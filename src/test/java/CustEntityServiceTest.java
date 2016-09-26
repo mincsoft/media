@@ -16,7 +16,7 @@ public class CustEntityServiceTest {
     @Before
     public void setUp() throws Exception {
         custEntityService= new CustEntityService();
-//        access_token = custEntityService.getAuthToken();
+        access_token = custEntityService.getAuthToken();
         if (StringUtils.isEmpty(access_token))
         access_token = Configuration.getInstance().getValue("access_token");
         System.out.println("access_token=============:"+access_token);
