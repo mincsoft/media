@@ -10,6 +10,7 @@ import com.crm.api.BaseResponse;
  */
 public class CustEntityService extends BaseAPI {
 
+
     public JSONObject getEnityList(String access_token) {
         String url = "https://api.xiaoshouyi.com/data/v1/picks/dimension/belongs?access_token=Bearer%20" + access_token;
         JSONObject response = executeGet(url);
@@ -32,7 +33,7 @@ public class CustEntityService extends BaseAPI {
     public JSONObject createEnity(String access_token,String belongId,JSONObject entityInfo) {
         String url = "https://api.xiaoshouyi.com/data/v1/objects/customize/create";
         JSONObject params = new JSONObject();
-        params.put("access_token", access_token);
+        params.put("access_token", "Bearer%20"+access_token);
         params.put("belongId", belongId);
         params.put("record", entityInfo);
 

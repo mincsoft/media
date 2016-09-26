@@ -1,4 +1,5 @@
 import com.alibaba.fastjson.JSONObject;
+import com.crm.api.Configuration;
 import com.crm.bs.CustEntityService;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
@@ -15,9 +16,9 @@ public class CustEntityServiceTest {
     @Before
     public void setUp() throws Exception {
         custEntityService= new CustEntityService();
-        access_token = custEntityService.getAuthToken();
+//        access_token = custEntityService.getAuthToken();
         if (StringUtils.isEmpty(access_token))
-        access_token = "b41b934d448a36ac85db23ede2f3120ede2a56b4db9b4b61076d17d3313bdc14";
+        access_token = Configuration.getInstance().getValue("access_token");
         System.out.println("access_token=============:"+access_token);
     }
 
@@ -34,19 +35,18 @@ public class CustEntityServiceTest {
     @Test
     public void testGetEnityList(){
         JSONObject result=custEntityService.getEnityList(access_token);
-        System.out.println(result.toJSONString());
+//        System.out.println(result.toJSONString());
     }
 
     @Test
     public void testGetEnityDetail(){
-        JSONObject result=custEntityService.getEnityDetail(access_token,"100018107");
-        System.out.println(result.toJSONString());
+        JSONObject result=custEntityService.getEnityDetail(access_token,"116");
+//        System.out.println(result.toJSONString());
     }
 
     @Test
     public void testCreateEnity(){
         JSONObject result=custEntityService.getEnityDetail(access_token,"100018107");
         custEntityService.createEnity(access_token,"100018107001",result);
-        System.out.println(result.toJSONString());
     }
 }

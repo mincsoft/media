@@ -23,17 +23,21 @@ public abstract class BaseAPI {
 
   protected static final String BASE_API_URL = "";
   protected static String _CURR_AUTHTOKEN = "";
-  protected static String SECURCODE = "cyKgOghI";//租户安全令牌
-
-  private static final String _CODE_TOKEN_URL = "https://api.xiaoshouyi.com/oauth2/token.action";//交互认证方式
-  private static final String _PWD_TOKEN_URL = "https://api.xiaoshouyi.com/oauth2/token";//静默方式
+  protected static String SECURCODE = Configuration.getInstance().getValue("securcode");//"cyKgOghI";//租户安全令牌
+  private static final String _CODE_TOKEN_URL = Configuration.getInstance().getValue("_code_token_url");//交互认证方式
+  private static final String _PWD_TOKEN_URL = Configuration.getInstance().getValue("_pwd_token_url");//静默方式
+  private static final String CLIENT_ID = Configuration.getInstance().getValue("client_id");//静默方式
+  private static final String CLIENT_SECRET = Configuration.getInstance().getValue("client_secret");//静默方式
+  private static final String REDIRECT_URI = Configuration.getInstance().getValue("redirect_uri");//静默方式
+  private static final String USERNAME = Configuration.getInstance().getValue("username");//静默方式
+  private static final String PASSWORD = Configuration.getInstance().getValue("password");//静默方式
 
 
 
   public String getAuthToken(){
     if (StringUtils.isEmpty(_CURR_AUTHTOKEN)){
-      String codeParam="grant_type=authorization_code&client_id=e3829850419b7ec442b0314c3cf2ff58&client_secret=562e34991cd545d5f499a3331b5cb592&redirect_uri=http://localhost&code=5385578c7137a40a75206c543605d3957a3355d78d3e2de0279cc6cb0f3a7e07";
-      String pwdParam="grant_type=password&client_id=e3829850419b7ec442b0314c3cf2ff58&client_secret=562e34991cd545d5f499a3331b5cb592&redirect_uri=http://localhost&username=18800004505&password=1qaz2wsx"+SECURCODE;
+//      String codeParam="grant_type=authorization_code&client_id=e3829850419b7ec442b0314c3cf2ff58&client_secret=562e34991cd545d5f499a3331b5cb592&redirect_uri=http://localhost&code=5385578c7137a40a75206c543605d3957a3355d78d3e2de0279cc6cb0f3a7e07";
+      String pwdParam="grant_type=password&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&redirect_uri="+REDIRECT_URI+"&username="+USERNAME+"&password="+PASSWORD+SECURCODE;
       String response = NetWorkCenter.sendSimplePost(_PWD_TOKEN_URL, pwdParam);
 
       if (StringUtils.isNotEmpty(response)){
