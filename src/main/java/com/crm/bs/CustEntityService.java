@@ -30,12 +30,44 @@ public class CustEntityService extends BaseAPI {
     }
 
 
-    public JSONObject createEnity(String access_token,String belongId,JSONObject entityInfo) {
+
+    public JSONObject getPayRecordEntity(String access_token) {
+        String url = "https://api.xiaoshouyi.com/data/v1/objects/contract/payment/describe?access_token=Bearer%20" + access_token;
+        JSONObject response = executeGet(url);
+        if (response != null) {
+            return response;
+        }
+        return null;
+    }
+
+
+
+    public JSONObject getPayPlanEntity(String access_token) {
+        String url = "https://api.xiaoshouyi.com/data/v1/objects/contract/payment/plan-describe?access_token=Bearer%20" + access_token;
+        JSONObject response = executeGet(url);
+        if (response != null) {
+            return response;
+        }
+        return null;
+    }
+
+
+    public JSONObject createEntityData(String access_token,String belongId,JSONObject jsonObject) {
         String url = "https://api.xiaoshouyi.com/data/v1/objects/customize/create";
         JSONObject params = new JSONObject();
         params.put("access_token", "Bearer%20"+access_token);
         params.put("belongId", belongId);
-        params.put("record", entityInfo);
+        params.put("record", jsonObject);
+
+        BaseResponse res = executePost(url, params.toString());
+        return res!=null? JSON.parseObject(res.getErrmsg()):null;
+    }
+
+    public JSONObject updateEntityData(String access_token,String belongId,JSONObject jsonObject){
+        String url = "https://api.xiaoshouyi.com/data/v1/objects/customize/update";
+        JSONObject params = new JSONObject();
+        params.put("access_token", "Bearer%20"+access_token);
+        params.put("record", jsonObject);
 
         BaseResponse res = executePost(url, params.toString());
         return res!=null? JSON.parseObject(res.getErrmsg()):null;
