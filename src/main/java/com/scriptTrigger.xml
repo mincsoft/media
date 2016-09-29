@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configs>
     <config>
-	<trigger>
+        <trigger>
             <object>meetingRoomPreRecord</object>
             <operate>add</operate>
             <processor>customEntitySaveProcessor</processor>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configs>
     <config>
-	<api>
+        <api>
             <class>other.bca.bdpidecaijddi.api.SearchMeetings</class>
-	    <url>/search-meeting</url>
+            <url>/search-meeting</url>
         </api>
-	<api>
+        <api>
             <class>other.bca.bdpidecaijddi.api.SaveMeetings</class>
-	    <url>/save-meeting</url>
+            <url>/save-meeting</url>
         </api>
-	
+
     </config>
 </configs>
 
