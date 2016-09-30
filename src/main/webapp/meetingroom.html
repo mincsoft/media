@@ -498,8 +498,8 @@ overflow-y:hidden;
 
 <!-- <script src="./js/laydate/laydate.js"></script> -->
 <script>
-//	var urlTitle = "https://api-gray.xiaoshouyi.com";
-	var urlTitle = "http://localhost:8081";
+	var urlTitle = "https://api.xiaoshouyi.com";
+//	var urlTitle = "http://localhost:8081";
 	var belongId = "100019547";
 	var access_token;
 	var refresh_token;
@@ -508,7 +508,8 @@ overflow-y:hidden;
 	var users = {};
 	var meetingDetails = {};
 	var access_user;
-	var client_id = "277afdc031d461adb2f29e915b38d6f7";
+	var client_id = "e3829850419b7ec442b0314c3cf2ff58";
+    var client_secret = "562e34991cd545d5f499a3331b5cb592";
 	var meetingRoomReservationManagerBelongId;
 	var meetingRoomReservationBelongId;
 	$(function(){
@@ -523,9 +524,10 @@ overflow-y:hidden;
             success: function(req) {
             	for(var i = 0;i<req.records.length;i++){
             		var obj1 = req.records[i];
-            		if(obj1.name == "meetingRoomInfo"){
+                    var bugName = "belongName"//应该是name，系统bug
+            		if(obj1[bugName] == "meetingRoomInfo"){
             			meetingRoomReservationManagerBelongId = obj1.belongId;
-            		} else if(obj1.name == "meetingRoomPreRecord"){
+            		} else if(obj1[bugName] == "meetingRoomPreRecord"){
             			meetingRoomReservationBelongId = obj1.belongId;
             		}
             	}
@@ -959,9 +961,9 @@ overflow-y:hidden;
 	}
 	
 	var getToken = function(obj){
-		var url = urlTitle + "/oauth2/token.action?grant_type=authorization_code&client_id=277afdc031d461adb2f29e915b38d6f7&client_secret=2688b03e897bdba1cc1b24a286a8acd7&redirect_uri=http://lapp.ingageapp.com/a93d/7173/meet/meetingroom.html&code="+code;
+		var url = urlTitle + "/oauth2/token.action?grant_type=authorization_code&client_id="+client_id+"&client_secret="+client_secret+"&redirect_uri=http://lapp.ingageapp.com/d3e6/f901/meet/meetingroom.html&code="+code;
 		if(obj.type != "code"){
-			url = urlTitle + "/oauth2/token.action?grant_type=refresh_token&client_id=277afdc031d461adb2f29e915b38d6f7&client_secret=2688b03e897bdba1cc1b24a286a8acd7&redirect_uri=http://lapp.ingageapp.com/a93d/7173/meet/meetingroom.html&refresh_token="+refresh_token;
+			url = urlTitle + "/oauth2/token.action?grant_type=refresh_token&client_id="+client_id+"&client_secret="+client_secret+"&redirect_uri=http://lapp.ingageapp.com/d3e6/f901/meet/meetingroom.html&refresh_token="+refresh_token;
 		}
 		$.ajax({
 				url: url,    //请求的url地址

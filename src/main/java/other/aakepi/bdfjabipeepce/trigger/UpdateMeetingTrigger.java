@@ -1,6 +1,6 @@
-package com.other.bca.bdpidecaijddi.trigger;
+package other.aakepi.bdfjabipeepce.trigger;
 
-import com.other.bca.bdpidecaijddi.util.DateUtil;
+import other.aakepi.bdfjabipeepce.util.DateUtil;
 import com.rkhd.platform.sdk.ScriptTrigger;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;

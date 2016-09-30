@@ -1,6 +1,6 @@
-package com.other.bca.bdpidecaijddi.api;
+package other.aakepi.bdfjabipeepce.api;
 
-import com.other.bca.bdpidecaijddi.util.DateUtil;
+import other.aakepi.bdfjabipeepce.util.DateUtil;
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;

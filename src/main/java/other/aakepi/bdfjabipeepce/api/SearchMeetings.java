@@ -1,4 +1,4 @@
-package com.other.bca.bdpidecaijddi.api;
+package other.aakepi.bdfjabipeepce.api;
 
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;

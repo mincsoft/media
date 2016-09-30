@@ -7,7 +7,7 @@
             <processor>customEntitySaveProcessor</processor>
             <position>before</position>
             <order>1</order>
-            <class>other.bca.bdpidecaijddi.trigger.SaveMettingTrigger</class>
+            <class>other.aakepi.bdfjabipeepce.trigger.SaveMettingTrigger</class>
         </trigger>
         <trigger>
             <object>meetingRoomPreRecord</object>
@@ -15,7 +15,7 @@
             <processor>customEntitySaveProcessor</processor>
             <position>before</position>
             <order>1</order>
-            <class>other.bca.bdpidecaijddi.trigger.UpdateMeetingTrigger</class>
+            <class>other.aakepi.bdfjabipeepce.trigger.UpdateMeetingTrigger</class>
         </trigger>
     </config>
 </configs>

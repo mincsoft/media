@@ -2,11 +2,11 @@
 <configs>
     <config>
         <api>
-            <class>other.bca.bdpidecaijddi.api.SearchMeetings</class>
+            <class>other.aakepi.bdfjabipeepce.api.SearchMeetings</class>
             <url>/search-meeting</url>
         </api>
         <api>
-            <class>other.bca.bdpidecaijddi.api.SaveMeetings</class>
+            <class>other.aakepi.bdfjabipeepce.api.SaveMeetings</class>
             <url>/save-meeting</url>
         </api>
 

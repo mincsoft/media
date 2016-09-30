@@ -1,4 +1,4 @@
-package com.other.bca.bdpidecaijddi.util;
+package other.aakepi.bdfjabipeepce.util;
 
 import java.util.Calendar;
 import java.util.Date;
