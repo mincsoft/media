@@ -7,6 +7,18 @@
     <groupId>com.crm.plugins</groupId>
     <artifactId>media</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <name>CRM广告传媒行业版</name>
 
     <dependencies>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configs>
+    <config>
+        <trigger>
+            <object>meetingRoomPreRecord</object>
+            <operate>add</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>before</position>
+            <order>1</order>
+            <class>other.bca.bdpidecaijddi.trigger.SaveMettingTrigger</class>
+        </trigger>
+        <trigger>
+            <object>meetingRoomPreRecord</object>
+            <operate>update</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>before</position>
+            <order>1</order>
+            <class>other.bca.bdpidecaijddi.trigger.UpdateMeetingTrigger</class>
+        </trigger>
+    </config>
+</configs>
+

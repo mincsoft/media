@@ -40,13 +40,24 @@ public class CustEntityServiceTest {
 
     @Test
     public void testGetEnityDetail(){
-        JSONObject result=custEntityService.getEnityDetail(access_token,"116");
+        JSONObject result=custEntityService.getEnityDetail(access_token,"100018193");
 //        System.out.println(result.toJSONString());
     }
 
     @Test
-    public void testCreateEnity(){
-        JSONObject result=custEntityService.getEnityDetail(access_token,"100018107");
-        custEntityService.createEnity(access_token,"100018107001",result);
+    public void testetPayRecordEntity(){
+        JSONObject result=custEntityService.getPayRecordEntity(access_token);
+//        System.out.println(result.toJSONString());
+    }
+
+    @Test
+    public void testGetPayPlanEntity(){
+        JSONObject result=custEntityService.getPayPlanEntity(access_token);
+//        System.out.println(result.toJSONString());
+    }
+
+    @Test
+    public void testCreateData(){
+//        custEntityService.createEntityData(access_token,"100018107001",result);
     }
 }
