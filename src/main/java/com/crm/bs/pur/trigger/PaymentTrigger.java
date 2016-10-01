@@ -1,9 +1,9 @@
-package com.crm.bs.pur;
+package com.crm.bs.pur.trigger;
 
 import com.crm.api.BaseResponse;
 import com.crm.api.Configuration;
 import com.crm.api.NetWorkCenter;
-import com.crm.bs.pur.trigger.BaseTrigger;
+import com.rkhd.platform.sdk.ScriptTrigger;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
@@ -13,6 +13,7 @@ import com.rkhd.platform.sdk.model.DataModel;
 import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import com.rkhd.platform.sdk.param.ScriptTriggerResult;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * 付款后更新付款计划
  */
-public class PaymentTrigger extends BaseTrigger {
+public class PaymentTrigger extends PaymentTrigger.BaseTrigger {
     private Logger logger = LoggerFactory.getLogger();
 
     @Override
@@ -82,4 +83,39 @@ public class PaymentTrigger extends BaseTrigger {
 //		testTriggerTool.test("E:\\ceshiSwing\\meetting\\src\\scriptTrigger.xml", saveMettingTrigger);
     }
 
+    /**
+     * 付款后更新付款计划
+     */
+    public static class BaseTrigger implements ScriptTrigger {
+        private Logger logger = LoggerFactory.getLogger();
+
+        protected static String _CURR_AUTHTOKEN = "";
+        protected static String SECURCODE = Configuration.getInstance().getValue("securcode");//"cyKgOghI";//租户安全令牌
+        private static final String _CODE_TOKEN_URL = Configuration.getInstance().getValue("_code_token_url");//交互认证方式
+        private static final String _PWD_TOKEN_URL = Configuration.getInstance().getValue("_pwd_token_url");//静默方式
+        private static final String CLIENT_ID = Configuration.getInstance().getValue("client_id");//静默方式
+        private static final String CLIENT_SECRET = Configuration.getInstance().getValue("client_secret");//静默方式
+        private static final String REDIRECT_URI = Configuration.getInstance().getValue("redirect_uri");//静默方式
+        private static final String USERNAME = Configuration.getInstance().getValue("username");//静默方式
+        private static final String PASSWORD = Configuration.getInstance().getValue("password");//静默方式
+
+        @Override
+        public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam) throws ScriptBusinessException {
+            return null;
+        }
+
+        public String getAuthToken(){
+            if (StringUtils.isEmpty(_CURR_AUTHTOKEN)){
+                String pwdParam="grant_type=password&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&redirect_uri="+REDIRECT_URI+"&username="+USERNAME+"&password="+PASSWORD+SECURCODE;
+                String response = NetWorkCenter.sendSimplePost(_PWD_TOKEN_URL, pwdParam);
+
+                if (StringUtils.isNotEmpty(response)){
+                    JSONObject result= JSONObject.fromObject(response);
+                    _CURR_AUTHTOKEN = result.getString("access_token");
+                }
+            }
+
+            return _CURR_AUTHTOKEN;
+        }
+    }
 }
