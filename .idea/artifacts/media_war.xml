@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="war" name="media:war">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="media_war.war">
+    <root id="archive" name="media-1.0-SNAPSHOT.war">
       <element id="artifact" artifact-name="media:war exploded" />
     </root>
   </artifact>
