@@ -1,0 +1,772 @@
+{
+  "page": 0,
+  "total": 1,
+  "fileName": "排期",
+  "sheets": [
+    {
+      "id": 1,
+      "name": "排期",
+      "actived": true,
+      "color": "orange"
+    }
+  ],
+  "floatings": [
+    {
+      "sheet": 1,
+      "name": "2016-07",
+      "ftype": "meg",
+      "json": " [1,7,1,10]"
+    },
+    {
+      "sheet": 1,
+      "name": "beforeHead",
+      "ftype": "meg",
+      "json": " [1,1,1,6]"
+    },
+    {
+      "sheet": 1,
+      "name": "afterHead",
+      "ftype": "meg",
+      "json": " [1,12,1,21]"
+    },
+    {
+      "sheet": 1,
+      "name": "colGroups",
+      "ftype": "colgroup",
+      "json": " [{\"level\":1,\"span\":[7,10]}]"
+    }
+  ],
+  "spotEndCol": 11,
+  "cells": [
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 1,
+      "json": {
+        "width": 100
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 2,
+      "json": {
+        "width": 200
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 3,
+      "json": {
+        "width": 150
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 4,
+      "json": {
+        "width": 100
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 5,
+      "json": {
+        "width": 100
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 6,
+      "json": "{width:100, drop: Ext.encode({data: [\"小时\",\"年\",\"月\",\"篇\",\"天\",\"CPM\",\"次\",\"周\",\"CPL\",\"CPS\",\"CPC\",\"PCS\",\"季度\"]})}"
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 7,
+      "json": {
+        "width": 30
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 8,
+      "json": {
+        "width": 30
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 9,
+      "json": {
+        "width": 30
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 10,
+      "json": {
+        "width": 30
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 11,
+      "json": {
+        "width": 30
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 12,
+      "json": {
+        "width": 100,
+        "fm": "money||2|none",
+        "dsd": "ed"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 13,
+      "json": {
+        "width": 100,
+        "fm": "money||2|none"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 14,
+      "json": {
+        "width": 100,
+        "fm": "percent"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 15,
+      "json": {
+        "width": 100,
+        "fm": "money||2|none"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 16,
+      "json": {
+        "width": 150,
+        "fm": "money||2|none"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 17,
+      "json": {
+        "width": 150,
+        "fm": "money||2|none"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 18,
+      "json": {
+        "width": 150,
+        "fm": "money||2|none"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 19,
+      "json": {
+        "width": 80,
+        "it": "checkbox",
+        "itchk": false,
+        "ta": "center"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 20,
+      "json": "{width:150,drop: Ext.encode({data:[\"展示类营销\",\"搜索引擎营销\",\"精准营销\",\"内容营销\",\"移动互联网营销\",\"地方站营销\",\"视频营销\"]})}"
+    },
+    {
+      "sheet": 1,
+      "row": 0,
+      "col": 21,
+      "json": {
+        "width": 150
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 1,
+      "json": "{data: 'Media', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 1,
+      "json": "{data: '媒体', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 2,
+      "json": "{data: 'Vendor', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 2,
+      "json": "{data: '供应商', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 3,
+      "json": "{data: 'colChannels', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 3,
+      "json": "{data: '频道/位置', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 4,
+      "json": "{data: 'Format', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 4,
+      "json": "{data: '形式', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 5,
+      "json": "{data: 'Size', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 5,
+      "json": "{data: '尺寸', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 6,
+      "json": "{data: 'BoughtUnit', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 6,
+      "json": "{data: '购买方式', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 7,
+      "json": "{data: '2016-07-28', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed',fm:'date',dfm:'d'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 7,
+      "json": "{data: '四', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 8,
+      "json": "{data: '2016-07-29', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed',fm:'date',dfm:'d'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 8,
+      "json": "{data: '五', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 9,
+      "json": "{data: '2016-07-30', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed',fm:'date',dfm:'d'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 9,
+      "json": "{data: '六', bgc: '#DFE3E8', color:'#FF0000', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 10,
+      "json": "{data: '2016-07-31', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed',fm:'date',dfm:'d'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 10,
+      "json": "{data: '日', bgc: '#DFE3E8', color:'#FF0000', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 11,
+      "json": "{data: '2016-08-01', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed',fm:'date',dfm:'d'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 11,
+      "json": "{data: '一', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 1,
+      "col": 7,
+      "json": "{data: '2016-07', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 1,
+      "col": 11,
+      "json": "{data: '2016-08', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 12,
+      "json": "{data: 'Total Insertion', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 12,
+      "json": "{data: '总数', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 13,
+      "json": "{data: 'Rate Card/day', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 13,
+      "json": "{data: '刊例单价', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 14,
+      "json": "{data: 'Discount', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 14,
+      "json": "{data: '扣率(%)', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 15,
+      "json": "{data: 'Net Cost/day', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 15,
+      "json": "{data: '折后单价', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 16,
+      "json": "{data: 'Total Ratecard Cost', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 16,
+      "json": "{data: '刊例总价', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 17,
+      "json": "{data: 'Total Net Cost', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 17,
+      "json": "{data: '折后总价', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 18,
+      "json": "{data: 'Total Order Cost', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 18,
+      "json": "{data: '下单总价', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 19,
+      "json": "{data: 'Free', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 19,
+      "json": "{data: '配送', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 20,
+      "json": "{data: 'Connunication Tactics', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 20,
+      "json": "{data: '推广方式', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 2,
+      "col": 21,
+      "json": "{data: 'Remarks', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 3,
+      "col": 21,
+      "json": "{data: '备注', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 1,
+      "col": 1,
+      "json": "{data: '', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+    {
+      "sheet": 1,
+      "row": 1,
+      "col": 12,
+      "json": "{data: '', bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'} "
+    },
+
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 0,
+      "json": {
+        "id": "gzlyo4dsx6"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 1,
+      "json": {
+        "data": "测试媒体",
+        "id": "ff8080814d503c8d014d507e590d001b"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 2,
+      "json": {
+        "data": "龙岩市坐享岩城文化传媒有限公司",
+        "id": "shvendor0322"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 3,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 4,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 5,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 6,
+      "json": {
+        "data": "CPM"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 10,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 11,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 12,
+      "json": {
+        "data": "2.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 13,
+      "json": {
+        "data": "100.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 14,
+      "json": {
+        "data": "1.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 15,
+      "json": {
+        "data": "100.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 16,
+      "json": {
+        "data": "200.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 17,
+      "json": {
+        "data": "200.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 18,
+      "json": {
+        "data": "200.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 4,
+      "col": 20,
+      "json": {
+        "data": "展示类营销"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 0,
+      "json": {
+        "id": "ls7iyk3jy9"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 1,
+      "json": {
+        "data": "人民网",
+        "id": "ff8080814d32b552014d4c7ff1ed0160"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 2,
+      "json": {
+        "data": "黔西南州美博聚名广告传媒有限责任公司",
+        "id": "shvendor0359"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 3,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 4,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 5,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 6,
+      "json": {
+        "data": "天"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 11,
+      "json": {
+        "data": "1"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 12,
+      "json": {
+        "data": "1.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 13,
+      "json": {
+        "data": "200.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 14,
+      "json": {
+        "data": "1.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 15,
+      "json": {
+        "data": "200.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 16,
+      "json": {
+        "data": "200.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 17,
+      "json": {
+        "data": "200.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 18,
+      "json": {
+        "data": "200.0"
+      }
+    },
+    {
+      "sheet": 1,
+      "row": 5,
+      "col": 20,
+      "json": {
+        "data": "展示类营销"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "level": 1,
+      "span": [
+        7,
+        10
+      ]
+    }
+  ],
+  "columnSize": 21
+}

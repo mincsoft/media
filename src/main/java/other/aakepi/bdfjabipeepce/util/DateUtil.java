@@ -1,10 +1,30 @@
 package other.aakepi.bdfjabipeepce.util;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DateUtil {
+
+
+    public  static Date getDate (String date)  {
+        return getDate(date,"yyyy-MM-dd");
+    }
+
+    public  static Date getDate (String date,String format)  {
+        if(StringUtils.isBlank(date)) return null;
+        DateFormat formater = new SimpleDateFormat(format);
+        try {
+            return formater.parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
 	/** 
      * 得到两个日期相差的天数 
      */  

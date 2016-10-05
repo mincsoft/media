@@ -1,0 +1,677 @@
+/**
+ * Enterprise Spreadsheet Solutions
+ * Copyright(c) FeyaSoft Inc. All right reserved.
+ * info@enterpriseSheet.com
+ * http://www.enterpriseSheet.com
+ *
+ * Licensed under the EnterpriseSheet Commercial License.
+ * http://enterprisesheet.com/license.jsp
+ *
+ * You need to have a valid license key to access this file.
+ */
+/*
+ * for char measure
+ */
+.sc-char-measure {	
+	position : absolute;
+	width: 0px;
+	height: 0px;	
+}
+
+.sc-char-measure, .sc-char-measure * {
+	white-space : normal;
+	word-wrap : break-word;
+}
+
+/*
+ * for px measure
+ */
+.sc-px-measure {
+	position : absolute;
+	left : -1000px;
+	top : -1000px;
+	border : none;
+	padding : 0px;
+}
+
+/*
+ * for simple button style
+ */
+.ss-simple-button {	
+	position: relative;
+	padding: 3px 5px;
+	text-align: center;
+	background-color: rgb(255,255,255);
+	background-position: left center;
+	background-repeat: no-repeat;	
+	/*border: 1px solid white;*/
+	outline: 1px solid rgb(1,132,187);
+    color: rgb(1,132,187);
+    cursor: pointer;       
+}
+
+.ss-simple-button-arrow {	
+	position: absolute;
+	top: 8px;
+	right: 3px;
+	width: 0px;
+	height: 0px;
+	border-top: 5px solid rgb(1,132,187);
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;	
+    cursor: pointer;    
+}
+
+.ss-simple-button-sep {
+	position: absolute;
+	top: 0px;	
+	right: 0px;
+	width: 16px;
+	height: 100%;
+	border-left: 1px solid rgb(1,132,187);
+}
+
+
+.ss-simple-button-pressed {
+	background-color: rgb(1,132,187);
+	color: white;
+}
+
+.ss-simple-button-pressed .ss-simple-button-arrow {
+	border-top: 5px solid white;
+}
+
+.ss-simple-button-pressed .ss-simple-button-sep {	
+	border-left: 1px solid white;
+}
+
+.ss-simple-button:hover {
+	opacity: .9;
+	filter: alpha(opacity=90);
+}
+
+
+.ss-simple-button-push {
+    opacity: .75 !important;
+    background-color: rgb(230,230,230);
+}
+
+/*
+ * for floating arrow box
+ */
+.ss-arrow-box {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	-webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+	border: 1px solid silver;
+	background-color: rgb(208,208,208);
+	cursor: pointer;
+	z-index: 10;
+}
+
+.ss-arrow-box:hover {
+	background-color: rgb(240,240,240);
+}
+
+.ss-arrow {
+	position: absolute;
+	width: 0px;
+	height: 0px;
+	top: 8px;
+	left: 5px;
+	border-top: 4px solid gray;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+}
+
+
+/*
+ * for scale menu
+ */
+ 
+.x-scale-menu-body .x-scale-menu-item a{
+	height: 100%;	
+}
+
+/*
+ * define the css for different scale menu
+ */
+/*
+ * extjs4
+ */
+.x-large-menu-body .x-menu-icon-separator {
+	left: 42px;
+}
+
+.x-large-menu-body .x-large-menu-item .x-menu-item-icon {
+	width: 32px;
+	height: 32px;
+}
+
+.x-large-menu-body .x-large-menu-item .x-menu-item-link {
+	height: 40px;
+}
+
+.x-large-menu-body .x-menu-item .x-menu-item-icon {
+	width: 32px;	
+}
+
+.x-large-menu-body .x-large-menu-item .x-menu-item-text {
+	top: -15px;	
+}
+
+.x-large-menu-body .x-menu-item-text {
+	margin-left: 15px;
+}
+
+.x-large-menu-body .x-large-menu-item .x-menu-item-arrow {
+	top: 12px;
+}
+
+
+
+.x-large-menu {
+	background-position-x: 16px;
+}
+
+.x-large-menu .x-menu-list-item-indent {
+	padding-left:45px;
+}
+
+.x-large-menu a.x-menu-item {
+	padding-left:45px;
+	line-height:32px;
+}
+
+.x-large-menu .x-menu-item-icon {
+	width:32px;
+	height:32px;
+}
+/*
+.x-large-menu .x-menu-item-active {
+	background-position-y: 0px;
+}
+*/
+/*
+ * for medium size
+ */
+.x-medium-menu {
+	background-position-x: 8px;
+}
+
+.x-medium-menu .x-menu-list-item-indent {
+	padding-left:37px;
+}
+
+.x-medium-menu a.x-menu-item {
+	padding-left:37px;
+	line-height:24px;
+}
+
+.x-medium-menu .x-menu-item-icon {
+	width:24px;
+	height:24px;
+}
+
+.x-medium-menu-body .x-medium-menu-item .x-menu-item-link {
+	height: 32px;
+}
+
+.x-medium-menu-body .x-medium-menu-item .x-menu-item-text {
+	top: -7px;
+}
+
+.x-medium-menu-body .x-menu-item-text {	
+	margin-left: 7px;	
+}
+
+/*
+ * for image preview box
+ */
+.sc-preview-box {	
+	padding: 5px;	
+	text-align: center;
+}
+
+.sc-preview-box img {
+	max-width: 100%;
+}
+
+.sc-menu-label {
+	padding: 5px;
+	color: gray;
+	font-size: 14px;
+}
+
+.sc-set-title {
+	padding: 5px;
+	border-bottom: 1px solid silver;
+}
+
+/*
+ * for clip using
+ */
+.ss-clip-area {
+	position: absolute;
+	width: 300px;
+	height: 100px;
+	left: 100px;
+	top: 100px;
+	z-index: 100;
+	background: white;
+}
+
+.ss-photo-box {
+	/*border:1px solid gray;
+	padding: 1px;*/
+	background:white;
+	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    /*
+	-moz-box-shadow:0px 0px 15px #999;              
+	-webkit-box-shadow:0px 0px 15px #999;            
+	box-shadow:0px 0px 15px #999;
+	*/
+	cursor: pointer;
+}
+
+.ss-photo-box img {
+	width: 100%;
+	height: 100%;
+	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.ss-photo-box:hover {
+	opacity:0.9;
+	-moz-opacity:0.9;
+	filter:alpha(opacity=90);
+	border-color: black;
+}
+
+.ss-username-label {
+	text-align: center;
+	color: white;
+	cursor: pointer;
+}
+
+.ss-username-label span {
+	padding: 1px 10px 2px 10px;
+	-webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    background: green;
+}
+
+.ss-username-label:hover {
+	text-decoration: underline;
+}
+
+/*
+ * set width for action column icon
+ */
+.action-column-icon {
+	width: 20px;
+}
+
+.sc-item-list-hint {
+	padding-bottom: 10px;
+}
+
+.x-webkit .x-menu-item .x-menu-item-icon {
+	top: 5px;
+	left: 4px;
+}
+
+
+
+/** this is for popup window CSS **/
+
+.ag-win {
+    border: none !important;
+    background: none !important;
+    overflow: hidden;
+}
+
+.ag-win .x-toolbar-default {
+    background: none !important;
+}
+  
+.ag-win .gm-list .author, .ag-win .gm-list .group {
+    color: rgb(63,63,63);
+    cursor: pointer;
+}
+
+.ag-win .gm-list .x-grid-row-over .author, .ag-win .gm-list .x-grid-row-over .group {
+  /*text-decoration: underline;*/
+}
+
+.ag-win .account-list .author, .ag-win .account-list .group {
+    color: rgb(63,63,63);
+    cursor: pointer;
+}
+
+.ag-win .account-list .x-grid-row-over .author, .ag-win .account-list .x-grid-row-over .group {
+    /*text-decoration: underline;*/
+}
+  
+.tp-title {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+  
+.dir-hint, .dir-info {
+    font-size: 16px;
+}
+  
+.dir-hint .bold, .dir-info .bold {
+    font-weight: bold;
+}
+  
+.dir-tree {
+    padding: 0 46px 46px 46px;
+}
+
+.dir-tree .x-grid-tree-node-expanded .x-tree-icon-parent, .dir-tree .x-tree-icon-parent, .dir-tree .x-tree-icon-leaf {
+     background-image: url(../images/folder_dark.png);
+}
+  
+ .x-grid-tree-node-expanded .x-tree-icon-parent.icon-sheet-tree{
+     background-image: url(../images/sheet_darkgreen.png) !important;
+ }
+
+.dir-tree .x-tree-view {
+    padding: 10px 0px;
+}
+  
+.lite-pop-title {
+    color: white;
+    font-size: 20px;
+    padding: 6px 10px;
+    text-align: center;
+}
+  
+.lite-group-topbar {
+    background: rgb(60,60,60);
+    color: white;
+}
+  
+.icon-cross-white {
+    background: transparent url(../images/cross_white.png) no-repeat center center;
+}
+  
+.apg-bottombar {
+    border: none;
+    border-top: 1px solid silver;
+}
+  
+.sbtn {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+    -moz-opacity: 0.75;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+    text-align: center;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.sbtn-drop {
+    position: relative;
+    padding-right: 25px;
+}
+
+.drop {
+    right: 8px;
+    top: 50%;
+    margin-top: -2px;
+    width: 0px;
+    height: 0px;
+    line-height: 0px;
+    font-size: 0px;
+    position: absolute;
+    border-top: 5px solid white;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+  
+.sbtn-over {
+    -moz-opacity: 0.85;
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+}
+
+.sbtn-hold {
+    -moz-opacity: 1;
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+ 
+/** not sure whether we need overwrite this ... **/
+.x-border-layout-ct {
+    background-color: white;
+}
+
+.pop-win {
+    border: none !important;
+    background: white !important;
+}
+
+.pop-win .x-toolbar-default {
+    background: none !important;
+}
+
+.pop-win .x-window-body {
+    background-color: white;
+    padding: 30px 40px;
+}
+
+/**
+ * for load mask
+ */
+.ss-loadmask {
+    padding: 15px 20px;
+    background: white;
+    border: 1px solid silver;
+}
+
+.ss-loadmask .x-mask-msg-inner {
+    background: white;
+    border: none;
+    min-width: 100px;
+}
+
+.ss-loadmask .mask-per {
+    height: 5px;
+    background: gray;
+}
+
+.ss-loadmask .mask-perinner {
+    height: 100%;
+    float: left;
+    background: black;
+}
+
+.no-fill-color-item .x-menu-item-link {
+    padding-left: 10px !important;
+}
+
+/**
+ * some mixin
+ */
+.iScroll ::-webkit-scrollbar, .iScroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.iScroll ::-webkit-scrollbar-button:start:decrement,
+.iScroll ::-webkit-scrollbar-button:end:increment,
+.iScroll::-webkit-scrollbar-button:start:decrement,
+.iScroll::-webkit-scrollbar-button:end:increment {
+    display: block;
+    height: 0;
+    width: 0;
+    background-color: transparent;
+}
+
+.iScroll ::-webkit-scrollbar-track-piece,
+.iScroll::-webkit-scrollbar-track-piece {
+    margin: 0;
+    -webkit-border-radius: 0;
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+}
+
+.iScroll ::-webkit-scrollbar-thumb:vertical,
+.iScroll::-webkit-scrollbar-thumb:vertical {
+    height: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-border-radius: 4px;
+}
+
+.iScroll ::-webkit-scrollbar-thumb:horizontal,
+.iScroll::-webkit-scrollbar-thumb:horizontal {
+    width: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-border-radius: 4px;
+}
+  
+.ss-cell-vertical_90 {
+	    display: inline-block;
+    white-space: nowrap;
+    -webkit-transform: translate(1.1em,0) rotate(90deg);
+       -moz-transform: translate(1.1em,0) rotate(90deg);
+         -o-transform: translate(1.1em,0) rotate(90deg);
+            transform: translate(1.1em,0) rotate(90deg);
+    -webkit-transform-origin: 0 0;
+       -moz-transform-origin: 0 0;
+         -o-transform-origin: 0 0;
+            transform-origin: 0 0;
+   -ms-transform: none;
+   -ms-transform-origin: none;
+   -ms-writing-mode: tb-rl;  
+}
+
+.ss-cell-vertical_270 {
+		    display: inline-block;
+    white-space: nowrap;
+    -webkit-transform: rotate(-90deg);
+       -moz-transform: rotate(-90deg);
+         -o-transform: rotate(-90deg);
+            transform: translate(0, 1.1em) rotate(-90deg);
+    -webkit-transform-origin: 0 0;
+       -moz-transform-origin: 0 0;
+         -o-transform-origin: 0 0;
+            transform-origin: 0 0;
+   -ms-transform: translate(1.1em, 6em) rotate(-180deg);
+   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+   -ms-transform-origin: none;
+   -ms-writing-mode: tb-rl;  
+}
+
+.x-menu-item-indent {
+    margin-left: 0px;
+}
+
+.x-menu-body {
+    border-color: white;
+}
+
+.photo-viewer, .flat-ui .photo-viewer {
+    -moz-opacity: 1;
+    opacity: 1;
+    filter: alpha(opacity=100);
+    z-index: 10000000;
+    background-color: transparent !important; }
+
+.photo-viewer .photo-viewer-frame {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    -moz-opacity: 0.85;
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+    background-color: black; }
+
+.photo-viewer-inner {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    table-layout: fixed; }
+
+.photo-col {
+    vertical-align: middle;
+    text-align: center;
+    overflow: hidden;
+    background-color: black; }
+
+.info-col, .option-col {
+    width: 300px;
+    vertical-align: top;
+    padding: 40px 20px; }
+
+.option-col {
+    vertical-align: bottom; }
+
+.option-col .download, .option-col .photo-prev, .option-col .photo-next {
+    color: #e1e1e1;
+    font-size: 16px;
+    cursor: pointer; }
+
+.photo-navi {
+    height: 50px; }
+
+.photo-prev {
+    float: left; }
+
+.photo-next {
+    float: left;
+    margin-left: 80px; }
+
+.option-col div.enabled span:hover {
+    text-decoration: underline; }
+
+.photo-name {
+    font-size: 16px;
+    color: white; }
+
+.file-type {
+    font-size: 14px;
+    color: white; }
+
+.update-time, .sharing, .cursor-info {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    color: #e1e1e1;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+.option-col .disabled {
+    color: gray;
+    cursor: default; }
+
+.photo-viewer-shield {
+    border: 1px solid gray; }
+
+.shield-label {
+    color: white;
+    font-size: 14px;
+    line-height: 30px; }
+    
+.top-mask {
+	z-index: 1000000;
+	background-color: transparent;
+}

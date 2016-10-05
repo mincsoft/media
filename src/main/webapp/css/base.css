@@ -1,0 +1,478 @@
+*
+{
+    font-family: "微软雅黑";
+}
+body
+{
+    margin: 0;
+    padding: 0;
+    font-family: "微软雅黑";
+}
+.header{
+    width: 100%;
+    border-bottom: 1px solid #cfdae5;
+    padding-bottom: 10px;
+}
+.content
+{
+    width: 100%;
+    overflow:auto;
+}
+.search-wapper
+{
+    margin: 20px 0 0 15px;
+}
+.search
+{
+    margin: 0 0 20px 0;
+}
+.search label
+{
+    display: block;
+    font-size: 14px;
+    color: #8fa1b2;
+    margin: 0 0 5px 0;
+}
+.search select
+{
+    width: 100%;
+    padding: 2px;
+    height: 38px;
+    line-height: 38px;
+    border:1px solid #cfdae5;
+    border-radius: 3px;
+    background: #fff;
+}
+.search input
+{
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
+    padding: 2px;
+    border:1px solid #cfdae5;
+    background: #fff;
+    border-radius: 3px;
+}
+a.sb,a.sb:visited
+{
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 5px;
+    color: #fff;
+    background: #00aaef;
+    border-radius:4px;
+    font-size:12px;
+    text-decoration: none;
+    margin: 20px 0 0 0;
+}
+a.sb:hover
+{
+    background: #00b7ff;
+    text-decoration: none;
+}
+.room-list
+{
+    margin: 30px 25px 0 25px;
+    padding:0;
+}
+.room
+{
+    border: 1px solid #cfdae5;
+    background: #fff;
+    height: 180px;
+    padding: 30px 30px 0 30px;
+    position: relative;
+    border-radius: 4px;
+    margin: 0 0 30px 0;
+}
+.room label
+{
+    display: block;
+    float:left;
+    color: #8fa1b2;
+    font-size: 13px;
+}
+.room .name
+{
+    font-weight: bold;
+    font-size: 16px;
+    clear: both;
+    margin: 0 0 20px 0;
+}
+
+.room .people,.room .time
+{
+    clear: left;
+    margin: 0 0 10px 0;
+}
+.room .status
+{
+    position: absolute;
+    width: 100%;
+    height:40px;
+    line-height: 40px;
+    left: 0;
+    bottom:0;
+    text-align: center;
+    color: #888;
+}
+.schedule:hover
+{
+    box-shadow: 0px 0px 5px 2px #8fa1b2;
+}
+.schedule .name
+{
+    color: #00aaef;
+}
+.schedule .status
+{
+    letter-spacing: 5px;
+}
+.schedule a
+{
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    background: #00aaef;
+    border-radius: 0 0 4px 4px;
+}
+.schedule a:hover
+{
+    background: #00b7ff;
+}
+.occupied .status
+{
+    background: #cfdae5;
+}
+.img
+{
+    position: absolute;
+    width: 70px;
+    height: 58px;
+    right: 40px;
+    top: 40px;
+}
+.schedule .img
+{
+    background: url(img/free.png);
+}
+.occupied .img
+{
+    background: url(img/meeting.png);
+}
+/*dialog style*/
+.ui-dialog
+{
+    background: #fff;
+}
+.ui-dialog-titlebar
+{
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+.ui-dialog-title
+{
+    color: #666;
+    font-weight: bold;
+    font-size: 16px;
+}
+.ui-dialog-content
+{
+    padding-top: 40px;
+}
+.meeting-form
+{
+
+}
+.meeting-form label
+{
+    display: block;
+}
+.meeting-form select
+{
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    border:1px solid #cfdae5;
+    background: #fff;
+    border-radius: 3px;
+}
+.meeting-form input
+{
+    width: 100%;
+    margin-bottom: 20px;
+    height: 38px;
+    border:1px solid #cfdae5;
+    background: #fff;
+    border-radius: 3px;
+}
+.ui-button
+{
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    background: #00aaef;
+    border: 0;
+    border-radius: 20px;
+    color: #fff;
+}
+.ui-dialog-buttonpane
+{
+    padding-top: 20px;
+}
+.room .status a{
+    text-decoration: none;
+}
+/*info style*/
+.info
+{
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -100px;
+    width: 200px;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 14px;
+}
+.info p
+{
+    margin: 15px;
+}
+.sucess
+{
+    background: #7CBC37;
+    color: #fff;
+}
+.failed
+{
+    background: #DC352E;
+    color: #fff;
+}
+/*loading*/
+.large-loading{
+    position: absolute;
+    z-index: 22;
+    top: 50%;
+    left: 50%;
+    width: 88px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -44px;
+    text-align: center;
+}
+#floatingCirclesG {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    -webkit-transform: scale(.6);
+    -moz-transform: scale(.6);
+    -ms-transform: scale(.6);
+    -o-transform: scale(.6);
+    transform: scale(.6);
+}
+
+.f_circleG {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    -webkit-animation-name: f_fadeG;
+    -moz-animation-name: f_fadeG;
+    -ms-animation-name: f_fadeG;
+    -o-animation-name: f_fadeG;
+    animation-name: f_fadeG;
+    -webkit-animation-duration: 1.04s;
+    -moz-animation-duration: 1.04s;
+    -ms-animation-duration: 1.04s;
+    -o-animation-duration: 1.04s;
+    animation-duration: 1.04s;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-direction: normal;
+    -moz-animation-direction: normal;
+    -ms-animation-direction: normal;
+    -o-animation-direction: normal;
+    animation-direction: normal;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    background-color: #fff;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
+
+#frotateG_01 {
+    top: 33px;
+    left: 0;
+    -webkit-animation-delay: .39s;
+    -moz-animation-delay: .39s;
+    -ms-animation-delay: .39s;
+    -o-animation-delay: .39s;
+    animation-delay: .39s;
+}
+
+#frotateG_02 {
+    top: 9px;
+    left: 9px;
+    -webkit-animation-delay: .52s;
+    -moz-animation-delay: .52s;
+    -ms-animation-delay: .52s;
+    -o-animation-delay: .52s;
+    animation-delay: .52s;
+}
+
+#frotateG_03 {
+    top: 0;
+    left: 33px;
+    -webkit-animation-delay: .65s;
+    -moz-animation-delay: .65s;
+    -ms-animation-delay: .65s;
+    -o-animation-delay: .65s;
+    animation-delay: .65s;
+}
+
+#frotateG_04 {
+    top: 9px;
+    right: 9px;
+    -webkit-animation-delay: .78s;
+    -moz-animation-delay: .78s;
+    -ms-animation-delay: .78s;
+    -o-animation-delay: .78s;
+    animation-delay: .78s;
+}
+
+#frotateG_05 {
+    top: 33px;
+    right: 0;
+    -webkit-animation-delay: .91s;
+    -moz-animation-delay: .91s;
+    -ms-animation-delay: .91s;
+    -o-animation-delay: .91s;
+    animation-delay: .91s;
+}
+
+#frotateG_06 {
+    right: 9px;
+    bottom: 9px;
+    -webkit-animation-delay: 1.04s;
+    -moz-animation-delay: 1.04s;
+    -ms-animation-delay: 1.04s;
+    -o-animation-delay: 1.04s;
+    animation-delay: 1.04s;
+}
+
+#frotateG_07 {
+    bottom: 0;
+    left: 33px;
+    -webkit-animation-delay: 1.17s;
+    -moz-animation-delay: 1.17s;
+    -ms-animation-delay: 1.17s;
+    -o-animation-delay: 1.17s;
+    animation-delay: 1.17s;
+}
+
+#frotateG_08 {
+    bottom: 9px;
+    left: 9px;
+    -webkit-animation-delay: 1.3s;
+    -moz-animation-delay: 1.3s;
+    -ms-animation-delay: 1.3s;
+    -o-animation-delay: 1.3s;
+    animation-delay: 1.3s;
+}
+
+@-moz-keyframes f_fadeG {
+    0% {
+        background-color: #617491;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+@-webkit-keyframes f_fadeG {
+    0% {
+        background-color: #617491;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+@-ms-keyframes f_fadeG {
+    0% {
+        background-color: #617491;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+@-o-keyframes f_fadeG {
+    0% {
+        background-color: #617491;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+@keyframes f_fadeG {
+    0% {
+        background-color: #617491;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+/*iphone6 日期时间控件宽度适配*/
+@media screen and(min-device-width: 375px) and (max-width: 667px)
+{
+    .meeting-form input[type="date"]
+    {
+        width: 315px;
+    }
+    .meeting-form input[type="time"]
+    {
+        width: 315px;
+    }
+}
+/*iphone6+ 日期时间控件宽度适配*/
+@media screen and(min-device-width: 414px) and (max-width: 736px)
+{
+    .meeting-form input[type="date"]
+    {
+        width: 354px;
+    }
+    .meeting-form input[type="time"]
+    {
+        width: 354px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+.html-body-overflow
+{
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+#dialog{
+    height:none
+}
