@@ -1,7 +1,7 @@
-package com.crm.api;
+package other.aakepi.bdfjfaackcpic.api;
 
 import com.alibaba.fastjson.JSON;
-import com.crm.enums.ResultType;
+import other.aakepi.bdfjfaackcpic.enums.ResultType;
 import org.apache.commons.lang.StringUtils;
 
 /**

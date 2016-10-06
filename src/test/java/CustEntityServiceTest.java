@@ -1,5 +1,5 @@
 import com.alibaba.fastjson.JSONObject;
-import com.crm.api.Configuration;
+import other.aakepi.bdfjfaackcpic.util.Configuration;
 import com.crm.bs.CustEntityService;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;

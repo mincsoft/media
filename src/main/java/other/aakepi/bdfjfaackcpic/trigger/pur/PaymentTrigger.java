@@ -1,8 +1,9 @@
-package com.crm.bs.pur.trigger;
+package other.aakepi.bdfjfaackcpic.trigger.pur;
 
-import com.crm.api.BaseResponse;
-import com.crm.api.Configuration;
-import com.crm.api.NetWorkCenter;
+import other.aakepi.bdfjfaackcpic.api.BaseResponse;
+import other.aakepi.bdfjfaackcpic.http.MincsoftHttpClient;
+import other.aakepi.bdfjfaackcpic.trigger.BaseTrigger;
+import other.aakepi.bdfjfaackcpic.util.Configuration;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
@@ -60,7 +61,7 @@ public class PaymentTrigger extends BaseTrigger {
                     params.put("json", json);
 
                     //2 更新状态
-                    BaseResponse res = NetWorkCenter.post(Configuration.getInstance().getValue("update_entity_data"), params.toString());
+                    BaseResponse res = MincsoftHttpClient.post(Configuration.getInstance().getValue("update_entity_data"), params.toString());
                 }
 
             } catch (IOException e) {

@@ -1,14 +1,13 @@
-package other.aakepi.bdfjabipeepce.api.media;
+package other.aakepi.bdfjfaackcpic.api.media;
 
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import other.aakepi.bdfjabipeepce.api.BaseApiSupport;
-import other.aakepi.bdfjabipeepce.api.QueryResult;
-import other.aakepi.bdfjabipeepce.util.DateUtil;
+import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
+import other.aakepi.bdfjfaackcpic.api.QueryResult;
+import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.*;

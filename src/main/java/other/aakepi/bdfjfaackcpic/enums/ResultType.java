@@ -1,4 +1,4 @@
-package com.crm.enums;
+package other.aakepi.bdfjfaackcpic.enums;
 
 import org.apache.commons.lang.StringUtils;
 

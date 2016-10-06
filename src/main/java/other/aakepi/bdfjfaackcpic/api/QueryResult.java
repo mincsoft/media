@@ -1,4 +1,4 @@
-package other.aakepi.bdfjabipeepce.api;
+package other.aakepi.bdfjfaackcpic.api;
 
 
 import net.sf.json.JSONArray;

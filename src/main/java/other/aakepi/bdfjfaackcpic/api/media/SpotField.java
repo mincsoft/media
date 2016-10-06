@@ -1,4 +1,4 @@
-package other.aakepi.bdfjabipeepce.api.media;
+package other.aakepi.bdfjfaackcpic.api.media;
 
 /**
  * Created by yangyixin on 16/10/5.

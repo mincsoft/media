@@ -1,8 +1,7 @@
-package other.aakepi.bdfjabipeepce.api.media;
+package other.aakepi.bdfjfaackcpic.api.media;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

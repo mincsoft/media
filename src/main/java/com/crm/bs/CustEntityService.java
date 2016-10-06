@@ -2,13 +2,13 @@ package com.crm.bs;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.crm.api.BaseAPI;
-import com.crm.api.BaseResponse;
+import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
+import other.aakepi.bdfjfaackcpic.api.BaseResponse;
 
 /**
  * Created by yujinliang on 16/9/22.
  */
-public class CustEntityService extends BaseAPI {
+public class CustEntityService extends BaseApiSupport {
 
 
     public JSONObject getEnityList(String access_token) {

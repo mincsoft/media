@@ -1,7 +1,5 @@
-package com.crm.bs.pur.trigger;
+package other.aakepi.bdfjfaackcpic.trigger;
 
-import com.crm.api.Configuration;
-import com.crm.api.NetWorkCenter;
 import com.rkhd.platform.sdk.ScriptTrigger;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.log.Logger;
@@ -10,6 +8,8 @@ import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import com.rkhd.platform.sdk.param.ScriptTriggerResult;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import other.aakepi.bdfjfaackcpic.http.MincsoftHttpClient;
+import other.aakepi.bdfjfaackcpic.util.Configuration;
 //import com.rkhd.platform.sdk.test.tool.TestTriggerTool;
 
 /**
@@ -36,7 +36,7 @@ public class BaseTrigger implements ScriptTrigger {
     public String getAuthToken(){
         if (StringUtils.isEmpty(_CURR_AUTHTOKEN)){
             String pwdParam="grant_type=password&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&redirect_uri="+REDIRECT_URI+"&username="+USERNAME+"&password="+PASSWORD+SECURCODE;
-            String response = NetWorkCenter.sendSimplePost(_PWD_TOKEN_URL, pwdParam);
+            String response = MincsoftHttpClient.sendSimplePost(_PWD_TOKEN_URL, pwdParam);
 
             if (StringUtils.isNotEmpty(response)){
                 JSONObject result= JSONObject.fromObject(response);
