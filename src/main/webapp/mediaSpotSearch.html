@@ -26,10 +26,14 @@
         },
         pathName:function () {
             return window.location.pathname;
+        },
+        path:function () {
+            var pa = window.location.pathname.lastIndexOf("/");
+            return window.location.pathname.substr(0,pa);
         }
     };
-//    var urlTitle = "https://api.xiaoshouyi.com";
-    var urlTitle = "http://localhost:8081/media";
+    var urlTitle = "https://api.xiaoshouyi.com";
+    var urlSearchMedia="/script-api/customopenapi/search-mediaspot";//查询媒体数据
     var belongId = "100019547";
     var access_token;
     var refresh_token;
@@ -38,11 +42,18 @@
     var access_user;
     var client_id = "e3829850419b7ec442b0314c3cf2ff58";
     var client_secret = "562e34991cd545d5f499a3331b5cb592";
+    var debug="";
 
     $(function(){
         hideAll();
         code = request.getParam("code");
         access_token = request.getParam("access_token");
+        debug = request.getParam("debug");
+        //本地测试
+        if ("dev"==debug){
+            urlTitle = "http://localhost:8081/media";
+            urlSearchMedia="/json/mediaspot.jsp";
+        }
         initHtml();
     });
 
@@ -92,7 +103,7 @@
             data["end"] = endDate;
             tokenAjax({
 //                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
-                url:  urlTitle+"/json/mediaspot.jsp",    //请求的url地址
+                url:  urlTitle+urlSearchMedia,    //请求的url地址
 //                dataType: "json",   //返回格式为json
                 data: data ,   //参数值
                 type: "POST",   //请求方式

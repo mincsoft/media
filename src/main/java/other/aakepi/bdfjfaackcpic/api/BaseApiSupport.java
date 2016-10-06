@@ -2,6 +2,7 @@ package other.aakepi.bdfjfaackcpic.api;
 
 import com.alibaba.fastjson.JSON;
 import com.rkhd.platform.sdk.http.Request;
+import com.rkhd.platform.sdk.http.RkhdHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
 import com.rkhd.platform.sdk.log.Logger;
 import com.rkhd.platform.sdk.log.LoggerFactory;
@@ -160,6 +161,7 @@ public abstract class BaseApiSupport {
         String result="";
         try{
             ScriptTriggerParam scriptTriggerParam = new ScriptTriggerParam();
+
             MincsoftHttpClient rkhdHttpClient = new MincsoftHttpClient(request);
             result = rkhdHttpClient.performRequest(rkhdHttpData);
         } catch (IOException e){
@@ -167,7 +169,23 @@ public abstract class BaseApiSupport {
         }
         return result;
     }
+    /**
+     * API请求
+     * @param rkhdHttpData
+     * @return
+     */
+    protected String apiRequest(RkhdHttpData rkhdHttpData){
+        String result="";
+        try{
+            ScriptTriggerParam scriptTriggerParam = new ScriptTriggerParam();
 
+            RkhdHttpClient rkhdHttpClient = new RkhdHttpClient();
+            result = rkhdHttpClient.performRequest(rkhdHttpData);
+        } catch (IOException e){
+            logger.error(e.getMessage());
+        }
+        return result;
+    }
     /**
      * 查询语句，返回json结果
      *
@@ -188,11 +206,35 @@ public abstract class BaseApiSupport {
      * @return
      * @throws IOException
      */
-    protected QueryResult queryResult(Request request,String sql)  {
-        String result=query(request, sql);
-        return queryResult(result);
+    protected String query(String sql)  {
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/query");
+        rkhdHttpData.putFormData("q", sql);
+        return apiRequest(rkhdHttpData);
     }
 
+    /**
+     * 查询语句，返回json结果
+     *
+     * @param sql
+     * @return
+     * @throws IOException
+     */
+    protected QueryResult queryResult(Request request,String sql)  {
+        String result=query(request, sql);
+        return getQueryResult(result);
+    }
+
+    /**
+     * 查询语句，返回json结果
+     *
+     * @param sql
+     * @return
+     * @throws IOException
+     */
+    protected QueryResult queryResult(String sql)  {
+        String result=query( sql);
+        return getQueryResult(result);
+    }
     /**
      * 查询语句，返回json结果
      *
@@ -200,7 +242,7 @@ public abstract class BaseApiSupport {
      * @return
      * @throws IOException
      */
-    protected QueryResult queryResult(String result)  {
+    protected QueryResult getQueryResult(String result)  {
         if (StringUtils.isBlank(result)){
             return null;
         }
@@ -211,6 +253,15 @@ public abstract class BaseApiSupport {
             return null;
         }
         return (QueryResult)JSONObject.toBean(jsonObject,QueryResult.class);
+    }
+    /**
+     * 获得全部业务对象
+     * @return
+     */
+    protected QueryResult getAllBelongs(){
+        RkhdHttpData rkhdHttpData = getRkhdHttpData("/data/v1/picks/dimension/belongs");
+        String result = apiRequest(rkhdHttpData);
+        return queryResult(result);
     }
 
     /**
@@ -294,6 +345,17 @@ public abstract class BaseApiSupport {
 
     /**
      * 获得自定义业务实体描述接口
+     * @param belongId 自定义ID
+     * @return
+     */
+    protected JSONObject getBelongsDesc(long belongId){
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/describe");
+        rkhdHttpData.putFormData("belongId", belongId);
+        String result = apiRequest(rkhdHttpData);
+        return JSONObject.fromObject(result);
+    }
+    /**
+     * 获得自定义业务实体描述接口
      * @param request
      * @param belongId 自定义ID
      * @return
@@ -305,6 +367,19 @@ public abstract class BaseApiSupport {
         return JSONObject.fromObject(result);
     }
 
+    /**
+     * 创建自定义实体
+     * @param belongId 自定义ID
+     * @param record 记录信息
+     * @return
+     */
+    protected JSONObject createBelongs(long belongId,JSONObject record){
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/create");
+        rkhdHttpData.putFormData("belongId", belongId);
+        rkhdHttpData.putFormData("record", record);
+        String result = apiRequest( rkhdHttpData);
+        return JSONObject.fromObject(result);
+    }
     /**
      * 创建自定义实体
      * @param request
@@ -322,6 +397,19 @@ public abstract class BaseApiSupport {
 
     /**
      * 更新自定义实体
+     * @param belongId 自定义ID
+     * @param record 记录信息
+     * @return
+     */
+    protected JSONObject updateBelongs(long belongId,JSONObject record){
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
+        rkhdHttpData.putFormData("belongId", belongId);
+        rkhdHttpData.putFormData("record", record);
+        String result = apiRequest(rkhdHttpData);
+        return JSONObject.fromObject(result);
+    }
+    /**
+     * 更新自定义实体
      * @param request
      * @param belongId 自定义ID
      * @param record 记录信息
@@ -336,6 +424,17 @@ public abstract class BaseApiSupport {
     }
     /**
      * 删除自定义实体
+     * @param id 记录
+     * @return
+     */
+    protected JSONObject deleteBelongs(long id){
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/delete");
+        rkhdHttpData.putFormData("id", id);
+        String result = apiRequest(rkhdHttpData);
+        return JSONObject.fromObject(result);
+    }
+    /**
+     * 删除自定义实体
      * @param request
      * @param id 记录
      * @return
@@ -344,6 +443,17 @@ public abstract class BaseApiSupport {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/delete");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(request, rkhdHttpData);
+        return JSONObject.fromObject(result);
+    }
+    /**
+     * 查询自定义实体
+     * @param id 对象主键
+     * @return
+     */
+    protected JSONObject getBelongs(long id){
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/create");
+        rkhdHttpData.putFormData("id", id);
+        String result = apiRequest(rkhdHttpData);
         return JSONObject.fromObject(result);
     }
 

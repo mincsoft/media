@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="599d115e-bc83-415d-a435-d51f0de81276" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/other/aakepi/bdfjfaackcpic/trigger/pur/PaymentTrigger.java" afterPath="$PROJECT_DIR$/src/main/java/other/aakepi/bdfjfaackcpic/trigger/pur/PaymentTrigger.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/scriptTrigger.xml" afterPath="$PROJECT_DIR$/src/main/java/scriptTrigger.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/oauthConfig.properties" afterPath="$PROJECT_DIR$/src/main/resources/oauthConfig.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/other/aakepi/bdfjfaackcpic/api/BaseApiSupport.java" afterPath="$PROJECT_DIR$/src/main/java/other/aakepi/bdfjfaackcpic/api/BaseApiSupport.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/mediaSpotSearch.html" afterPath="$PROJECT_DIR$/src/main/webapp/mediaSpotSearch.html" />
     </list>
     <ignored path="media.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1737,7 +1736,7 @@
       <workItem from="1474602010047" duration="1488000" />
       <workItem from="1474605212792" duration="13000" />
       <workItem from="1474605235103" duration="47130000" />
-      <workItem from="1475724932590" duration="9730000" />
+      <workItem from="1475724932590" duration="9884000" />
     </task>
     <servers />
   </component>
@@ -1756,11 +1755,11 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61096000" />
+    <option name="totallyTimeSpent" value="61250000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="52" y="23" width="1228" height="777" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32348806" sideWeight="0.5352941" order="8" side_tool="false" content_ui="tabs" />
@@ -1772,7 +1771,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.556962" sideWeight="0.5159129" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3622159" sideWeight="0.5695142" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5089058" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3562044" sideWeight="0.49413735" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3562044" sideWeight="0.49413735" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4786932" sideWeight="0.5041946" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30823863" sideWeight="0.48991597" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
