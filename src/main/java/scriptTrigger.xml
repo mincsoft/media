@@ -17,6 +17,14 @@
             <order>1</order>
             <class>other.aakepi.bdfjabipeepce.trigger.UpdateMeetingTrigger</class>
         </trigger>
+        <trigger>
+            <object>paymentRecord</object>
+            <operate>update</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>after</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.pur.PaymentTrigger</class>
+        </trigger>
     </config>
 </configs>
 
