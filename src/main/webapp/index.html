@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>导航</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <!-- <script src="./js/jquery-1.8.3.min.js" type="text/javascript"></script> -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery-ui.js" type="text/javascript"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="./js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<script>
+    var request = {
+        getParam:function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        },
+        pathName:function () {
+            return window.location.pathname;
+        },
+        path:function () {
+            var pa = window.location.pathname.lastIndexOf("/");
+            return window.location.pathname.substr(0,pa);
+        }
+    };
+    var urlTitle = "http://localhost:8081/media";
+    var urlSearchContract="/json/contract.jsp";//查询媒体数据
+    var belongId = "15";
+    var contractBelongId="15";//销售合同belongID
+    var access_token;
+    var refresh_token;
+    var code;
+    var users = {};
+    var access_user;
+    var client_id = "e3829850419b7ec442b0314c3cf2ff58";
+    var client_secret = "562e34991cd545d5f499a3331b5cb592";
+
+    $(function(){
+        hideAll();
+        code = request.getParam("code");
+        access_token = request.getParam("access_token");
+        initHtml();
+    });
+
+    var initToken=function(){
+        access_token= $("#token").val();
+    }
+    var initHtml = function(){
+
+        var cleanHtmls = function(){
+            $(".room-list").html("");
+            meettingsObjectArray = [];
+            //users = {};
+            meetingDetails = {};
+        }
+        $("[act=search_meetting]").click(function(){
+            initToken();
+            var array = $("[act=query_form]").serializeArray();
+            var data = {};
+            for(var i=0 ; i < array.length;i++){
+                data[array[i].name] = array[i].value;
+            }
+//            data['access_token']=access_token;
+
+            tokenAjax({
+//                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
+                url:  urlTitle+urlSearchContract,    //请求的url地址
+//                dataType: "json",   //返回格式为json
+                data: data ,   //参数值
+                type: "POST",   //请求方式
+                beforeSend: function(request) {
+//                    request.setRequestHeader("Authorization","Bearer "+ access_token);
+                },
+                success: function(req) {
+//                    var result = JSON.parse(req.result);
+                    var records = req.result;
+//                    alert(records.length);
+                    if (records){
+                        for(var j=0 ; j < records.length;j++){
+                            var contract = records[j];
+                            toHtml(contract,j+1);
+                        }
+                    }
+                }
+            });
+        });
+        //媒体查询
+        $("[act=mediaSearch]").click(function(){
+            initToken();
+            window.location="mediaSpotSearch.html?access_token="+access_token+"&debug=dev";
+        });
+
+    };
+
+    var toHtml = function(contract,index){
+        var html = '<li>'+index+'、<a href="contractSpot.html?access_token='+access_token+'&id='+contract.id+'">'+contract.title+'</a></li>';
+        //return html;
+        $(".room-list").append(html);
+    }
+
+    var tokenAjax = function(obj){
+        showLoading();
+        var success = function(o,req){
+            if(!o.data.access_token){
+                o.data.access_token = req.access_token;
+            }
+            $.ajax({
+                url: o.url,    //请求的url地址
+                beforeSend: o.beforeSend,
+                //dataType: "json",   //返回格式为json
+                data: o.data ,   //参数值
+                type: o.type,   //请求方式
+                contentType:o.contentType,
+                success: function(req) {
+                    //请求成功时处理
+                    o.success(req);
+                    hideLoading();
+                }
+            });
+        };
+
+        $.ajax({
+            url: obj.url,    //请求的url地址
+            beforeSend: obj.beforeSend,
+//            dataType: "json",   //返回格式为json
+            data: obj.data ,   //参数值
+            type: obj.type,   //请求方式
+            contentType:obj.contentType,
+            success: function(req) {
+                if(req.error_code == 20000002 && req.message == "invalid access token"){
+                    if(refresh_token){
+                        getToken({
+                            type:'refresh_token',
+                            success:function(req){
+                                success(obj,req);
+                                hideLoading();
+                            }
+                        });
+                    } else if(code){
+                        getToken({
+                            type:'code',
+                            success:function(req){
+                                success(obj,req);
+                                hideLoading();
+                            }
+                        });
+                    }
+                }else{
+                    //请求成功时处理
+                    obj.success(req);
+                    hideLoading();
+                }
+            },
+            error:function(data){
+                alert('error');
+                hideLoading();
+            }
+        });
+    }
+
+    var getToken = function(obj){
+        var pathName= request.pathName();
+        var url = urlTitle + "/oauth2/token.action?grant_type=authorization_code&client_id="+client_id+"&client_secret="+client_secret+"&redirect_uri=https://lapp.ingageapp.com"+pathName+"&code="+code;
+        if(obj.type != "code"){
+            url = urlTitle + "/oauth2/token.action?grant_type=refresh_token&client_id="+client_id+"&client_secret="+client_secret+"&redirect_uri=https://lapp.ingageapp.com"+pathName+"&refresh_token="+refresh_token;
+        }
+        $.ajax({
+            url: url,    //请求的url地址
+            //dataType: "json",   //返回格式为json
+            data: {} ,   //参数值
+            type: "GET",   //请求方式
+            success: function(req) {
+                req.access_token = "Bearer " + req.access_token;
+                access_token = req.access_token;
+                refresh_token = req.refresh_token;
+                //请求成功时处理
+                obj.success(req);
+            }
+        });
+    }
+    var hideAll = function(){
+        $("[act=infoSuccess]").hide();
+        $("[act=infoFailed]").hide();
+        $("#rk-panel_loading").hide();
+    }
+
+    var alertSuccess = function(title){
+        $("[act=infoSuccess]").show();
+        setInterval('$("[act=infoSuccess]").hide()',3000);
+    }
+
+    var alertFailed = function(title){
+        if(title){
+            $("[act=infoFailed]").find("p").html(title);
+        }else{
+            $("[act=infoFailed]").find("p").html('预定失败');
+        }
+        $("[act=infoFailed]").show();
+        setInterval('$("[act=infoFailed]").hide()',3000);
+    }
+
+    var showLoading = function(){
+        $("#rk-panel_loading").show();
+    }
+    var hideLoading = function(){
+        $("#rk-panel_loading").hide();
+    }
+
+
+
+</script>
+
+<div class="header" act="tables">
+    <div class="search-wapper container-fluid">
+        <form act="query_form">
+            <div class="search col-xs-6 col-md-2 col-lg-4">
+                <label>先输入有效的Token：</label>
+                <input name="access_token" id="token"  type="text" placeholder="输入token，点击查询" value="bab2c474cf2488ce39d2055483466bbd9b8d291e7c7cdfc447a23f475826cb96"/><!-- name="begin" -->
+            </div>
+
+            <div class="search col-xs-12 col-md-2 col-lg-1">
+                <a href="javascript:;" class="sb" act="search_meetting">合同查询</a>
+            </div>
+
+            <div class="search col-xs-12 col-md-2 col-lg-1">
+                <a href="javascript:;" class="sb" act="mediaSearch">排期查询</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="content" act="tables">
+    <div class="room-list container-fluid" act="room_list">
+
+    </div>
+
+</div>
+<div id="rk-panel_loading" class="rk_cover_loading light_bg_color" style="position: fixed; width: 100%; height: 100%; top: 0px; left: 0px; z-index: 9999999;">
+    <div class="large-loading" >
+        <div id="floatingCirclesG" class="f_circle" style="top: 0px;">
+
+            <div class="f_circleG" id="frotateG_06">
+            </div>
+            <div class="f_circleG" id="frotateG_07">
+            </div>
+            <div class="f_circleG" id="frotateG_08">
+            </div>
+            <div class="f_circleG" id="frotateG_01">
+            </div>
+            <div class="f_circleG" id="frotateG_02">
+            </div>
+            <div class="f_circleG" id="frotateG_03">
+            </div>
+            <div class="f_circleG" id="frotateG_04">
+            </div>
+            <div class="f_circleG" id="frotateG_05">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
