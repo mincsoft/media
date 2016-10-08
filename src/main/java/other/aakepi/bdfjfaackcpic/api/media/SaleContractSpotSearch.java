@@ -5,9 +5,9 @@ import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import other.aakepi.bdfjabipeepce.util.DateUtil;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
-import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -15,28 +15,47 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 媒体管理查询
- * Created by yangyixin on 16/10/4.
+ * 销售合同排期查询
+ * Created by yangyixin on 16/10/8.
  */
-public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
-
+public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport {
 
     @Override
     public String execute(Request request, Long userId, Long tenantId) {
 
-        initParam(request);
+        String contractId = request.getParameter("id");
+        if (StringUtils.isBlank(contractId)) contractId="-1";
+        JSONObject contract = getContract(contractId);
 
         Map<String, Object> returnMap = new HashMap<String, Object>();
 
-        Date startDate = DateUtil.getDate(request.getParameter("begin"));
-        Date endDate = DateUtil.getDate(request.getParameter("end"));
-        JSONObject sheetObj = sheet(startDate, endDate, null);
+        returnMap.put("contract", contract);
+        //合同不为空
+        if (!contract.isEmpty()){
+            initParam(request);
 
-        returnMap.put("sheet", sheetObj);
+            Date startDate = DateUtil.getDate(contract.getString("startDate"));
+            Date endDate = DateUtil.getDate(contract.getString("endDate"));
+
+            JSONObject sheetObj = sheet(startDate, endDate, null);
+            returnMap.put("sheet", sheetObj);
+        }
+
         return JSONObject.fromObject(returnMap).toString();
     }
 
-
+    /**
+     * 查询合同
+     * @return
+     */
+    private JSONObject getContract(String contractId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,title,startDate,endDate from contract where id=").append(contractId);
+        QueryResult queryResult = queryResult(sql.toString());
+        if (queryResult==null) return new JSONObject();
+        if (queryResult.getCount()==0) return new JSONObject();
+        return queryResult.getRecords().getJSONObject(0);
+    }
     /**
      * 初始化显示字段
      */

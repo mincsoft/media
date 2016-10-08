@@ -1,4 +1,4 @@
-package other.aakepi.bdfjfaackcpic.api.media;
+package other.aakepi.bdfjfaackcpic.config;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -22,6 +22,11 @@ public class SpotConfig {
      */
     private JSONArray fieldsArray;
 
+    /**
+     * 在那个字段后显示点位
+     */
+    private String showSpotFieldName;
+
 
     private List<SpotField> spotFielList= new ArrayList<SpotField>();
 
@@ -30,7 +35,14 @@ public class SpotConfig {
         if (belongsDes.containsKey("fields")) {
             this.fieldsArray = belongsDes.getJSONArray("fields");
         }
+    }
 
+    public String getShowSpotFieldName() {
+        return showSpotFieldName;
+    }
+
+    public void setShowSpotFieldName(String showSpotFieldName) {
+        this.showSpotFieldName = showSpotFieldName;
     }
 
     /**

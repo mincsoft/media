@@ -1,4 +1,4 @@
-package other.aakepi.bdfjfaackcpic.api.media;
+package other.aakepi.bdfjfaackcpic.config;
 
 /**
  * Created by yangyixin on 16/10/5.
