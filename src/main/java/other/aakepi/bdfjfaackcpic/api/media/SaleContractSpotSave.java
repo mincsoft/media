@@ -98,10 +98,15 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                 }
                 dataMap = spotList.get(row);
 
-                String data = jsonCell.getString("data");
-                String value = jsonCell.getString("value");
-                String id = jsonCell.getString("id");
-                String cal = jsonCell.getString("cal");
+//                String data = jsonCell.getString("data");
+//                String value = jsonCell.getString("value");
+//                String id = jsonCell.getString("id");
+//                String cal = jsonCell.getString("cal");
+
+                String data = jsonCell.containsKey("data")?jsonCell.getString("data"):"";
+                String value = jsonCell.containsKey("value")?jsonCell.getString("value"):"";
+                String id = jsonCell.containsKey("id")?jsonCell.getString("id"):"";
+                String cal = jsonCell.containsKey("cal")?jsonCell.getString("cal"):"";
 
                 String key = colTempMap.get(col);
                 //包含指定的列
