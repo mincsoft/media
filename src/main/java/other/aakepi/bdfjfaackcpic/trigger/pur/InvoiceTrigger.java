@@ -20,9 +20,9 @@ import java.util.List;
 //import com.rkhd.platform.sdk.test.tool.TestTriggerTool;
 
 /**
- * 付款后更新付款计划
+ * 收票后更新付款记录
  */
-public class PaymentTrigger extends BaseTrigger {
+public class InvoiceTrigger extends BaseTrigger {
     private Logger logger = LoggerFactory.getLogger();
 
     @Override
@@ -34,12 +34,10 @@ public class PaymentTrigger extends BaseTrigger {
             DataModel dataModel = list.get(0);
             int stage = dataModel.getAttribute("stage")!=null&&!"".equals(dataModel.getAttribute("stage"))?Integer.parseInt(dataModel.getAttribute("stage")+""):0;
             String contractId = dataModel.getAttribute("contractId")+"";
-            double amount = dataModel.getAttribute("amount")!=null&&!"".equals(dataModel.getAttribute("amount"))?Double.valueOf(dataModel.getAttribute("amount") + ""):0.0;
-
-            //1 获取本期付款计划
-            String sql = "select id,amount from paymentPlan where stage =" + stage + " and contractId = '" + contractId + "'";
-            sql = "select id,amount from paymentPlan where stage =1";
-            amount = 2000.0;
+            double amount = dataModel.getAttribute("invAmount")!=null&&!"".equals(dataModel.getAttribute("invAmount"))?Double.valueOf(dataModel.getAttribute("invAmount") + ""):0.0;
+amount = 10000.0;
+            //1 获取本期付款记录
+            String sql = "select id,amount from paymentRecord where stage =" + stage + " and contractId = '" + contractId + "'";
             RkhdHttpClient rkhdHttpClient = null;
             try {
                 rkhdHttpClient = new RkhdHttpClient();
@@ -50,19 +48,19 @@ public class PaymentTrigger extends BaseTrigger {
                 rkhdHttpData.putFormData("q", sql);
                 System.out.println("sql---------" + sql);
 
-                String planResultJson = rkhdHttpClient.performRequest(rkhdHttpData);
-                System.out.println("planResultJson---------" + planResultJson);
-                JSONObject planResult = JSONObject.fromObject(planResultJson);
+                String recordResultJson = rkhdHttpClient.performRequest(rkhdHttpData);
+                System.out.println("recordResultJson---------" + recordResultJson);
+                JSONObject planResult = JSONObject.fromObject(recordResultJson);
                 QueryResult queryResult = (QueryResult)JSONObject.toBean(planResult,QueryResult.class);
 
                 JSONArray array = queryResult.getRecords();
 
                 if (array!=null&&array.size()>0){
                     JSONObject item = (JSONObject) array.get(0);
-                    double planAmount = item.getDouble("amount");
+                    double payAmount = item.getDouble("amount");
                     String id = item.getString("id");
-                    if (Math.abs(amount - planAmount) < 0.01 || amount > planAmount) {//如果实际付款金额>=计划付款金额(考虑尾差),就更新付款计划状态
-                        String json = "{\"id\":"+id+",\"status\":2}";
+                    if (Math.abs(amount - payAmount) < 0.01 || amount > payAmount) {//如果实际开票金额>=付款金额(考虑尾差),就更新付款记录状态
+                        String json = "{\"id\":"+id+",\"invoiceFlg\":2}";
 //                        JSONObject params = new JSONObject();
 //                        params.put("access_token", "Bearer%20" + getAuthToken());
 //                        params.put("json", json);
@@ -94,7 +92,7 @@ public class PaymentTrigger extends BaseTrigger {
 
     public static void main(String[] args) {
 		TestTriggerTool testTriggerTool = new TestTriggerTool();
-		PaymentTrigger paymentTrigger = new PaymentTrigger();
+		InvoiceTrigger paymentTrigger = new InvoiceTrigger();
 		testTriggerTool.test("/Users/yujinliang/Documents/workspace/media/src/main/java/scriptTrigger.xml", paymentTrigger);
     }
 

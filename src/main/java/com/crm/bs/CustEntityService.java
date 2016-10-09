@@ -1,9 +1,13 @@
 package com.crm.bs;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.rkhd.platform.sdk.http.RkhdHttpClient;
+import com.rkhd.platform.sdk.http.RkhdHttpData;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
-import other.aakepi.bdfjfaackcpic.api.BaseResponse;
+import other.aakepi.bdfjfaackcpic.api.QueryResult;
+
+import java.io.IOException;
 
 /**
  * Created by yujinliang on 16/9/22.
@@ -12,12 +16,12 @@ public class CustEntityService extends BaseApiSupport {
 
 
 //    public JSONObject getEnityList(String access_token) {
-//        String url = "https://api.xiaoshouyi.com/data/v1/picks/dimension/belongs?access_token=Bearer%20" + access_token;
-//        JSONObject response = executeGet(url);
-//        if (response != null) {
-//            return response;
-//        }
-//        return null;
+////        String url = "https://api.xiaoshouyi.com/data/v1/picks/dimension/belongs?access_token=Bearer%20" + access_token;
+////        JSONObject response = executeGet(url);
+////        if (response != null) {
+////            return response;
+////        }
+////        return null;
 //    }
 //
 //    public JSONObject getEnityDetail(String access_token,String belongId) {
@@ -72,4 +76,33 @@ public class CustEntityService extends BaseApiSupport {
 //        BaseResponse res = executePost(url, params.toString());
 //        return res!=null? JSON.parseObject(res.getErrmsg()):null;
 //    }
+
+    public JSONArray queryData(){
+        String sql = "select id,invoiceFlg,status from paymentRecord where stage = 1 ";
+        RkhdHttpClient rkhdHttpClient = null;
+        try {
+            rkhdHttpClient = new RkhdHttpClient();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        RkhdHttpData rkhdHttpData = new RkhdHttpData();
+        rkhdHttpData.setCallString("/data/v1/query");
+        rkhdHttpData.setCall_type("POST");
+
+        rkhdHttpData.putFormData("q", sql);
+        System.out.println("sql---------" + sql);
+
+        String recordResultJson = null;
+        try {
+            recordResultJson = rkhdHttpClient.performRequest(rkhdHttpData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("recordResultJson---------" + recordResultJson);
+        JSONObject planResult = JSONObject.fromObject(recordResultJson);
+        QueryResult queryResult = (QueryResult)JSONObject.toBean(planResult,QueryResult.class);
+
+        return queryResult.getRecords();
+
+    }
 }

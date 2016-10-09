@@ -20,7 +20,7 @@ public class Configuration {
 		properties = new Properties();
 		InputStream is = null;
 		try {
-			is = getClass().getResourceAsStream("/app-config.properties");
+			is = getClass().getResourceAsStream("/oauthConfig.properties");
 			properties.load(is);
 		} catch (Exception exception) {
 			exception.printStackTrace();

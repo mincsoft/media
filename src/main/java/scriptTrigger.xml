@@ -25,6 +25,14 @@
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.pur.PaymentTrigger</class>
         </trigger>
+        <trigger>
+            <object>invoiceRecord</object>
+            <operate>update</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>after</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.pur.InvoiceTrigger</class>
+        </trigger>
     </config>
 </configs>
 

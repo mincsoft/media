@@ -1,8 +1,5 @@
-import com.alibaba.fastjson.JSONObject;
-import other.aakepi.bdfjfaackcpic.util.Configuration;
 import com.crm.bs.CustEntityService;
-import org.apache.commons.lang.StringUtils;
-import org.junit.After;
+import net.sf.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +12,7 @@ public class CustEntityServiceTest {
 
     @Before
     public void setUp() throws Exception {
-//        custEntityService= new CustEntityService();
+        custEntityService= new CustEntityService();
 //        access_token = custEntityService.getAuthToken();
 //        if (StringUtils.isEmpty(access_token))
 //        access_token = Configuration.getInstance().getValue("access_token");
@@ -60,4 +57,10 @@ public class CustEntityServiceTest {
 //    public void testCreateData(){
 ////        custEntityService.createEntityData(access_token,"100018107001",result);
 //    }
+
+    @Test
+    public void testqueryData(){
+        JSONArray array = custEntityService.queryData();
+        System.out.println("========="+array.toString());
+    }
 }
