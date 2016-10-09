@@ -9,7 +9,6 @@
             <class>other.aakepi.bdfjabipeepce.api.SaveMeetings</class>
             <url>/save-meeting</url>
         </api>
-
         <api>
             <class>other.aakepi.bdfjfaackcpic.api.media.ContractSearch</class>
             <url>/search-contract</url>
@@ -26,7 +25,6 @@
             <class>other.aakepi.bdfjfaackcpic.api.media.SaleContractSpotSave</class>
             <url>/save-salecontractspot</url>
         </api>
-
     </config>
 </configs>
 

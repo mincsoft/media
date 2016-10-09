@@ -37,8 +37,6 @@ public class PaymentTrigger extends BaseTrigger {
 
             //1 获取本期付款计划
             String sql = "select id,amount from paymentPlan where stage =" + stage + " and contractId = '" + contractId + "'";
-            sql = "select id,amount from paymentPlan where stage =1";
-            amount = 2000.0;
             RkhdHttpClient rkhdHttpClient = null;
             try {
                 rkhdHttpClient = new RkhdHttpClient();
@@ -62,9 +60,6 @@ public class PaymentTrigger extends BaseTrigger {
                     String id = item.getString("id");
                     if (Math.abs(amount - planAmount) < 0.01 || amount > planAmount) {//如果实际付款金额>=计划付款金额(考虑尾差),就更新付款计划状态
                         String json = "{\"id\":"+id+",\"status\":2}";
-//                        JSONObject params = new JSONObject();
-//                        params.put("access_token", "Bearer%20" + getAuthToken());
-//                        params.put("json", json);
 
                         //2 更新状态
                         rkhdHttpData = new RkhdHttpData();
