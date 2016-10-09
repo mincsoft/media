@@ -9,7 +9,6 @@
             <class>other.aakepi.bdfjabipeepce.api.SaveMeetings</class>
             <url>/save-meeting</url>
         </api>
-
     </config>
 </configs>
 

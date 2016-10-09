@@ -34,7 +34,6 @@ public class InvoiceTrigger extends BaseTrigger {
             int stage = dataModel.getAttribute("stage")!=null&&!"".equals(dataModel.getAttribute("stage"))?Integer.parseInt(dataModel.getAttribute("stage")+""):0;
             String contractId = dataModel.getAttribute("contractId")+"";
             double amount = dataModel.getAttribute("invAmount")!=null&&!"".equals(dataModel.getAttribute("invAmount"))?Double.valueOf(dataModel.getAttribute("invAmount") + ""):0.0;
-amount = 10000.0;
             //1 获取本期付款记录
             String sql = "select id,amount from paymentRecord where stage =" + stage + " and contractId = '" + contractId + "'";
             RkhdHttpClient rkhdHttpClient = null;
@@ -60,9 +59,6 @@ amount = 10000.0;
                     String id = item.getString("id");
                     if (Math.abs(amount - payAmount) < 0.01 || amount > payAmount) {//如果实际开票金额>=付款金额(考虑尾差),就更新付款记录状态
                         String json = "{\"id\":"+id+",\"invoiceFlg\":2}";
-//                        JSONObject params = new JSONObject();
-//                        params.put("access_token", "Bearer%20" + getAuthToken());
-//                        params.put("json", json);
 
                         //2 更新状态
                         rkhdHttpData = new RkhdHttpData();
