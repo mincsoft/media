@@ -13,7 +13,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.trigger.BaseTrigger;
-import other.aakepi.bdfjfaackcpic.util.Configuration;
 
 import java.io.IOException;
 import java.util.List;
@@ -69,7 +68,7 @@ public class PaymentTrigger extends BaseTrigger {
 
                         //2 更新状态
                         rkhdHttpData = new RkhdHttpData();
-                        rkhdHttpData.setCallString(Configuration.getInstance().getValue("update_entity_data"));
+                        rkhdHttpData.setCallString("/data/v1/objects/customize/update");
                         rkhdHttpData.setCall_type("POST");
                         rkhdHttpData.putFormData("json", json);
                         String resultStr = rkhdHttpClient.performRequest(rkhdHttpData);
