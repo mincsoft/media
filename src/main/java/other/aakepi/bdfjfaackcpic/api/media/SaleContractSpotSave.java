@@ -22,7 +22,6 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
     /**
      * 初始化
      *
-     * @param request
      */
     protected void initParam() {
         super.initParam();
@@ -39,9 +38,12 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
 
         JSONObject jsonResult = new JSONObject();
 
-        com.alibaba.fastjson.JSONArray cellArray = null;
+//        com.alibaba.fastjson.JSONArray cellArray = null;
+        JSONArray cellArray = null;
         System.out.println("load start:" + (System.currentTimeMillis() - start) + " ms");
-        com.alibaba.fastjson.JSONObject obj1 = com.alibaba.fastjson.JSONObject.parseObject(json);
+//        com.alibaba.fastjson.JSONObject obj1 = com.alibaba.fastjson.JSONObject.parseObject(json);
+
+        JSONObject obj1 = JSONObject.fromObject(json);
         if (obj1.containsKey("cells")) {
             cellArray = obj1.getJSONArray("cells");
             //System.out.println("size:"+cellArray.size()+"value:" +cellArray.get(0));
@@ -74,17 +76,19 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
         //解析全部数据
         for (int i = 0; i < cellArray.size(); i++) {
 
-            com.alibaba.fastjson.JSONObject cell = (com.alibaba.fastjson.JSONObject) cellArray.get(i);
+//            com.alibaba.fastjson.JSONObject cell = (com.alibaba.fastjson.JSONObject) cellArray.get(i);
+           JSONObject cell = cellArray.getJSONObject(i);
             if (cell == null)
                 continue;
 
-            int row = cell.getIntValue("row");
+            int row = cell.getInt("row");
             //从第四行开始
             if (row <= 3)
                 continue;
-            int col = cell.getIntValue("col");
+            int col = cell.getInt("col");
             String json1 = cell.getString("json");
-            com.alibaba.fastjson.JSONObject jsonCell = com.alibaba.fastjson.JSONObject.parseObject(json1);
+//            com.alibaba.fastjson.JSONObject jsonCell = com.alibaba.fastjson.JSONObject.parseObject(json1);
+            JSONObject jsonCell = JSONObject.fromObject(json1);
             if (jsonCell != null) {
                 HashMap<String, String> dataMap = new HashMap<String, String>();
                 if (row >= spotList.size()) {
