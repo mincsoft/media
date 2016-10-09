@@ -33,12 +33,17 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
     protected  SpotConfig spotConfig;
 
     /**
-     * 初始化
-     *
+     * 初始化Request
      * @param request
      */
-    protected void initParam(Request request) {
+    protected void initRequest(Request request){
         this.request=request;
+    }
+    /**
+     * 初始化
+     *
+     */
+    protected void initParam() {
         //查询全部实体，获得对应的belongId：
         allBelongs = getAllBelongs(request);
         //媒体对象的ID
@@ -423,8 +428,25 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
      * @return
      */
     protected JSONObject getColItemSelect(Integer sheetId, int row, int col, JSONObject record, String fieldName) {
-        String selectLabel = getSelectLabel(fieldName, record.get(fieldName));
-        return getColItemObject(sheetId, row, col, selectLabel);
+        Object fieldValue=record.get(fieldName);
+        String selectLabel = getSelectLabel(fieldName, fieldValue);
+        return getColItemIdValue(sheetId, row, col,fieldValue,selectLabel);
+    }
+
+    /**
+     * 获得排期Cell对象
+     * @param sheetId
+     * @param row
+     * @param col
+     * @param id
+     * @param data
+     * @return
+     */
+    protected JSONObject getColItemIdValue(Integer sheetId, int row, int col, Object id, Object data) {
+
+        JSONObject cols = getItemObject(sheetId, row, col);
+        cols.accumulate("json", "{id:\"" +convertObject(id)  + "\",data: \"" + convertObject(data) + "\" }");
+        return cols;
     }
 
     /**

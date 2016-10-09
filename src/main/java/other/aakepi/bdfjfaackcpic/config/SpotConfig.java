@@ -56,6 +56,7 @@ public class SpotConfig {
         spotField.setEn(fieldName);
         spotField.setWidth(width);
         spotField.setOther(other);
+        spotField.setIsMediaField(true);
 
         //中文名称、字段配置类型
         JSONObject fieldObj = getFieldObj(fieldName);
@@ -68,11 +69,29 @@ public class SpotConfig {
     }
 
     /**
+     * 添加配置字段,不是媒体的字段
+     * @param fieldName
+     * @param zhName
+     * @param width
+     * @param other
+     */
+    public void addFieldNotMedia(String fieldName,String zhName,int width,String other){
+        SpotField spotField  = new SpotField();
+        spotField.setEn(fieldName);
+        spotField.setZn(zhName);
+        spotField.setWidth(width);
+        spotField.setOther(other);
+        spotField.setIsMediaField(false);
+
+        spotFielList.add(spotField);
+    }
+    /**
      * 获得字段配置属性
      * @param fieldName
      * @return
      */
     private JSONObject getFieldObj(String fieldName){
+        if (fieldsArray==null) return null;
         for (int i = 0; i < fieldsArray.size() ; i++) {
             JSONObject fieldObj = fieldsArray.getJSONObject(i);
             if (fieldName.equalsIgnoreCase(fieldObj.getString("propertyname"))){
@@ -96,12 +115,20 @@ public class SpotConfig {
 
         for (int i = 0; i < spotFielList.size(); i++) {
             SpotField spotField = spotFielList.get(i);
-            String fieldName = spotField.getEn();
-            sql.append(spotField.getEn());
-            if (i!=spotFielList.size()-1){
-                sql.append(",");
+            if (spotField.isMediaField()){
+                String fieldName = spotField.getEn();
+                sql.append(",").append(spotField.getEn());
             }
         }
         return sql.toString();
+    }
+
+
+    /**
+     * 获得第一列字段名称
+     * @return
+     */
+    public String getFistFieldName(){
+       return spotFielList.get(0).getEn();
     }
 }

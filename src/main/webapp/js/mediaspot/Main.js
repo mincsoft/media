@@ -249,13 +249,39 @@ Ext.onReady(function() {
 		fileName: "排期",
 		sheets: [{id: 1, name: "排期", actived: true, color: "orange"}],
 		cells:[
-
 			{sheet:1,row:0,col:0,json:{data: "点击查询加载数据"} }
 
 		]
 	};
 
-	SHEET_API.loadData(SHEET_API_HD, jsonTitle, null, this);
+
+	loadParentData=function(){
+		//从父对象中加载数据
+		if (window.parent){
+			if (Ext.isDefined( window.parent.getSheetData) ) {
+				console.info("Main.js= getSheetData");
+				SHEET_API_HD.sheet.loadMask.show();
+				var sheetData = window.parent.getSheetData();
+				if (sheetData) {
+					console.info("Main.js= defer load");
+					var sheetJson = {
+						fileName: "排期",
+						sheets: sheetData.sheets,
+						floatings: sheetData.floatings,
+						cells: sheetData.cells
+					};
+					//console.info(JSON.stringify(sheetJson));
+					SHEET_API.loadData(SHEET_API_HD, sheetJson);
+					////最大列数
+					SHEET_API.setMaxColNumber(sheetData.columnSize);
+				}
+				SHEET_API_HD.sheet.loadMask.hide();
+			}
+		}
+	}
+
+
+	//SHEET_API.loadData(SHEET_API_HD, jsonTitle, null, this);
 	////最大列数
 	//SHEET_API.setMaxColNumber(json1.columnSize);
 

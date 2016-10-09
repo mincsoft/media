@@ -25,6 +25,30 @@ public class DateUtil {
             return null;
         }
     }
+    /**
+     * 按照yyyy-MM-dd 返回日期对象字符串
+     * @param date
+     * @return
+     */
+    public static String getDateStr(Date date){
+        return getDateStr(date, "yyyy-MM-dd");
+    }
+
+    /**
+     * 获得日期格式
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String getDateStr (Date date,String format)  {
+        if (date == null) return "";
+        try {
+            DateFormat formater = new SimpleDateFormat(format);
+            return formater.format(date);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 	/** 
      * 得到两个日期相差的天数 
      */  

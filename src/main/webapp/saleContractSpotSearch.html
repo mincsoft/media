@@ -34,6 +34,7 @@
     };
     var urlTitle = "https://api.xiaoshouyi.com";
     var urlSearchMedia="/script-api/customopenapi/search-salecontractspot";//查询合同排期数据
+    var urlSaveMedia="/script-api/customopenapi/save-salecontractspot";//保存
     var belongId = "100019547";
     var access_token;
     var refresh_token;
@@ -44,6 +45,7 @@
     var client_secret = "562e34991cd545d5f499a3331b5cb592";
     var debug="";
     var contractId="-1";
+    var sheetData;
 
     $(function(){
         hideAll();
@@ -55,30 +57,13 @@
         if ("dev"==debug){
             urlTitle = "http://localhost:8081/media";
             urlSearchMedia="/json/saleContractSpotSearch.jsp";
+            urlSaveMedia="/json/saleContractSpotSave.jsp";
         }
+
         initHtml();
     });
 
     var initHtml = function(){
-        var now = new Date();
-
-        var year = now.getFullYear() + "";       //年
-        var month = (now.getMonth() + 1) + "";     //月
-        var day = now.getDate() + "";
-        if(month.length == 1){
-            month = "0" + month;
-        }
-        if(day.length == 1){
-            day = "0" + day;
-        }
-        $("#dateinfo").val(year + "-" + month + "-" + day);
-
-        var nextMonth = (now.getMonth() + 2) + "";     //月
-        if(nextMonth.length == 1){
-            nextMonth = "0" + nextMonth;
-        }
-        $("#dateend").val(year + "-" + nextMonth + "-" + day);
-
 
         var cleanHtmls = function(){
             $(".room-list").html("");
@@ -99,36 +84,44 @@
                 var result = req.result;
                 if (result){
                     var contract = result.contract;
+                    //初始化排期点位数据
                     loadContract(contract);
+//                    console.info("loadContract");
 
-                    if (result.sheet){
-                        loadSpot(result.sheet);
-                    }
-                    //请求成功时处理
+                    sheetData = result.sheet;
 
+                    setTimeout(function(){
+                        if (sheet_iframe.window && $.isFunction(sheet_iframe.window.loadParentData) ){
+                            sheet_iframe.window.loadParentData();
+                        }
+                    },1000);
+//
                 }
             }
         });
-        $("[act=search_meetting]").click(function(){
+        $("[act=load_spot]").click(function(){
+            loadSpot();
+        });
+
+        $("[act=save_spot]").click(function(){
             var array = $("[act=query_form]").serializeArray();
             var data = {};
             for(var i=0 ; i < array.length;i++){
                 data[array[i].name] = array[i].value;
             }
             data['access_token']=access_token;
-            var beginDate = $("[act=beginTime]").val();
-            var endDate = $("[act=endTime]").val();
-
-            if(beginDate >= endDate){
-                alert("开始日期一定要小于结束日期");
+            data["id"] = contractId;
+            if ($("#contractId").val() ==""){
+                alert("合同未正确加载");
                 return;
             }
+            if (sheet_iframe.window && $.isFunction(sheet_iframe.window.loadData) ){
+                var json = sheet_iframe.window.submitData();
+                data["json"] = json;
+            }
 
-            data["begin"] = beginDate;
-            data["end"] = endDate;
             tokenAjax({
-//                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
-                url:  urlTitle+urlSearchMedia,    //请求的url地址
+                url:  urlTitle+urlSaveMedia,    //请求的url地址
 //                dataType: "json",   //返回格式为json
                 data: data ,   //参数值
                 type: "POST",   //请求方式
@@ -138,8 +131,8 @@
                 success: function(req) {
 //                    var result = JSON.parse(req.result);
                     var result = req.result;
-                    if (result){
-
+                    if (result.message){
+                       alert(result.message);
                     }
                 }
             });
@@ -153,29 +146,33 @@
             $("#contractName").val(contract.title);
             $("#startDate").val(contract.startDate);
             $("#endDate").val(contract.endDate);
+            $("#contractId").val(contract.id);
         }
     }
 
     //加载排期控件
-    var loadSpot = function(json){
-//        alert(json.sheets);
+    var loadSpot = function(jsonTitle,maxCol){
+
+        console.info("search.html= loadSpot");
         //JSON
-        var jsonTitle = {
-            fileName: "排期",
-            sheets: json.sheets,
-            floatings:json.floatings,
-            cells:json.cells
-        };
-        var maxCol = json.columnSize;
-        if (sheet_iframe.window && $.isFunction(sheet_iframe.window.loadData)){
+        if (sheet_iframe.window && $.isFunction(sheet_iframe.window.loadData) && jsonTitle){
+
+            console.info("search.html= sheet_iframe loadSpot");
+            //加载数据
             sheet_iframe.window.loadData(jsonTitle);
             ////最大列数
             sheet_iframe.window.setMaxCol(maxCol);
         } else{
-            //alert("正在加载控件");
+//            alert("正在加载控件");
         }
     }
 
+
+
+    //加载排期数据数据
+    function getSheetData(){
+        return sheetData;
+    }
 
 
     var tokenAjax = function(obj){
@@ -293,9 +290,10 @@
 <div class="header" act="tables">
     <div class="search-wapper container-fluid">
         <form act="query_form">
-            <div class="search col-xs-6 col-md-2 col-lg-2">
+            <input name="contractId" id="contractId" type="hidden">
+            <div class="search col-xs-6 col-md-2 col-lg-3">
                 <label>合同名称</label>
-                <input name="contractName" id="contractName"  type="text" placeholder="未加载"/><!-- name="begin" -->
+                <input name="contractName" id="contractName"  type="text" placeholder="未加载" readonly="readonly"/><!-- name="begin" -->
             </div>
 
             <!--<div class="search">
@@ -308,11 +306,11 @@
            </div>-->
             <div class="search col-xs-6 col-md-2 col-lg-2">
                 <label>开始日期</label>
-                <input id="startDate" type="text" act="startDate" placeholder="未加载"/><!-- name="begin" -->
+                <input name="startDate" id="startDate" type="text" placeholder="未加载" readonly="readonly"/>
             </div>
             <div class="search col-xs-6 col-md-2 col-lg-2">
                 <label>结束日期</label>
-                <input id="endDate" type="text" act="endDate" placeholder="未加载"/><!-- name="end" -->
+                <input name="endDate" id="endDate"  type="text" placeholder="未加载" readonly="readonly"/>
             </div>
             <!--<div class="search col-xs-6 col-md-2 col-lg-2">-->
                 <!--<label>持续</label>-->
@@ -333,7 +331,8 @@
                 <select style="width:100px"><option>1小时</option></select>
             </div>-->
             <div class="search col-xs-12 col-md-2 col-lg-2">
-                <a href="javascript:;" class="sb" act="search_meetting">查询</a>
+                <a href="javascript:;" class="sb" act="save_spot">保存点位</a>
+                <a href="javascript:;" class="sb" act="load_spot" style="display: none;">加载</a>
             </div>
         </form>
     </div>

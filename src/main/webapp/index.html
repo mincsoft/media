@@ -48,6 +48,9 @@
         hideAll();
         code = request.getParam("code");
         access_token = request.getParam("access_token");
+        if(access_token){
+            $("#token").val(access_token);
+        }
         initHtml();
     });
 

@@ -1,4 +1,4 @@
-package com.crm.bs;
+package other.aakepi.bdfjfaackcpic.api.media;
 
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;

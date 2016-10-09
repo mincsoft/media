@@ -24,7 +24,9 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
     @Override
     public String execute(Request request, Long userId, Long tenantId) {
 
-        initParam(request);
+        initRequest(request);
+
+        initParam();
 
         Map<String, Object> returnMap = new HashMap<String, Object>();
 
@@ -86,11 +88,16 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                 for (int j = 0; j < spotFieldList.size(); j++) {
                     SpotField spotField = spotFieldList.get(j);
                     String fieldName = spotField.getEn();
-                    if ("select".equals(spotField.getType()) || "entityType".equals(spotField.getType())) {
-                        headData.add(getColItemSelect(sheetId, startRow, dateColumns++, record, fieldName));
-                    } else {
-                        Object value = record.get(fieldName);
-                        headData.add(getColItemObject(sheetId, startRow, dateColumns++, value));
+                    Object value = record.get(fieldName);
+                    if (value == null || StringUtils.isBlank(value.toString())){
+                        //不处理
+                        dateColumns++;
+                    }  else{
+                        if ("select".equals(spotField.getType()) || "entityType".equals(spotField.getType())) {
+                            headData.add(getColItemSelect(sheetId, startRow, dateColumns++, record, fieldName));
+                        } else {
+                            headData.add(getColItemObject(sheetId, startRow, dateColumns++, value));
+                        }
                     }
                 }
             }
@@ -110,7 +117,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
 
         String spotField = spotConfig.getSql();
         StringBuffer sql = new StringBuffer();
-        sql.append("select id,").append(spotField).append(" from media ");
+        sql.append("select id").append(spotField).append(" from media ");
         if (StringUtils.isNotBlank(mediaName)) {
             sql.append(" where name like '%").append(mediaName).append("%'");
         }

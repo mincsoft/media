@@ -10,6 +10,8 @@ public class SpotField {
     private String other;
     //字段类型
     private String type;
+    //是否媒体的字段
+    private boolean isMediaField;
 
     public SpotField(){}
 
@@ -52,5 +54,13 @@ public class SpotField {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isMediaField() {
+        return isMediaField;
+    }
+
+    public void setIsMediaField(boolean isMediaField) {
+        this.isMediaField = isMediaField;
     }
 }

@@ -279,8 +279,11 @@ public abstract class BaseApiSupport {
      */
     protected JSONObject createBelongs(long belongId,JSONObject record){
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/create");
-        rkhdHttpData.putFormData("belongId", belongId);
-        rkhdHttpData.putFormData("record", record);
+        JSONObject body = new JSONObject();
+        body.accumulate("belongId", belongId);
+        body.accumulate("record", record);
+        rkhdHttpData.setBody(body.toString());
+
         String result = apiRequest( rkhdHttpData);
         return JSONObject.fromObject(result);
     }
@@ -293,36 +296,35 @@ public abstract class BaseApiSupport {
      */
     protected JSONObject createBelongs(Request request,long belongId,JSONObject record){
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/create");
-        rkhdHttpData.putFormData("belongId", belongId);
-        rkhdHttpData.putFormData("record", record);
+        JSONObject body = new JSONObject();
+        body.accumulate("belongId", belongId);
+        body.accumulate("record", record);
+        rkhdHttpData.setBody(body.toString());
+
         String result = apiRequest(request, rkhdHttpData);
         return JSONObject.fromObject(result);
     }
 
     /**
      * 更新自定义实体
-     * @param belongId 自定义ID
      * @param record 记录信息
      * @return
      */
-    protected JSONObject updateBelongs(long belongId,JSONObject record){
+    protected JSONObject updateBelongs(JSONObject record){
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
-        rkhdHttpData.putFormData("belongId", belongId);
-        rkhdHttpData.putFormData("record", record);
+        rkhdHttpData.setBody(record.toString());
         String result = apiRequest(rkhdHttpData);
         return JSONObject.fromObject(result);
     }
     /**
      * 更新自定义实体
      * @param request
-     * @param belongId 自定义ID
      * @param record 记录信息
      * @return
      */
-    protected JSONObject updateBelongs(Request request,long belongId,JSONObject record){
+    protected JSONObject updateBelongs(Request request,JSONObject record){
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
-        rkhdHttpData.putFormData("belongId", belongId);
-        rkhdHttpData.putFormData("record", record);
+        rkhdHttpData.setBody(record.toString());
         String result = apiRequest(request, rkhdHttpData);
         return JSONObject.fromObject(result);
     }
@@ -355,7 +357,7 @@ public abstract class BaseApiSupport {
      * @return
      */
     protected JSONObject getBelongs(long id){
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/create");
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/info");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(rkhdHttpData);
         return JSONObject.fromObject(result);
@@ -368,7 +370,7 @@ public abstract class BaseApiSupport {
      * @return
      */
     protected JSONObject getBelongs(Request request,long id){
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/create");
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/info");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(request, rkhdHttpData);
         return JSONObject.fromObject(result);
