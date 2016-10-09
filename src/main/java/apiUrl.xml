@@ -10,6 +10,23 @@
             <url>/save-meeting</url>
         </api>
 
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.ContractSearch</class>
+            <url>/search-contract</url>
+        </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.MediaSpotSearch</class>
+            <url>/search-mediaspot</url>
+        </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.SaleContractSpotSearch</class>
+            <url>/search-salecontractspot</url>
+        </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.SaleContractSpotSave</class>
+            <url>/save-salecontractspot</url>
+        </api>
+
     </config>
 </configs>
 
