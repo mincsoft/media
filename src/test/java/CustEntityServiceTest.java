@@ -1,4 +1,3 @@
-import com.crm.bs.CustEntityService;
 import net.sf.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,21 +12,23 @@ public class CustEntityServiceTest {
     @Before
     public void setUp() throws Exception {
         custEntityService= new CustEntityService();
-//        access_token = custEntityService.getAuthToken();
+        access_token = custEntityService.getAuthToken();
 //        if (StringUtils.isEmpty(access_token))
 //        access_token = Configuration.getInstance().getValue("access_token");
 //        System.out.println("access_token=============:"+access_token);
     }
+
+
 
 //    @After
 //    public void tearDown() throws Exception {
 //
 //    }
 //
-//    @Test
-//    public void testGetAuthToken(){
-//
-//    }
+    @Test
+    public void testGetAuthToken(){
+
+    }
 //
 //    @Test
 //    public void testGetEnityList(){

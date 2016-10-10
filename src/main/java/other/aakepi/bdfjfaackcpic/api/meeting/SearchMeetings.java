@@ -1,4 +1,4 @@
-package other.aakepi.bdfjabipeepce.api;
+package other.aakepi.bdfjfaackcpic.api.meeting;
 
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
