@@ -1,6 +1,5 @@
 package other.aakepi.bdfjfaackcpic.trigger.meeting;
 
-import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import com.rkhd.platform.sdk.ScriptTrigger;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
@@ -10,6 +9,7 @@ import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import com.rkhd.platform.sdk.param.ScriptTriggerResult;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
