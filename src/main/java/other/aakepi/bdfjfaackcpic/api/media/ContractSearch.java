@@ -33,7 +33,13 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
 
         String startAt = request.getParameter("begin");
         String endAt = request.getParameter("end");
-        QueryResult result = getAllContract(request, 0, 20);
+
+        String op = request.getParameter("op");
+        QueryResult result = null;
+        //合同纪录
+        if ("contract".equals(op)){
+            result = getAllContract(request, 0, 20);
+        }
         JSONArray records=new JSONArray();
         if (result != null){
             records= result.getRecords();

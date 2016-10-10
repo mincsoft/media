@@ -73,7 +73,7 @@
                 data[array[i].name] = array[i].value;
             }
 //            data['access_token']=access_token;
-
+            data['op']="contract";//合同数据
             tokenAjax({
 //                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
                 url:  urlTitle+urlSearchContract,    //请求的url地址
@@ -105,7 +105,7 @@
     };
 
     var toHtml = function(contract,index){
-        var html = '<li>'+index+'、<a href="saleContractSpotSearch.html?access_token='+access_token+'&id='+contract.id+'&debug=dev">'+contract.title+'</a></li>';
+        var html = '<li>'+index+'、<a href="saleContractSpotSearch.html?access_token='+access_token+'&id='+contract.id+'">'+contract.title+'</a></li>';
         //return html;
         $(".room-list").append(html);
     }
