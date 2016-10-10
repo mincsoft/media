@@ -1,4 +1,4 @@
-package other.aakepi.bdfjabipeepce.api;
+package other.aakepi.bdfjfaackcpic.api.meeting;
 
 import other.aakepi.bdfjabipeepce.util.DateUtil;
 import com.rkhd.platform.sdk.api.ApiSupport;

@@ -1,25 +1,21 @@
-package other.aakepi.bdfjabipeepce.trigger;
+package other.aakepi.bdfjfaackcpic.trigger.meeting;
 
+import other.aakepi.bdfjabipeepce.util.DateUtil;
 import com.rkhd.platform.sdk.ScriptTrigger;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
-import com.rkhd.platform.sdk.log.Logger;
-import com.rkhd.platform.sdk.log.LoggerFactory;
 import com.rkhd.platform.sdk.model.DataModel;
 import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import com.rkhd.platform.sdk.param.ScriptTriggerResult;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import other.aakepi.bdfjabipeepce.util.DateUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-//import com.rkhd.platform.sdk.test.tool.TestTriggerTool;
 
-public class SaveMettingTrigger implements ScriptTrigger{
-	private Logger logger = LoggerFactory.getLogger();
+public class UpdateMeetingTrigger implements ScriptTrigger{
 
 	@Override
 	public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
@@ -28,6 +24,7 @@ public class SaveMettingTrigger implements ScriptTrigger{
 		Object huiyishiName = list.get(0).getAttribute("meetingRoom");
 		Object beginTime = list.get(0).getAttribute("beginTime");
 		Object end_time = list.get(0).getAttribute("end_time");
+		Object id = list.get(0).getAttribute("id");
 		
 		String begin = beginTime.toString();
 		String end = end_time.toString();
@@ -40,8 +37,7 @@ public class SaveMettingTrigger implements ScriptTrigger{
 			throw new ScriptBusinessException("begin time must before end time ");
 		}
 		
-		
-		String firstTable = getYuding(begin,end,scriptTriggerParam.getUserId(),-1L,meetingManagerIds,0,1);
+		String firstTable = getYuding(begin,end,scriptTriggerParam.getUserId(),-1L,meetingManagerIds,0,1,id.toString());
 		
 		JSONObject firstTableJson = JSONObject.fromObject(firstTable);
 		JSONArray firstTableJsonArray = null;
@@ -54,17 +50,15 @@ public class SaveMettingTrigger implements ScriptTrigger{
 		if(firstTableJsonArray.size() > 0){
 			throw new ScriptBusinessException("have meetings");
 		}
-		
-		
-		
 		ScriptTriggerResult scriptTriggerResult = new ScriptTriggerResult();
 		scriptTriggerResult.setDataModelList(scriptTriggerParam.getDataModelList());
 		return scriptTriggerResult;
 	}
 	
-	private String getYuding(String begin,String end, Long userId, Long tenantId,String meetingManagerIds,int first,int size){
+	
+	private String getYuding(String begin,String end, Long userId, Long tenantId,String meetingManagerIds,int first,int size,String id){
 		try{
-			ScriptTriggerParam scriptTriggerParam = new ScriptTriggerParam();
+			
 			RkhdHttpClient rkhdHttpClient = new RkhdHttpClient();
 			
 			RkhdHttpData rkhdHttpData = new RkhdHttpData();
@@ -86,6 +80,7 @@ public class SaveMettingTrigger implements ScriptTrigger{
 				sb.append(" or (beginTime <= ").append(end).append(" and end_time >= ").append(end).append(")");
 				sb.append(" or (beginTime >= ").append(begin).append(" and end_time <= ").append(end).append(") )");
 			}
+			sb.append(" and id != ").append(id);
 			sb.append(" order by beginTime,end_time");
 			sb.append(" limit ").append(first).append(",").append(size);
 			sql = sql + sb.toString();
@@ -97,12 +92,6 @@ public class SaveMettingTrigger implements ScriptTrigger{
 		}catch(Exception e){
 			return e.getMessage();
 		}
-	}
-	
-	public static void main(String[] args) {
-//		TestTriggerTool testTriggerTool = new TestTriggerTool();
-//		SaveMettingTrigger saveMettingTrigger = new SaveMettingTrigger();
-//		testTriggerTool.test("E:\\ceshiSwing\\meetting\\src\\scriptTrigger.xml", saveMettingTrigger);
 	}
 
 }

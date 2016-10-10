@@ -1,11 +1,11 @@
-package com.crm.bs;
-
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
+import other.aakepi.bdfjfaackcpic.http.MincsoftHttpClient;
 
 import java.io.IOException;
 
@@ -13,6 +13,31 @@ import java.io.IOException;
  * Created by yujinliang on 16/9/22.
  */
 public class CustEntityService extends BaseApiSupport {
+    protected static String _CURR_AUTHTOKEN = "";
+    protected static String SECURCODE = "cyKgOghI";//"cyKgOghI";//租户安全令牌
+    private static final String _PWD_TOKEN_URL = "https://api.xiaoshouyi.com/oauth2/token";//静默方式
+    private static final String CLIENT_ID = "e3829850419b7ec442b0314c3cf2ff58";//静默方式
+    private static final String CLIENT_SECRET = "562e34991cd545d5f499a3331b5cb592";//静默方式
+    private static final String REDIRECT_URI = "https://lapp.ingageapp.com/d3e6/f901/meeting/meetingroom.html";//静默方式
+    private static final String USERNAME = "18800004505";//静默方式
+    private static final String PASSWORD = "1qaz2wsx";//静默方式
+
+
+    public String getAuthToken(){
+        if (StringUtils.isEmpty(_CURR_AUTHTOKEN)){
+//      String codeParam="grant_type=authorization_code&client_id=e3829850419b7ec442b0314c3cf2ff58&client_secret=562e34991cd545d5f499a3331b5cb592&redirect_uri=http://localhost&code=5385578c7137a40a75206c543605d3957a3355d78d3e2de0279cc6cb0f3a7e07";
+            String pwdParam="grant_type=password&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&redirect_uri="+REDIRECT_URI+"&username="+USERNAME+"&password="+PASSWORD+SECURCODE;
+            String response = MincsoftHttpClient.sendSimplePost(_PWD_TOKEN_URL, pwdParam);
+
+            if (StringUtils.isNotEmpty(response)){
+                JSONObject result= JSONObject.fromObject(response);
+                _CURR_AUTHTOKEN = result.getString("access_token");
+            }
+        }
+
+        return _CURR_AUTHTOKEN;
+    }
+
 
 
 //    public JSONObject getEnityList(String access_token) {
