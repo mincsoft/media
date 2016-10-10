@@ -11,7 +11,7 @@ import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import com.rkhd.platform.sdk.param.ScriptTriggerResult;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import other.aakepi.bdfjabipeepce.util.DateUtil;
+import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

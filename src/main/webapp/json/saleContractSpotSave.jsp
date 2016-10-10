@@ -1,6 +1,6 @@
 <%@ page import="net.sf.json.JSONObject" %>
-<%@ page import="java.util.Enumeration" %>
 <%@ page import="other.aakepi.bdfjfaackcpic.api.media.SaleContractSpotSave" %>
+<%@ page import="java.util.Enumeration" %>
 <%@ page contentType="text/json;charset=UTF-8" language="java" %>
 <%
   //销售合同保存测试方法

@@ -1,6 +1,6 @@
 package other.aakepi.bdfjfaackcpic.trigger.meeting;
 
-import other.aakepi.bdfjabipeepce.util.DateUtil;
+import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import com.rkhd.platform.sdk.ScriptTrigger;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;

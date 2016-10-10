@@ -8,7 +8,8 @@ import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotConfig;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 媒体管理查询
