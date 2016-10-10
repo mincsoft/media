@@ -1,6 +1,3 @@
-/**
- * 
- */
 package other.aakepi.bdfjfaackcpic.util;
 
 import java.io.IOException;
