@@ -127,7 +127,20 @@ public abstract class BaseApiSupport {
         String result=query(request, sql);
         return getQueryResult(result);
     }
-
+    /**
+     * 查询语句，返回json结果
+     *
+     * @param sql
+     * @return
+     * @throws IOException
+     */
+    protected JSONArray queryResultArray(Request request,String sql)  {
+        String result=query( sql);
+        QueryResult queryResult = queryResult(request,result);
+        if (queryResult==null) return new JSONArray();
+        if (queryResult.getCount()==0) return new JSONArray();
+        return queryResult.getRecords();
+    }
     /**
      * 查询语句，返回json结果
      *
@@ -142,11 +155,25 @@ public abstract class BaseApiSupport {
     /**
      * 查询语句，返回json结果
      *
+     * @param sql
+     * @return
+     * @throws IOException
+     */
+    protected JSONArray queryResultArray(String sql)  {
+        String result=query( sql);
+        QueryResult queryResult = getQueryResult(result);
+        if (queryResult==null) return new JSONArray();
+        if (queryResult.getCount()==0) return new JSONArray();
+        return queryResult.getRecords();
+    }
+    /**
+     * 查询语句，返回json结果
+     *
      * @param result,查询结果
      * @return
      * @throws IOException
      */
-    protected QueryResult getQueryResult(String result)  {
+    private QueryResult getQueryResult(String result)  {
         if (StringUtils.isBlank(result)){
             return null;
         }
@@ -156,6 +183,7 @@ public abstract class BaseApiSupport {
         if (jsonObject.containsKey("error_code")){
             return null;
         }
+        logger.info("getQueryResult:" + result);
         return (QueryResult)JSONObject.toBean(jsonObject,QueryResult.class);
     }
     /**
@@ -285,6 +313,7 @@ public abstract class BaseApiSupport {
         rkhdHttpData.setBody(body.toString());
 
         String result = apiRequest( rkhdHttpData);
+        logger.info("createBelongs:" + result);
         return JSONObject.fromObject(result);
     }
     /**
@@ -302,6 +331,7 @@ public abstract class BaseApiSupport {
         rkhdHttpData.setBody(body.toString());
 
         String result = apiRequest(request, rkhdHttpData);
+        logger.info("createBelongs:" + result);
         return JSONObject.fromObject(result);
     }
 
@@ -314,6 +344,7 @@ public abstract class BaseApiSupport {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
         rkhdHttpData.setBody(record.toString());
         String result = apiRequest(rkhdHttpData);
+        logger.info("updateBelongs:" + result);
         return JSONObject.fromObject(result);
     }
     /**
@@ -326,6 +357,7 @@ public abstract class BaseApiSupport {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
         rkhdHttpData.setBody(record.toString());
         String result = apiRequest(request, rkhdHttpData);
+        logger.info("updateBelongs:" + result);
         return JSONObject.fromObject(result);
     }
     /**
@@ -337,6 +369,7 @@ public abstract class BaseApiSupport {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/delete");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(rkhdHttpData);
+        logger.info("deleteBelongs:" + result);
         return JSONObject.fromObject(result);
     }
     /**
@@ -349,6 +382,7 @@ public abstract class BaseApiSupport {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/delete");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(request, rkhdHttpData);
+        logger.info("deleteBelongs:" + result);
         return JSONObject.fromObject(result);
     }
     /**

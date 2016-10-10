@@ -1,10 +1,9 @@
 package other.aakepi.bdfjfaackcpic.trigger.pur;
 
+import com.rkhd.platform.sdk.ScriptTrigger;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
-import com.rkhd.platform.sdk.log.Logger;
-import com.rkhd.platform.sdk.log.LoggerFactory;
 import com.rkhd.platform.sdk.model.DataModel;
 import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import com.rkhd.platform.sdk.param.ScriptTriggerResult;
@@ -16,15 +15,11 @@ import other.aakepi.bdfjfaackcpic.trigger.BaseTrigger;
 
 import java.io.IOException;
 import java.util.List;
-//import com.rkhd.platform.sdk.test.tool.TestTriggerTool;
-
 /**
  * 付款后更新付款计划
  */
-public class PaymentTrigger extends BaseTrigger {
-    private Logger logger = LoggerFactory.getLogger();
+public class PaymentTrigger extends BaseTrigger  implements ScriptTrigger {
 
-    @Override
     public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
             throws ScriptBusinessException {
         List<DataModel> list = scriptTriggerParam.getDataModelList();

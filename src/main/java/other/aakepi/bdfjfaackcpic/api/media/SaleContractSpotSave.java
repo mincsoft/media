@@ -307,10 +307,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
     private JSONArray getSpotDate(String spotId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,spot from saleContractSpotDate where spotId=").append(spotId);
-        QueryResult queryResult = queryResult(request, sql.toString());
-        if (queryResult==null) return new JSONArray();
-        if (queryResult.getCount()==0) return new JSONArray();
-        return queryResult.getRecords();
+        return queryResultArray(request, sql.toString());
     }
 
 }

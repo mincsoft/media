@@ -176,7 +176,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
         StringBuffer sql = new StringBuffer();
         sql.append("select id,meidaId,onlineTimeArange,boughtType,displayQuantity,orderPrice,retailPriceTotal,orderPriceTotal from saleContractSpot where contractId=").append(contractId);
         sql.append(" order by createdAt asc");
-        QueryResult saleContractSpot = queryResult(sql.toString());
+        QueryResult saleContractSpot = queryResult(request,sql.toString());
         if (saleContractSpot==null) return null;
         if (saleContractSpot.getCount()==0) return null;
 
@@ -227,9 +227,6 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
     private JSONArray getSpotDate(String spotId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,spot from saleContractSpotDate where spotId=").append(spotId);
-        QueryResult queryResult = queryResult(request, sql.toString());
-        if (queryResult==null) return new JSONArray();
-        if (queryResult.getCount()==0) return new JSONArray();
-        return queryResult.getRecords();
+        return queryResultArray(request, sql.toString());
     }
 }
