@@ -30,6 +30,7 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
     @Override
     public String execute(Request request, Long userId, Long tenantId) {
 
+
         Map<String, Object> returnMap = new HashMap<String, Object>();
 
         String startAt = request.getParameter("begin");
@@ -60,7 +61,7 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
         sql.append("select id,title from contract ");
         sql.append(" limit ").append(first).append(",").append(size);
 
-        return queryResult(request, sql.toString());
+        return queryResult(sql.toString());
     }
 
 

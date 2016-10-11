@@ -124,7 +124,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         sql.append(" order by name");
         sql.append(" limit ").append(first).append(",").append(size);
 
-        return queryResult(request, sql.toString());
+        return queryResult( sql.toString());
     }
 
 

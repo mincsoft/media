@@ -76,7 +76,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
         StringBuffer sql = new StringBuffer();
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/contract/info");
         rkhdHttpData.putFormData("id", contractId);
-        String result = apiRequest(request, rkhdHttpData);
+        String result = apiRequest( rkhdHttpData);
         return  JSONObject.fromObject(result);
     }
 
@@ -176,7 +176,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
         StringBuffer sql = new StringBuffer();
         sql.append("select id,meidaId,onlineTimeArange,boughtType,displayQuantity,orderPrice,retailPriceTotal,orderPriceTotal from saleContractSpot where contractId=").append(contractId);
         sql.append(" order by createdAt asc");
-        QueryResult saleContractSpot = queryResult(request,sql.toString());
+        QueryResult saleContractSpot = queryResult(sql.toString());
         if (saleContractSpot==null) return null;
         if (saleContractSpot.getCount()==0) return null;
 
@@ -195,7 +195,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
         sql.append("select id").append(spotField).append(" from media ");
         sql.append(" where id in (").append(mediaIds).append(")");
 
-        QueryResult mediaResult = queryResult(request, sql.toString());
+        QueryResult mediaResult = queryResult( sql.toString());
         if (mediaResult!=null){
             JSONArray mediaArray = mediaResult.getRecords();
             for (int i = 0; i < spotArray.size(); i++) {
@@ -227,6 +227,6 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
     private JSONArray getSpotDate(String spotId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,spot from saleContractSpotDate where spotId=").append(spotId);
-        return queryResultArray(request, sql.toString());
+        return queryResultArray( sql.toString());
     }
 }

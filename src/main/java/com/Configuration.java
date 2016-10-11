@@ -1,4 +1,4 @@
-package other.aakepi.bdfjfaackcpic.util;
+package com;
 
 import java.io.IOException;
 import java.io.InputStream;

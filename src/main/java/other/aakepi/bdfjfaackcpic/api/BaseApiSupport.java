@@ -1,6 +1,5 @@
 package other.aakepi.bdfjfaackcpic.api;
 
-import com.rkhd.platform.sdk.http.Request;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
 import com.rkhd.platform.sdk.log.Logger;
@@ -9,7 +8,6 @@ import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import other.aakepi.bdfjfaackcpic.http.MincsoftHttpClient;
 
 import java.io.IOException;
 import java.util.Date;
@@ -57,24 +55,6 @@ public abstract class BaseApiSupport {
 
     /**
      * API请求
-     * @param request
-     * @param rkhdHttpData
-     * @return
-     */
-    protected String apiRequest(Request request,RkhdHttpData rkhdHttpData){
-        String result="";
-        try{
-            ScriptTriggerParam scriptTriggerParam = new ScriptTriggerParam();
-
-            MincsoftHttpClient rkhdHttpClient = new MincsoftHttpClient(request);
-            result = rkhdHttpClient.performRequest(rkhdHttpData);
-        } catch (IOException e){
-            logger.error(e.getMessage());
-        }
-        return result;
-    }
-    /**
-     * API请求
      * @param rkhdHttpData
      * @return
      */
@@ -90,18 +70,6 @@ public abstract class BaseApiSupport {
         }
         return result;
     }
-    /**
-     * 查询语句，返回json结果
-     *
-     * @param sql
-     * @return
-     * @throws IOException
-     */
-    protected String query(Request request,String sql)  {
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/query");
-        rkhdHttpData.putFormData("q", sql);
-        return apiRequest(request, rkhdHttpData);
-    }
 
     /**
      * 查询语句，返回json结果
@@ -116,31 +84,7 @@ public abstract class BaseApiSupport {
         return apiRequest(rkhdHttpData);
     }
 
-    /**
-     * 查询语句，返回json结果
-     *
-     * @param sql
-     * @return
-     * @throws IOException
-     */
-    protected QueryResult queryResult(Request request,String sql)  {
-        String result=query(request, sql);
-        return getQueryResult(result);
-    }
-    /**
-     * 查询语句，返回json结果
-     *
-     * @param sql
-     * @return
-     * @throws IOException
-     */
-    protected JSONArray queryResultArray(Request request,String sql)  {
-        String result=query( sql);
-        QueryResult queryResult = queryResult(request,result);
-        if (queryResult==null) return new JSONArray();
-        if (queryResult.getCount()==0) return new JSONArray();
-        return queryResult.getRecords();
-    }
+
     /**
      * 查询语句，返回json结果
      *
@@ -193,17 +137,6 @@ public abstract class BaseApiSupport {
     protected QueryResult getAllBelongs(){
         RkhdHttpData rkhdHttpData = getRkhdHttpData("/data/v1/picks/dimension/belongs");
         String result = apiRequest(rkhdHttpData);
-        return getQueryResult(result);
-    }
-
-    /**
-     * 获得全部业务对象
-     * @param request
-     * @return
-     */
-    protected QueryResult getAllBelongs(Request request){
-        RkhdHttpData rkhdHttpData = getRkhdHttpData("/data/v1/picks/dimension/belongs");
-        String result = apiRequest(request, rkhdHttpData);
         return getQueryResult(result);
     }
 
@@ -286,18 +219,6 @@ public abstract class BaseApiSupport {
         String result = apiRequest(rkhdHttpData);
         return JSONObject.fromObject(result);
     }
-    /**
-     * 获得自定义业务实体描述接口
-     * @param request
-     * @param belongId 自定义ID
-     * @return
-     */
-    protected JSONObject getBelongsDesc(Request request,long belongId){
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/describe");
-        rkhdHttpData.putFormData("belongId", belongId);
-        String result = apiRequest(request, rkhdHttpData);
-        return JSONObject.fromObject(result);
-    }
 
     /**
      * 创建自定义实体
@@ -316,24 +237,6 @@ public abstract class BaseApiSupport {
         logger.info("createBelongs:" + result);
         return JSONObject.fromObject(result);
     }
-    /**
-     * 创建自定义实体
-     * @param request
-     * @param belongId 自定义ID
-     * @param record 记录信息
-     * @return
-     */
-    protected JSONObject createBelongs(Request request,long belongId,JSONObject record){
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/create");
-        JSONObject body = new JSONObject();
-        body.accumulate("belongId", belongId);
-        body.accumulate("record", record);
-        rkhdHttpData.setBody(body.toString());
-
-        String result = apiRequest(request, rkhdHttpData);
-        logger.info("createBelongs:" + result);
-        return JSONObject.fromObject(result);
-    }
 
     /**
      * 更新自定义实体
@@ -347,19 +250,7 @@ public abstract class BaseApiSupport {
         logger.info("updateBelongs:" + result);
         return JSONObject.fromObject(result);
     }
-    /**
-     * 更新自定义实体
-     * @param request
-     * @param record 记录信息
-     * @return
-     */
-    protected JSONObject updateBelongs(Request request,JSONObject record){
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
-        rkhdHttpData.setBody(record.toString());
-        String result = apiRequest(request, rkhdHttpData);
-        logger.info("updateBelongs:" + result);
-        return JSONObject.fromObject(result);
-    }
+
     /**
      * 删除自定义实体
      * @param id 记录
@@ -372,19 +263,7 @@ public abstract class BaseApiSupport {
         logger.info("deleteBelongs:" + result);
         return JSONObject.fromObject(result);
     }
-    /**
-     * 删除自定义实体
-     * @param request
-     * @param id 记录
-     * @return
-     */
-    protected JSONObject deleteBelongs(Request request,long id){
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/delete");
-        rkhdHttpData.putFormData("id", id);
-        String result = apiRequest(request, rkhdHttpData);
-        logger.info("deleteBelongs:" + result);
-        return JSONObject.fromObject(result);
-    }
+
     /**
      * 查询自定义实体
      * @param id 对象主键
@@ -397,18 +276,6 @@ public abstract class BaseApiSupport {
         return JSONObject.fromObject(result);
     }
 
-    /**
-     * 查询自定义实体
-     * @param request
-     * @param id 对象主键
-     * @return
-     */
-    protected JSONObject getBelongs(Request request,long id){
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/info");
-        rkhdHttpData.putFormData("id", id);
-        String result = apiRequest(request, rkhdHttpData);
-        return JSONObject.fromObject(result);
-    }
 
     //转换对象，避免null对象转json时出错
     protected Object convertObject(Object value){

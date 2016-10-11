@@ -44,11 +44,11 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
      */
     protected void initParam() {
         //查询全部实体，获得对应的belongId：
-        allBelongs = getAllBelongs(request);
+        allBelongs = getAllBelongs();
         //媒体对象的ID
         mediaBelongId = getBelongId(allBelongs, "media");
         //字段描述
-        mediaBelongsDes = getBelongsDesc(request, mediaBelongId);
+        mediaBelongsDes = getBelongsDesc( mediaBelongId);
         //下拉选项
         mediaSelectMap = getBelongSelectItem(mediaBelongsDes);
         //排期配置对象

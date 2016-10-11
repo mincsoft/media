@@ -203,7 +203,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                             if (!dateValue.equalsIgnoreCase(spot)) {
                                 //设置新的点位
                                 spotDate.put("spot",dateValue);
-                                updateBelongs(request,spotDate);
+                                updateBelongs(spotDate);
                             }
                             existsData=true;
                             //匹配上则删除集合
@@ -220,7 +220,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                         spotDate.accumulate("contractId",contractId);
                         spotDate.accumulate("meidaId",mediaId);
                         spotDate.accumulate("dimDepart",contract.getString("dimDepart"));
-                        createBelongs(request,spotDateBelongId,spotDate);
+                        createBelongs(spotDateBelongId,spotDate);
                     }
 
                 }
@@ -229,7 +229,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                 for (int j = 0; j < spotPlanDateList.size() ; j++) {
                     JSONObject spotDate = spotPlanDateList.getJSONObject(j);
                     long spotDateId = spotDate.getLong("id");
-                    deleteBelongs(request,spotDateId);
+                    deleteBelongs(spotDateId);
                 }
 
                 if (!hasSpot) {
@@ -307,7 +307,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
     private JSONArray getSpotDate(String spotId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,spot from saleContractSpotDate where spotId=").append(spotId);
-        return queryResultArray(request, sql.toString());
+        return queryResultArray( sql.toString());
     }
 
 }
