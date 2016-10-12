@@ -33,6 +33,42 @@
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.pur.InvoiceTrigger</class>
         </trigger>
+        <!--媒体保留 新增前校验、新增后生成保留点位；保存前校验、保存后生成保留点位；-->
+        <trigger>
+            <object>mediaKeeping</object>
+            <operate>add</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>before</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.SaveMediaKeeping</class>
+        </trigger>
+        <trigger>
+            <object>mediaKeeping</object>
+            <operate>add</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>after</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.SaveMediaKeepingAfter</class>
+        </trigger>
+        <trigger>
+            <object>mediaKeeping</object>
+            <operate>update</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>before</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.UpdateMediaKeeping</class>
+        </trigger>
+        <trigger>
+            <object>mediaKeeping</object>
+            <operate>update</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>after</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.UpdateMediaKeepingAfter</class>
+        </trigger>
+
+
+
     </config>
 </configs>
 
