@@ -67,8 +67,27 @@
             <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.UpdateMediaKeepingAfter</class>
         </trigger>
 
+        <!--销售合同保存：开始、结束日期校验，不知道processor -->
 
 
+        <!--媒体上画保存： -->
+
+        <trigger>
+            <object>contractMediaPaint</object>
+            <operate>add</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>before</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.contract.UpdateContractPaintTrigger</class>
+        </trigger>
+        <trigger>
+            <object>contractMediaPaint</object>
+            <operate>update</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>before</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.contract.UpdateContractPaintTrigger</class>
+        </trigger>
     </config>
 </configs>
 
