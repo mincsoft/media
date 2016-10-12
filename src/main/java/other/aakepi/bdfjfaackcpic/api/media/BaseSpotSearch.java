@@ -31,6 +31,8 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
     //排期显示配置对象
     protected  SpotConfig spotConfig;
 
+    //用户信息纪录
+    protected Map<Long,String> userMap=new HashMap<Long, String>();
     /**
      * 初始化Request
      * @param request
@@ -504,6 +506,27 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
         itemObj.accumulate("col", col);
 
         return itemObj;
+    }
+
+    /**
+     * 获得用户信息
+     * @param userId
+     * @return
+     */
+    protected String getUserName(Long userId){
+        String userName = "";
+
+        if(userMap.containsKey(userId)){
+            userName= userMap.get(userId);
+        } else {
+            JSONObject userInfo = getUserInfo(userId);
+            if (userInfo != null && userInfo.containsKey("name")){
+                userName = userInfo.getString("name");
+                userMap.put(userId,userName);
+                return userName;
+            }
+        }
+        return userName;
     }
 
 }

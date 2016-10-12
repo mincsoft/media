@@ -267,6 +267,11 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
     private Map<String,String> getPurContractSpotDate(String mediaId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day from purContractSpotDate where mediaId=").append(mediaId);
+        if (startDate != null && endDate != null) {
+            Long beginLong = startDate.getTime();
+            Long endLong = endDate.getTime();
+            sql.append(" and day >= ").append(beginLong).append(" and day <= ").append(endLong);
+        }
         JSONArray resultArray = queryResultArray( sql.toString());
 
         Map<String,String> purSpotDateMap=new HashMap<String, String>();

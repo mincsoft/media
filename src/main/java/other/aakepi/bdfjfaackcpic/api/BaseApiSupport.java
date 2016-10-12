@@ -93,7 +93,7 @@ public abstract class BaseApiSupport {
      * @throws IOException
      */
     protected QueryResult queryResult(String sql)  {
-        String result=query( sql);
+        String result=query(sql);
         return getQueryResult(result);
     }
     /**
@@ -271,6 +271,18 @@ public abstract class BaseApiSupport {
      */
     protected JSONObject getBelongs(long id){
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/info");
+        rkhdHttpData.putFormData("id", id);
+        String result = apiRequest(rkhdHttpData);
+        return JSONObject.fromObject(result);
+    }
+
+    /**
+     * 获得用户信息
+     * @param id 对象主键
+     * @return
+     */
+    protected JSONObject getUserInfo(long id){
+        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/user/info");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(rkhdHttpData);
         return JSONObject.fromObject(result);
