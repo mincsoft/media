@@ -47,7 +47,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         spotConfig.addField("name", 150, null);
         spotConfig.addField("form", 80, null);
         spotConfig.addField("entityType", 80, null);
-        spotConfig.addField("opMode", 80, null);
+        spotConfig.addField("OpMode", 80, null);
         spotConfig.addField("saleStatus", 80, null);
         spotConfig.addField("address", 150, null);
         spotConfig.addField("retailPrice", 100, " fm: \"money||2|none\"");

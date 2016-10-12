@@ -35,6 +35,14 @@ public class DateUtil {
     }
 
     /**
+     * 按照yyyy-MM-dd 返回日期对象字符串
+     * @param date yyyy-MM-dd HH:mm
+     * @return
+     */
+    public static String getDateStr(String date){
+        return StringUtils.left(date,10);
+    }
+    /**
      * 获得日期格式
      * @param date
      * @param format

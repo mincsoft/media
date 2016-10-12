@@ -465,6 +465,19 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
     /**
      * 获得排期Cell对象
      * @param sheetId
+     * @param row
+     * @param col
+     * @param value
+     * @return
+     */
+    protected JSONObject getColItemObject(Integer sheetId, int row, int col, Object value,String other) {
+        JSONObject cols = getItemObject(sheetId, row, col);
+        cols.accumulate("json", "{data: \"" + convertObject(value) + "\" "+other+" }");
+        return cols;
+    }
+    /**
+     * 获得排期Cell对象
+     * @param sheetId
      * @param startRow
      * @param col
      * @return
