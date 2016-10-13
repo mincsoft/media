@@ -7,6 +7,7 @@ import com.rkhd.platform.sdk.http.RkhdHttpData;
 import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotConfig;
@@ -36,6 +37,9 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
         //合同纪录
         if ("contract".equals(op)){
             result = getAllContract(request, 0, 20);
+        } else if ("mediaSearchMobile".equals(op)){
+            //媒体查询
+            result = getAllMedia( 0, 20);
         }
         JSONArray records=new JSONArray();
         if (result != null){
@@ -82,5 +86,19 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
         }
     }
 
+    /**
+     * 查询全部的媒体记录
+     *
+     * @return
+     */
+    private QueryResult getAllMedia(int first, int size) {
+
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,name,opMode from media ");
+        sql.append(" order by name");
+        sql.append(" limit ").append(first).append(",").append(size);
+
+        return queryResult( sql.toString());
+    }
 
 }

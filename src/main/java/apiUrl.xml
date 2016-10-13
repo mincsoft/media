@@ -25,6 +25,10 @@
             <class>other.aakepi.bdfjfaackcpic.api.media.SaleContractSpotSave</class>
             <url>/save-salecontractspot</url>
         </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.MediaSpotMobileSearch</class>
+            <url>/search-mediaspot-mobile</url>
+        </api>
     </config>
 </configs>
 

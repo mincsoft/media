@@ -84,6 +84,8 @@
 //                    request.setRequestHeader("Authorization","Bearer "+ access_token);
                 },
                 success: function(req) {
+
+                    cleanHtmls();
 //                    var result = JSON.parse(req.result);
                     var records = req.result;
 //                    alert(records.length);
@@ -101,11 +103,50 @@
             initToken();
             window.location="mediaSpotSearch.html?access_token="+access_token+"&debug=dev";
         });
+        //媒体查询(手机）
 
+        $("[act=mediaSearchMobile]").click(function(){
+            initToken();
+            var array = $("[act=query_form]").serializeArray();
+            var data = {};
+            for(var i=0 ; i < array.length;i++){
+                data[array[i].name] = array[i].value;
+            }
+            data['op']="mediaSearchMobile";
+
+            tokenAjax({
+//                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
+                url:  urlTitle+urlSearchContract,    //请求的url地址
+//                dataType: "json",   //返回格式为json
+                data: data ,   //参数值
+                type: "POST",   //请求方式
+                beforeSend: function(request) {
+//                    request.setRequestHeader("Authorization","Bearer "+ access_token);
+                },
+                success: function(req) {
+                    cleanHtmls();
+//                    var result = JSON.parse(req.result);
+                    var records = req.result;
+//                    alert(records.length);
+                    if (records){
+                        for(var j=0 ; j < records.length;j++){
+                            var record = records[j];
+                            toMediaSearchHtml(record,j+1);
+                        }
+                    }
+                }
+            });
+        });
     };
 
     var toHtml = function(contract,index){
         var html = '<li>'+index+'、<a href="saleContractSpotSearch.html?access_token='+access_token+'&id='+contract.id+'&debug=dev">'+contract.title+'</a></li>';
+        //return html;
+        $(".room-list").append(html);
+    }
+
+    var toMediaSearchHtml = function(record,index){
+        var html = '<li>'+index+'、<a href="mediaSpotSearch_mobile.html?access_token='+access_token+'&mediaId='+record.id+'&mediaName='+record.name+'&debug=dev">'+record.name+'</a></li>';
         //return html;
         $(".room-list").append(html);
     }
@@ -235,11 +276,17 @@
             </div>
 
             <div class="search col-xs-12 col-md-2 col-lg-1">
-                <a href="javascript:;" class="sb" act="mediaSearch">排期查询</a>
+                <a href="javascript:;" class="sb" act="mediaSearch">媒体排期查询</a>
             </div>
+
+            <div class="search col-xs-12 col-md-2 col-lg-2">
+                <a href="javascript:;" class="sb" act="mediaSearchMobile">媒体查询（手机）</a>
+            </div>
+
         </form>
     </div>
 </div>
+
 
 <div class="content" act="tables">
     <div class="room-list container-fluid" act="room_list">
