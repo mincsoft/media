@@ -8,6 +8,7 @@ import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotConfig;
@@ -25,7 +26,8 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
 
     @Override
     public String execute(Request request, Long userId, Long tenantId) {
-
+        int first = 0;
+        int size = 20;
 
         Map<String, Object> returnMap = new HashMap<String, Object>();
 
@@ -34,12 +36,17 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
 
         String op = request.getParameter("op");
         QueryResult result = null;
+        String start = request.getParameter("start");
+        if (StringUtils.isNotBlank(start)){
+           int startInt = NumberUtils.toInt(start);
+            first = startInt * size ;
+        }
         //合同纪录
         if ("contract".equals(op)){
             result = getAllContract(request, 0, 20);
         } else if ("mediaSearchMobile".equals(op)){
             //媒体查询
-            result = getAllMedia( 0, 20);
+            result = getAllMedia(request,first, size);
         }
         JSONArray records=new JSONArray();
         if (result != null){
@@ -91,10 +98,14 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
      *
      * @return
      */
-    private QueryResult getAllMedia(int first, int size) {
+    private QueryResult getAllMedia(Request request,int first, int size) {
+        String mediaName = request.getParameter("mediaName");
 
         StringBuffer sql = new StringBuffer();
         sql.append("select id,name,opMode from media ");
+        if (StringUtils.isNotBlank(mediaName)) {
+            sql.append(" where name like '%").append(mediaName).append("%'");
+        }
         sql.append(" order by name");
         sql.append(" limit ").append(first).append(",").append(size);
 
