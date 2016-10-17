@@ -104,37 +104,10 @@
 
         //媒体查询(手机）
 
+        //媒体查询(手机）
         $("[act=mediaSearchMobile]").click(function(){
             initToken();
-            var array = $("[act=query_form]").serializeArray();
-            var data = {};
-            for(var i=0 ; i < array.length;i++){
-                data[array[i].name] = array[i].value;
-            }
-            data['op']="mediaSearchMobile";
-
-            tokenAjax({
-//                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
-                url:  urlTitle+urlSearchContract,    //请求的url地址
-//                dataType: "json",   //返回格式为json
-                data: data ,   //参数值
-                type: "POST",   //请求方式
-                beforeSend: function(request) {
-//                    request.setRequestHeader("Authorization","Bearer "+ access_token);
-                },
-                success: function(req) {
-                    cleanHtmls();
-//                    var result = JSON.parse(req.result);
-                    var records = req.result;
-//                    alert(records.length);
-                    if (records){
-                        for(var j=0 ; j < records.length;j++){
-                            var record = records[j];
-                            toMediaSearchHtml(record,j+1);
-                        }
-                    }
-                }
-            });
+            window.location="mediaSpotSearch_mobile_list.html?access_token="+access_token+"";
         });
 
     };
