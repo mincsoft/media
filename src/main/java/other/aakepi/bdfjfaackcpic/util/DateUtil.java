@@ -81,6 +81,128 @@ public class DateUtil {
         return date1.before(date2);
     }
 
+
+
+    /**
+     * 获取一个月内结束
+     * @return
+     * @throws ParseException
+     */
+    public static Date getOneMonthEnd()  {
+        Calendar minCal = Calendar.getInstance();
+        minCal.add(Calendar.DAY_OF_MONTH,30);
+        minCal.set(Calendar.HOUR_OF_DAY, 23);
+        minCal.set(Calendar.MINUTE,59);
+        minCal.set(Calendar.SECOND,59);
+        minCal.set(Calendar.MILLISECOND,0);
+
+        return minCal.getTime();
+    }
+
+    /**
+     * 获取两月内开始
+     * @return
+     * @throws ParseException
+     */
+    public static Date getTwoMonthStart()  {
+        Calendar minCal = Calendar.getInstance();
+        minCal.add(Calendar.DAY_OF_MONTH,31);
+        minCal.set(Calendar.HOUR_OF_DAY, 0);
+        minCal.set(Calendar.MINUTE,0);
+        minCal.set(Calendar.SECOND,0);
+        minCal.set(Calendar.MILLISECOND,0);
+
+        return minCal.getTime();
+    }
+
+    /**
+     * 获取两月内结束
+     * @return
+     * @throws ParseException
+     */
+    public static Date getTwoMonthEnd()  {
+        Calendar minCal = Calendar.getInstance();
+        minCal.add(Calendar.DAY_OF_MONTH, 60);
+        minCal.set(Calendar.HOUR_OF_DAY,23);
+        minCal.set(Calendar.MINUTE,59);
+        minCal.set(Calendar.SECOND,59);
+        minCal.set(Calendar.MILLISECOND,0);
+
+        return minCal.getTime();
+    }
+
+    /**
+     * 获取三月内开始
+     * @return
+     * @throws ParseException
+     */
+    public static Date getThreeMonthStart()  {
+        Calendar minCal = Calendar.getInstance();
+        minCal.add(Calendar.DAY_OF_MONTH,61);
+        minCal.set(Calendar.HOUR_OF_DAY, 0);
+        minCal.set(Calendar.MINUTE,0);
+        minCal.set(Calendar.SECOND,0);
+        minCal.set(Calendar.MILLISECOND,0);
+
+        return minCal.getTime();
+    }
+
+    /**
+     * 获取三月内结束
+     * @return
+     * @throws ParseException
+     */
+    public static Date getThreeMonthEnd()  {
+        Calendar minCal = Calendar.getInstance();
+        minCal.add(Calendar.DAY_OF_MONTH, 90);
+        minCal.set(Calendar.HOUR_OF_DAY,23);
+        minCal.set(Calendar.MINUTE,59);
+        minCal.set(Calendar.SECOND,59);
+        minCal.set(Calendar.MILLISECOND,0);
+
+        return minCal.getTime();
+    }
+
+    /**
+     * 获取当日起始时间
+     * @return
+     * @throws ParseException
+     */
+    public static Date  getTodayStart()  {
+
+        return getDestdayStart(Calendar.getInstance().getTime());
+    }
+
+    /**
+     * 获取当日起始时间
+     * @return
+     * @throws ParseException
+     */
+    public static Date  getDestdayStart(Date date)  {
+        Calendar minCal = Calendar.getInstance();
+        minCal.setTime(date);
+        minCal.set(Calendar.HOUR_OF_DAY, 0);
+        minCal.set(Calendar.MINUTE,0);
+        minCal.set(Calendar.SECOND,0);
+        minCal.set(Calendar.MILLISECOND,0);
+
+        return minCal.getTime();
+    }
+
+    /**
+     * 获取当日结束时间
+     * @return
+     */
+    public static Date  getDestdayEnd(Date date)  {
+        Calendar minCal = Calendar.getInstance();
+        minCal.setTime(date);
+        minCal.set(Calendar.HOUR_OF_DAY,23);
+        minCal.set(Calendar.MINUTE,59);
+        minCal.set(Calendar.SECOND,59);
+        return minCal.getTime();
+    }
+
+
     public static void main(String[] args) {
         String a = "ab1";
         String b = "a" + "b" + 1;

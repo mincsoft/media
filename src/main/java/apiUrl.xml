@@ -29,6 +29,10 @@
             <class>other.aakepi.bdfjfaackcpic.api.media.MediaSpotMobileSearch</class>
             <url>/search-mediaspot-mobile</url>
         </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.MediaAdventSearch</class>
+            <url>/search-adventmedia</url>
+        </api>
     </config>
 </configs>
 

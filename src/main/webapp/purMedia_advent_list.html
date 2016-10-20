@@ -8,15 +8,19 @@
     <title>采购媒体临期预警</title>
     <link rel="bookmark" type="image/x-icon" href="https://rs.ingageapp.com/static/img/favicon.ico">
     <link rel="stylesheet" type="text/css" href="https://rs.ingageapp.com/static/deploy/rk1.css">
-    <link rel="stylesheet" type="text/css" href="https://rs.ingageapp.com/static/gcss/lib/jqwidgets/styles/jqx.base.css">
-    <link rel="stylesheet" type="text/css" href="https://rs.ingageapp.com/static/gcss/lib/jqwidgets/styles/jqx-base-rk-v2.css">
-    <link rel="stylesheet" type="text/css" href="https://rs.ingageapp.com/static/gcss/lib/jquery-ui/1.11.3/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="https://rs.ingageapp.com/static/gcss/lib/jquery-ui/1.11.3/jquery-ui-rk.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://rs.ingageapp.com/static/gcss/lib/jqwidgets/styles/jqx.base.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://rs.ingageapp.com/static/gcss/lib/jqwidgets/styles/jqx-base-rk-v2.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://rs.ingageapp.com/static/gcss/lib/jquery-ui/1.11.3/jquery-ui.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://rs.ingageapp.com/static/gcss/lib/jquery-ui/1.11.3/jquery-ui-rk.css">
     <link rel="stylesheet" type="text/css" href="https://rs.ingageapp.com/static/deploy/rk2.css">
+    <link charset="utf-8" rel="stylesheet" href="https://rs.ingageapp.com/static/deploy/core/widgets/grid/popup.grid.css">
     <!--<link rel="stylesheet" type="text/css" href="https://crm.xiaoshouyi.com/admin/css/setstyle.css">-->
     <style type="text/css">
-        a.sb,a.sb:visited
-        {
+        a.sb, a.sb:visited {
             display: block;
             height: 40px;
             line-height: 40px;
@@ -25,26 +29,41 @@
             letter-spacing: 5px;
             color: #fff;
             background: #00aaef;
-            border-radius:4px;
-            font-size:12px;
+            border-radius: 4px;
+            font-size: 12px;
             text-decoration: none;
             /*margin: 0px 0 0 0;*/
         }
-        a.sb:hover
-        {
+
+        a.sb:hover {
             background: #00b7ff;
             text-decoration: none;
         }
 
-        .add_tip {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            margin: 0 0 0 1px;
-            cursor: help;
-            /*background: url(img/help.png) center no-repeat;*/
+        .workreport-grid-header th:first-child, .workreport-grid-body thead th {
+            text-align: center;
+            /*padding-left: 5px;*/
         }
+        .workreport-grid-header th {
+            text-align: center;
+        }
+
+        .red {
+            color:red
+        }
+
+        .orange {
+            color:orange
+        }
+
+        .blue {
+            color:dodgerblue
+        }
+
     </style>
+
+    <script>
+    </script>
 </head>
 <body>
 <!-- <script src="./js/jquery-1.8.3.min.js" type="text/javascript"></script> -->
@@ -55,28 +74,27 @@
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="./js/bootstrap.min.js"></script>
 
-<!-- <script src="./js/laydate/laydate.js"></script> -->
 <script>
 
 </script>
 
-<!--<script src="https://rs.ingageapp.com/static/deploy/rk1.js"></script>-->
-<!--<script src="https://rs.ingageapp.com/static/deploy/core/i18n/all_zh-cn.js"></script>-->
-<!--<script src="https://rs.ingageapp.com/static/sea-config.js"></script>-->
-<!--<script src="https://rs.ingageapp.com/static/deploy/rk2.js"></script>-->
-<!--<script src="https://rs.ingageapp.com/static/router.js"></script>-->
+<script src="./js/pur/purMediaAdvent.js?12334"></script>
 
 <div class="main_grid">
     <div class="main_grid_top workreport-grid-top">
         <div class="goal_top_title">
             <div class="grid_view clear">
-                <div class="view_now"><span><span class="view_name" data-value="25">一月内到期</span><span
-                        class="arrow"></span></span>
+                <div class="view_now">
+                    <span>
+                        <span class="view_name" data-value="25">一月内到期</span>
+                        <span class="arrow"></span>
+                    </span>
                     <div class="drop_div work-report-div">
                         <ul class="drop-menu">
                             <li><a data-value="25" data-name="day" href="javascript:void(0);">一月内到期</a></li>
                             <li><a data-value="26" data-name="week" href="javascript:void(0);">两月内到期</a></li>
                             <li><a data-value="27" data-name="month" href="javascript:void(0);">三月内到期</a></li>
+                            <li><a data-value="all" data-name="all" href="javascript:void(0);">全部临期</a></li>
                         </ul>
                     </div>
                 </div>
@@ -96,47 +114,38 @@
                     <tbody>
                     <tr>
                         <td>
-                            <div class="time_select clear" style="display: none">
-                                <div class="ui-powerinput-box" style="width: 180px; height: 100%;"><a
-                                        href="javascript:;" class="ui-powerinput-button"><span>+</span></a><input
-                                        type="text" id="wrStatisticDepartment" placeholder="请选择客户"
-                                        class="ui-autocomplete-input" autocomplete="off"></div>
-                            </div>
-                            <div class="area_select people_select clear"><input type="text" id="custmerSelect"
-                                                                                placeholder="请输入客户"
+                            <div class="area_select people_select clear" style="margin-left:0px;"><input type="text" id="contractSelect"
+                                                                                placeholder="合同号/名称"
                                                                                 class="rk-user ui-autocomplete-input"
                                                                                 autocomplete="off"><a
                                     style="display: none" href="javascript:void(0);" class="search-close"><span></span></a>
                             </div>
-                            <div class="area_select people_select clear"><input type="text" id="deptSelect"
-                                                                                placeholder="请输入部门"
+                            <div class="area_select people_select clear" style="margin-left:0px;"><input type="text" id="customerSelect"
+                                                                                placeholder="合同签订人"
                                                                                 class="rk-user ui-autocomplete-input"
                                                                                 autocomplete="off"><a
                                     style="display: none" href="javascript:void(0);" class="search-close"><span></span></a>
                             </div>
 
-                            <div class="area_select people_select clear"><input type="text" id="keywordSelect"
-                                                                                placeholder="关键字"
-                                                                                class="rk-user ui-autocomplete-input"
-                                                                                autocomplete="off"><a
-                                    style="display: none" href="javascript:void(0);" class="search-close"><span></span></a>
-                            </div>
-                            <div class="time_select clear">
-                                <select>
-                                    <option value="">--媒体形式--</option>
+                            <div class="area_select" style="margin-left:0px;border: none;display: none">
+                                <select class="form-control ng-pristine ng-valid">
+                                    <option value="">--请选择媒体形式--</option>
                                     <option value="户外">户外</option>
                                     <option value="户外">楼宇</option>
                                     <option value="户外">其他</option>
                                 </select>
                             </div>
-                            <div style="margin-left:630px">
+
+                            <div style="margin-left:400px">
                                 <a href="javascript:;" class="sb" act="search_media" style="width:20%;">查询</a>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div style="margin-left:5px;font-size: 11px"></span>温馨提示：<span style="color:red;">红色</span>一月内到期；<span style="color:orange">黄色</span>两月内到期；<span style="color:dodgerblue">蓝色</span>三月内到期；</div>
+                            <div style="font-size: 11px"></span>温馨提示：<span style="color:red;">红色</span>一月内到期；<span
+                                    style="color:orange">黄色</span>两月内到期；<span style="color:dodgerblue">蓝色</span>三月内到期；
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -145,13 +154,14 @@
             <div class="workreport-grid-header">
                 <table border="0" cellspacing="0" cellpadding="0" class="workreport-tab">
                     <thead>
-                    <tr style="text-align: center">
-                        <th data-name="mediaCode" style="width: 20%"><span>媒体编号</span></th>
-                        <th data-name="mediaName" style="width: 20%"><span>媒体名称</span></th>
-                        <th data-name="cust" style="width: 20%"><span>客户</span></th>
-                        <th data-name="address" style="width: 30%"><span>媒体位置</span></th>
-                        <th data-name="endAt" style="width: 10%"><span>到期日期</span></th>
-                        <th data-name="delayed" style="width: 10%"><span>剩余天数</span></th>
+                    <tr>
+                        <th data-name="contract" width="10%"><span>合同</span></th>
+                        <th data-name="mediaCode" width="10%"><span>媒体编号</span></th>
+                        <th data-name="mediaName" width="30%"><span>媒体名称</span></th>
+                        <th  data-name="disAmount" width="15%"><span>代理费（元）</span></th>
+                        <th  data-name="startAt" width="15%"><span>发布日期</span></th>
+                        <th  data-name="endAt" width="15%"><span>到期日期</span></th>
+                        <th  data-name="operator" width="10%"><span>合同签订人</span></th>
                     </tr>
                     </thead>
                 </table>
@@ -162,47 +172,8 @@
                     <div id="mCSB_4_container" class="mCSB_container mCS_y_hidden mCS_no_scrollbar_y"
                          style="position:relative; top:0; left:0;" dir="ltr">
                         <table border="0" cellspacing="0" cellpadding="0" class="workreport-tab">
-                            <tbody>
-                            <tr style="color:red">
-                                <td><a target="_blank" href="/customize.action?belongId=100018286"><span>20160910001</span></a></td>
-                                <td><span>中航一层电梯</span></td>
-                                <td><span>北京明科云创</span></td>
-                                <td><span>建国路17号中航大厦一层</span></td>
-                                <td><span>2016-10-28</span></td>
-                                <td><span>20</span></td>
-                            </tr>
-                            <tr style="color:orange">
-                                <td><a target="_blank" href="/customize.action?belongId=100018286"><span>20160910002</span></a></td>
-                                <td><span>中航二层电梯</span></td>
-                                <td><span>北京明科云创</span></td>
-                                <td><span>建国路17号中航大厦二层</span></td>
-                                <td><span>2016-11-28</span></td>
-                                <td><span>40</span></td>
-                            </tr>
-                            <tr style="color:dodgerblue">
-                                <td><a target="_blank" href="/customize.action?belongId=100018286"><span>20160910003</span></a></td>
-                                <td><span>中航二层电梯</span></td>
-                                <td><span>北京明科云创</span></td>
-                                <td><span>建国路17号中航大厦二层</span></td>
-                                <td><span>2016-12-28</span></td>
-                                <td><span>80</span></td>
-                            </tr>
-                            <tr style="color:red">
-                                <td><a target="_blank" href="/customize.action?belongId=100018286"><span>20160910001</span></a></td>
-                                <td><span>中航一层电梯</span></td>
-                                <td><span>北京明科云创</span></td>
-                                <td><span>建国路17号中航大厦一层</span></td>
-                                <td><span>2016-10-28</span></td>
-                                <td><span>20</span></td>
-                            </tr>
-                            <tr style="color:orange">
-                                <td><a target="_blank" href="/customize.action?belongId=100018286"><span>20160910002</span></a></td>
-                                <td><span>中航二层电梯</span></td>
-                                <td><span>北京明科云创</span></td>
-                                <td><span>建国路17号中航大厦二层</span></td>
-                                <td><span>2016-11-28</span></td>
-                                <td><span>40</span></td>
-                            </tr>
+                            <tbody id="spot-list">
+
                             </tbody>
                         </table>
                     </div>
