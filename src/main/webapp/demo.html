@@ -5,6 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
     <title>导航</title>
     <link rel="stylesheet" href="./css/base.css">
     <!-- <script src="./js/jquery-1.8.3.min.js" type="text/javascript"></script> -->
@@ -110,6 +114,40 @@
             window.location="mediaSpotSearch_mobile_list.html?access_token="+access_token+"";
         });
 
+        $("[act=search_purcontract]").click(function(){
+            initToken();
+            var array = $("[act=query_form]").serializeArray();
+            var data = {};
+            for(var i=0 ; i < array.length;i++){
+                data[array[i].name] = array[i].value;
+            }
+            data['op']="purContract";//合同数据
+
+            tokenAjax({
+//                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
+                url:  urlTitle+urlSearchContract,    //请求的url地址
+//                dataType: "json",   //返回格式为json
+                data: data ,   //参数值
+                type: "POST",   //请求方式
+                beforeSend: function(request) {
+//                    request.setRequestHeader("Authorization","Bearer "+ access_token);
+                },
+                success: function(req) {
+
+                    cleanHtmls();
+//                    var result = JSON.parse(req.result);
+                    var records = req.result;
+//                    alert(records.length);
+                    if (records){
+                        for(var j=0 ; j < records.length;j++){
+                            var contract = records[j];
+                            toPurContractHtml(contract,j+1);
+                        }
+                    }
+                }
+            });
+        });
+
     };
 
     var toHtml = function(contract,index){
@@ -121,6 +159,12 @@
 
     var toMediaSearchHtml = function(record,index){
         var html = '<li>'+index+'、<a href="mediaSpotSearch_mobile.html?access_token='+access_token+'&mediaId='+record.id+'&mediaName='+record.name+'">'+record.name+'</a></li>';
+        //return html;
+        $(".room-list").append(html);
+    }
+
+    var toPurContractHtml = function(record,index){
+        var html = '<li>'+index+'、<a href="purContractSpotSearch.html?access_token='+access_token+'&id='+record.id+'&mediaName='+record.name+'">'+record.name+'</a></li>';
         //return html;
         $(".room-list").append(html);
     }
@@ -246,19 +290,15 @@
             </div>
 
             <div class="search col-xs-12 col-md-2 col-lg-1">
-                <a href="javascript:;" class="sb" act="search_purcontract">采购合同</a>
-            </div>
-
-            <div class="search col-xs-12 col-md-2 col-lg-1">
-                <a href="javascript:;" class="sb" act="media1Search">采购排期查询</a>
-            </div>
-
-            <div class="search col-xs-12 col-md-2 col-lg-1">
                 <a href="javascript:;" class="sb" act="search_meetting">销售合同</a>
             </div>
 
             <div class="search col-xs-12 col-md-2 col-lg-1">
-                <a href="javascript:;" class="sb" act="mediaSearch">销售排期查询</a>
+                <a href="javascript:;" class="sb" act="search_purcontract">采购合同</a>
+            </div>
+
+            <div class="search col-xs-12 col-md-2 col-lg-1">
+                <a href="javascript:;" class="sb" act="mediaSearch">媒体排期查询</a>
             </div>
 
             <div class="search col-xs-12 col-md-2 col-lg-1">

@@ -6,6 +6,7 @@ import com.rkhd.platform.sdk.http.RkhdHttpData;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
 import other.aakepi.bdfjfaackcpic.enums.OpMode;
@@ -14,10 +15,10 @@ import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import java.util.*;
 
 /**
- * 销售合同排期查询
+ * 采购合同排期查询
  * Created by yangyixin on 16/10/8.
  */
-public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport {
+public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport {
 
     //合同ID
     protected  String contractId;
@@ -37,11 +38,8 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
         spotConfig.addField("saleStatus", 80, null);
         spotConfig.addField("address", 150, null);
 
-        spotConfig.addFieldNotMedia("onlineTimeArange", "点位上线时间段", 100, null);
-//        spotConfig.addFieldNotMedia("boughtType", "购买单位形式", 100, null);
-
         //在单价后显示排期点位信息
-        spotConfig.setShowSpotFieldName("onlineTimeArange");
+        spotConfig.setShowSpotFieldName("address");
     }
 
     @Override
@@ -74,13 +72,9 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
      * @return
      */
     protected JSONObject getContract( String contractId) {
-        StringBuffer sql = new StringBuffer();
-        RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/contract/info");
-        rkhdHttpData.putFormData("id", contractId);
-        String result = apiRequest( rkhdHttpData);
-        return  JSONObject.fromObject(result);
-    }
+        return getBelongs(NumberUtils.toLong(contractId));
 
+    }
 
 
     /**
@@ -101,7 +95,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
             int dateColumns = 0;
             JSONObject record = records.getJSONObject(i);
             String spotId =record.getString("id");
-            String opMode =record.getString("opMode");
+//            String opMode =record.getString("opMode");
 
             JSONObject col0 = getItemObject(sheetId, startRow, dateColumns++);
             col0.accumulate("json", "{id: \"" + spotId + "\"}");
@@ -119,16 +113,14 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                     if ("select".equals(spotField.getType()) || "entityType".equals(spotField.getType())) {
                         headData.add(getColItemSelect(sheetId, startRow, dateColumns++, record, fieldName));
                     } else if (fieldName.equals("name")){//媒体名称，增加ID
-                        Object meidaId = record.get("meidaId");
-                        headData.add(getColItemIdValue(sheetId, startRow, dateColumns++, meidaId, value));
+                        Object mediaId = record.get("mediaId");
+                        headData.add(getColItemIdValue(sheetId, startRow, dateColumns++, mediaId, value));
                     } else {
                         headData.add(getColItemObject(sheetId, startRow, dateColumns++, value));
                     }
                 }
                 //显示点位
                 boolean renderDateColumn = fieldName.equalsIgnoreCase(spotConfig.getShowSpotFieldName());
-                //外购媒体
-                boolean buyMedia = OpMode.BUY.getCode().equals(opMode);
 
                 if (renderDateColumn) {
                     spotPlanDateList = getSpotDate(spotId);
@@ -141,16 +133,11 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                         //date_0_2015-01-01
                         endCal.add(Calendar.DATE, 1);//最后日期加一天，便于循环
 
-                        //外购点位纪录
-                        Map<String,String> purSpotDateMap = (Map<String,String> )record.get("purSpotDateMap");
                         while (startCal.before(endCal)) {
                             String date = String.format("%tF", startCal.getTime());
 
                             //控制是否允许填写
                             String other = "";
-                            if(buyMedia&& !purSpotDateMap.containsKey(date)){
-                                other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
-                            }
 
                             boolean hasSpotItem = false;
                             if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {
@@ -160,7 +147,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                                     Date spotDay = DateUtil.getDate(spotDate.getString("day"));
                                     if (date.equals(DateUtil.getDateStr(spotDay))) {
                                         //点位信息
-                                        String spot = spotDate.getString("spot");
+                                        String spot = spotDate.getString("qty");
                                         headData.add(getColItemObject(sheetId, startRow, dateColumns, spot,other));
 
                                         //配上则删除集合
@@ -197,7 +184,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
 
         JSONArray spotArray;
         StringBuffer sql = new StringBuffer();
-        sql.append("select id,meidaId,onlineTimeArange,boughtType,displayQuantity,orderPrice,retailPriceTotal,orderPriceTotal from saleContractSpot where contractId=").append(contractId);
+        sql.append("select id,mediaId,disPrice,qty,retailAmount,disAmount from purContractSpot where contractId=").append(contractId);
         sql.append(" order by createdAt asc");
         QueryResult saleContractSpot = queryResult(sql.toString());
         if (saleContractSpot==null) return null;
@@ -206,7 +193,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
         spotArray = saleContractSpot.getRecords();
         StringBuffer mediaIds = new StringBuffer();
         for (int i = 0; i < spotArray.size(); i++) {
-            String mediaId = spotArray.getJSONObject(i).getString("meidaId");
+            String mediaId = spotArray.getJSONObject(i).getString("mediaId");
             mediaIds.append(mediaId);
             if (i!=spotArray.size()-1){
                 mediaIds.append(",");
@@ -225,7 +212,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
             for (int i = 0; i < spotArray.size(); i++) {
                 JSONObject spotObj = spotArray.getJSONObject(i);
                 String spotId =spotObj.getString("id");
-                String mediaId=  spotObj.getString("meidaId");
+                String mediaId=  spotObj.getString("mediaId");
                 for (int j = 0; j < mediaArray.size(); j++) {
                     JSONObject mediaObj = mediaArray.getJSONObject(j);
                     String mediaObjId= mediaObj.getString("id");
@@ -235,11 +222,6 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                         spotObj.putAll(mediaObj);
                         //恢复spotId
                         spotObj.put("id", spotId);
-                        //外购媒体，获得点位纪录
-                        if (OpMode.BUY.getCode().equals(opMode)){
-                            Map<String,String> purSpotDateMap = getPurContractSpotDate(mediaId);
-                            spotObj.put("purSpotDateMap",purSpotDateMap);
-                        }
                         break;
                     }
                 }
@@ -256,7 +238,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
      */
     private JSONArray getSpotDate(String spotId) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select id,day,spot from saleContractSpotDate where spotId=").append(spotId);
+        sql.append("select id,day,qty from purContractSpotDate where spotId=").append(spotId);
         return queryResultArray( sql.toString());
     }
 

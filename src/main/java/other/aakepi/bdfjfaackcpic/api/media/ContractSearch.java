@@ -47,6 +47,9 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
         } else if ("mediaSearchMobile".equals(op)){
             //媒体查询
             result = getAllMedia(request,first, size);
+        } else if ("purContract".equals(op)){
+            //采购合同查询
+            result = getAllPurContract(request,first, size);
         }
         JSONArray records=new JSONArray();
         if (result != null){
@@ -110,6 +113,19 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
         sql.append(" limit ").append(first).append(",").append(size);
 
         return queryResult( sql.toString());
+    }
+
+    /**
+     * 查询全部的采购合同
+     *
+     * @return
+     */
+    private QueryResult getAllPurContract(Request request,int first, int size) {
+
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,name from purchasingContract where id>0");
+        sql.append(" order by createdAt asc");
+        return queryResult(sql.toString());
     }
 
 }

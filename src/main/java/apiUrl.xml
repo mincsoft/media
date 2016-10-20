@@ -33,6 +33,15 @@
             <class>other.aakepi.bdfjfaackcpic.api.media.MediaAdventSearch</class>
             <url>/search-adventmedia</url>
         </api>
+
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.PurContractSpotSearch</class>
+            <url>/search-purcontractspot</url>
+        </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.PurContractSpotSave</class>
+            <url>/save-purcontractspot</url>
+        </api>
     </config>
 </configs>
 
