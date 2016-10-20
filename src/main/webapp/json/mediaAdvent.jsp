@@ -1,6 +1,5 @@
 <%@ page import="net.sf.json.JSONObject" %>
 <%@ page import="java.util.Enumeration" %>
-<%@ page import="other.aakepi.bdfjfaackcpic.api.media.MediaSpotMobileSearch" %>
 <%@ page import="other.aakepi.bdfjfaackcpic.api.media.MediaAdventSearch" %>
 <%@ page contentType="text/json;charset=UTF-8" language="java" %>
 <%
