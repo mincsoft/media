@@ -37,6 +37,14 @@
             <class>other.aakepi.bdfjfaackcpic.api.media.DeptSearch</class>
             <url>/search-deptlist</url>
         </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.PurContractSpotSearch</class>
+            <url>/search-purcontractspot</url>
+        </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.PurContractSpotSave</class>
+            <url>/save-purcontractspot</url>
+        </api>
     </config>
 </configs>
 
