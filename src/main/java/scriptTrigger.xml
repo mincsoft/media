@@ -88,6 +88,16 @@
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.contract.UpdateContractPaintTrigger</class>
         </trigger>
+
+        <!--合同生效自动生成上画记录-->
+        <trigger>
+            <object>contract</object>
+            <operate>update</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>after</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.contract.ContractTrigger</class>
+        </trigger>
     </config>
 </configs>
 

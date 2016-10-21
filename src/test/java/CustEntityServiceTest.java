@@ -1,6 +1,7 @@
 import net.sf.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
+import other.aakepi.bdfjfaackcpic.api.QueryResult;
 
 /**
  * Created by yujinliang on 16/9/22.
@@ -30,11 +31,11 @@ public class CustEntityServiceTest {
 
     }
 //
-//    @Test
-//    public void testGetEnityList(){
-//        JSONObject result=custEntityService.getEnityList(access_token);
-////        System.out.println(result.toJSONString());
-//    }
+    @Test
+    public void testGetEnityList(){
+        QueryResult result=custEntityService.getEnityList(access_token);
+        System.out.println(result.getRecords());
+    }
 //
 //    @Test
 //    public void testGetEnityDetail(){

@@ -40,14 +40,20 @@ public class CustEntityService extends BaseApiSupport {
 
 
 
-//    public JSONObject getEnityList(String access_token) {
-////        String url = "https://api.xiaoshouyi.com/data/v1/picks/dimension/belongs?access_token=Bearer%20" + access_token;
-////        JSONObject response = executeGet(url);
-////        if (response != null) {
-////            return response;
-////        }
-////        return null;
-//    }
+    public QueryResult getEnityList(String access_token) {
+        RkhdHttpClient rkhdHttpClient = null;
+        try {
+            rkhdHttpClient = new RkhdHttpClient();
+            RkhdHttpData rkhdHttpData = new RkhdHttpData();
+            rkhdHttpData.setCallString("/data/v1/picks/dimension/belongs");
+            rkhdHttpData.setCall_type("GET");
+            String resultJson = rkhdHttpClient.performRequest(rkhdHttpData);
+            return (QueryResult) JSONObject.toBean(JSONObject.fromObject(resultJson),QueryResult.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 //
 //    public JSONObject getEnityDetail(String access_token,String belongId) {
 //        String url = "https://api.xiaoshouyi.com/data/v1/objects/customize/describe?belongId="+belongId+"&access_token=Bearer%20" + access_token;
