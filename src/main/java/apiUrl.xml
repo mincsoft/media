@@ -33,6 +33,10 @@
             <class>other.aakepi.bdfjfaackcpic.api.media.MediaAdventSearch</class>
             <url>/search-adventmedia</url>
         </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.DeptSearch</class>
+            <url>/search-deptlist</url>
+        </api>
     </config>
 </configs>
 

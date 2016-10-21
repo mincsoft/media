@@ -78,7 +78,7 @@
 
 </script>
 
-<script src="./js/sales/salesMediaAdvent.js"></script>
+<script src="./js/sales/salesMediaAdvent.js?12"></script>
 
 <div class="main_grid">
     <div class="main_grid_top workreport-grid-top">
@@ -94,6 +94,7 @@
                             <li><a data-value="25" data-name="day" href="javascript:void(0);">一月内到期</a></li>
                             <li><a data-value="26" data-name="week" href="javascript:void(0);">两月内到期</a></li>
                             <li><a data-value="27" data-name="month" href="javascript:void(0);">三月内到期</a></li>
+                            <li><a data-value="all" data-name="all" href="javascript:void(0);">全部临期</a></li>
                         </ul>
                     </div>
                 </div>
@@ -113,34 +114,32 @@
                     <tbody>
                     <tr>
                         <td>
-                            <div class="time_select clear" style="display: none">
-                                <div class="ui-powerinput-box" style="width: 180px; height: 100%;"><a
-                                        href="javascript:;" class="ui-powerinput-button"><span>+</span></a><input
-                                        type="text" id="wrStatisticDepartment" placeholder="请选择客户"
-                                        class="ui-autocomplete-input" autocomplete="off"></div>
-                            </div>
-                            <div class="area_select people_select clear" style="margin-left:0px;"><input type="text" id="custmerSelect"
-                                                                                                         placeholder="请输入客户"
+                            <div class="area_select people_select clear" style="margin-left:0px;display: none"><input type="text" id="deptSelect"
+                                                                                                         placeholder="部门名称"
                                                                                                          class="rk-user ui-autocomplete-input"
                                                                                                          autocomplete="off"><a
-                                    style="display: none" href="javascript:void(0);" class="search-close"><span></span></a>
+                                     href="javascript:void(0);" class="search-close"><span></span></a>
                             </div>
-                            <div class="area_select people_select clear" style="margin-left:0px;"><input type="text" id="deptSelect"
-                                                                                                         placeholder="请输入部门"
+                            <div class="area_select" style="margin-left:0px;border: none;">
+                                <select class="form-control ng-pristine ng-valid" id="dept_tree">
+                                </select>
+                            </div>
+                            <div class="area_select people_select clear" style="margin-left:2px;"><input type="text" id="operatorSelect"
+                                                                                                         placeholder="合同签订人"
                                                                                                          class="rk-user ui-autocomplete-input"
                                                                                                          autocomplete="off"><a
                                     style="display: none" href="javascript:void(0);" class="search-close"><span></span></a>
                             </div>
 
-                            <div class="area_select people_select clear" style="margin-left:0px;"><input type="text" id="keywordSelect"
-                                                                                                         placeholder="关键字"
-                                                                                                         class="rk-user ui-autocomplete-input"
-                                                                                                         autocomplete="off"><a
-                                    style="display: none" href="javascript:void(0);" class="search-close"><span></span></a>
+                            <div class="area_select" style="margin-left:2px;border: none;">
+                                <select class="form-control ng-pristine ng-valid" id="customerSelect">
+                                    <option value="">--全部--</option>
+                                </select>
                             </div>
-                            <div class="area_select" style="margin-left:0px;border: none">
-                                <select class="form-control ng-pristine ng-valid">
-                                    <option value="">--请选择媒体形式--</option>
+
+                            <div class="area_select" style="margin-left:2px;border: none;">
+                                <select class="form-control ng-pristine ng-valid" id="mediaForms">
+                                    <option value="">--全部--</option>
                                     <option value="户外">户外</option>
                                     <option value="户外">楼宇</option>
                                     <option value="户外">其他</option>
@@ -166,12 +165,12 @@
                 <table border="0" cellspacing="0" cellpadding="0" class="workreport-tab">
                     <thead>
                     <tr>
-                        <th data-name="mediaCode" width="20%"><span>媒体编号</span></th>
-                        <th data-name="mediaName" width="20%"><span>媒体名称</span></th>
-                        <th data-name="cust" width="20%"><span>客户</span></th>
-                        <th  data-name="address" width="30%"><span>媒体位置</span></th>
-                        <th  data-name="endAt" width="10%"><span>到期日期</span></th>
-                        <th  data-name="delayed" width="10%"><span>剩余天数</span></th>
+                        <th data-name="mediaCode" width="10%"><span>媒体编号</span></th>
+                        <th data-name="mediaName" width="30%"><span>媒体名称</span></th>
+                        <th data-name="customer" width="10%"><span>客户</span></th>
+                        <th  data-name="operator" width="10%"><span>合同签订人</span></th>
+                        <th  data-name="endAt" width="15%"><span>到期日期</span></th>
+                        <th  data-name="dayQty" width="10%"><span>剩余天数</span></th>
                     </tr>
                     </thead>
                 </table>
@@ -182,25 +181,8 @@
                     <div id="mCSB_4_container" class="mCSB_container mCS_y_hidden mCS_no_scrollbar_y"
                          style="position:relative; top:0; left:0;" dir="ltr">
                         <table border="0" cellspacing="0" cellpadding="0" class="workreport-tab">
-                            <tbody>
-                            <tr class="red">
-                                <td width="20%"><a target="_blank"
-                                                   href="/customize.action?belongId=100018286"><span>20160910001</span></a></td>
-                                <td width="20%"><span>中航一层电梯</span></td>
-                                <td width="20%"><span>北京明科云创</span></td>
-                                <td width="30%"><span>建国路17号中航大厦一层</span></td>
-                                <td width="10%"><span>2016-10-28</span></td>
-                                <td width="10%"><span>20</span></td>
-                            </tr>
-                            <tr class="blue">
-                                <td width="20%"><a target="_blank"
-                                                   href="/customize.action?belongId=100018286"><span>20160910001</span></a></td>
-                                <td width="20%"><span>中航一层电梯</span></td>
-                                <td width="20%"><span>北京明科云创</span></td>
-                                <td width="30%"><span>建国路17号中航大厦一层</span></td>
-                                <td width="10%"><span>2016-10-28</span></td>
-                                <td width="10%"><span>20</span></td>
-                            </tr>
+                            <tbody id="spot-list">
+
                             </tbody>
                         </table>
                     </div>

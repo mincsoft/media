@@ -62,7 +62,7 @@ var loadMediaData = function () {
             $.each(req.result, function(i,val){
                 var body = $("#spot-list");
                 var tr = $('<tr class="'+val.color+'">').appendTo(body);
-                var td = $('<td width="10%"><a target="_blank" href=""><span>'+val.contract+'</span></a></td>').appendTo(tr);
+                var td = $('<td width="10%"><a target="_blank" href="https://crm.xiaoshouyi.com/final/customize.action?id='+val.id+'&belongId=100018388"><span>'+val.contract+'</span></a></td>').appendTo(tr);
                 var td = $('<td width="10%"><span>'+val.mediaCode+'</span></td>').appendTo(tr);
                 var td = $('<td width="30%"><span>'+val.mediaName+'</span></td>').appendTo(tr);
                 var td = $('<td width="15%"><span>'+val.disAmount+'</span></td>').appendTo(tr);

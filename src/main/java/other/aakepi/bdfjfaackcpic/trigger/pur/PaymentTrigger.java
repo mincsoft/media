@@ -10,7 +10,6 @@ import com.rkhd.platform.sdk.param.ScriptTriggerResult;
 import com.rkhd.platform.sdk.test.tool.TestTriggerTool;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.trigger.BaseTrigger;
 
 import java.io.IOException;
@@ -32,45 +31,55 @@ public class PaymentTrigger extends BaseTrigger  implements ScriptTrigger {
 
             //1 获取本期付款计划
             String sql = "select id,amount from paymentPlan where stage =" + stage + " and contractId = '" + contractId + "'";
-            RkhdHttpClient rkhdHttpClient = null;
-            try {
-                rkhdHttpClient = new RkhdHttpClient();
-                RkhdHttpData rkhdHttpData = new RkhdHttpData();
-                rkhdHttpData.setCallString("/data/v1/query");
-                rkhdHttpData.setCall_type("POST");
 
-                rkhdHttpData.putFormData("q", sql);
-                System.out.println("sql---------" + sql);
+            JSONArray array = queryResultArray(sql);
 
-                String planResultJson = rkhdHttpClient.performRequest(rkhdHttpData);
-                System.out.println("planResultJson---------" + planResultJson);
-                JSONObject planResult = JSONObject.fromObject(planResultJson);
-                QueryResult queryResult = (QueryResult)JSONObject.toBean(planResult,QueryResult.class);
+            if (array!=null&&array.size()>0){
+                JSONObject item = (JSONObject) array.get(0);
+                double planAmount = item.getDouble("amount");
+                String id = item.getString("id");
+                if (Math.abs(amount - planAmount) < 0.01 || amount > planAmount) {//如果实际付款金额>=计划付款金额(考虑尾差),就更新付款计划状态
+                    String json = "{\"id\":"+id+",\"status\":2}";
 
-                JSONArray array = queryResult.getRecords();
-
-                if (array!=null&&array.size()>0){
-                    JSONObject item = (JSONObject) array.get(0);
-                    double planAmount = item.getDouble("amount");
-                    String id = item.getString("id");
-                    if (Math.abs(amount - planAmount) < 0.01 || amount > planAmount) {//如果实际付款金额>=计划付款金额(考虑尾差),就更新付款计划状态
-                        String json = "{\"id\":"+id+",\"status\":2}";
-
-                        //2 更新状态
-                        rkhdHttpData = new RkhdHttpData();
+                    //2 更新状态
+                    RkhdHttpClient rkhdHttpClient = null;
+                    try {
+                        rkhdHttpClient = new RkhdHttpClient();
+                        RkhdHttpData rkhdHttpData = new RkhdHttpData();
                         rkhdHttpData.setCallString("/data/v1/objects/customize/update");
                         rkhdHttpData.setCall_type("POST");
                         rkhdHttpData.putFormData("json", json);
                         String resultStr = rkhdHttpClient.performRequest(rkhdHttpData);
                         System.out.println("result ----------"+resultStr);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+//            RkhdHttpClient rkhdHttpClient = null;
+//            try {
+//                rkhdHttpClient = new RkhdHttpClient();
+//                RkhdHttpData rkhdHttpData = new RkhdHttpData();
+//                rkhdHttpData.setCallString("/data/v1/query");
+//                rkhdHttpData.setCall_type("POST");
+//
+//                rkhdHttpData.putFormData("q", sql);
+//                System.out.println("sql---------" + sql);
+//
+//                String planResultJson = rkhdHttpClient.performRequest(rkhdHttpData);
+//                System.out.println("planResultJson---------" + planResultJson);
+//                JSONObject planResult = JSONObject.fromObject(planResultJson);
+//                QueryResult queryResult = (QueryResult)JSONObject.toBean(planResult,QueryResult.class);
+//
+//                JSONArray array = queryResult.getRecords();
+//
+//
+//
+//
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
 
         }

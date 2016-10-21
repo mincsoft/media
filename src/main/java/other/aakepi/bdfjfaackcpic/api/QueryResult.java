@@ -13,6 +13,7 @@ public class QueryResult implements Serializable {
     Integer totalSize;
     Integer count;
     JSONArray records;
+    String status;
 
     public Integer getTotalSize() {
         return totalSize;
@@ -36,5 +37,13 @@ public class QueryResult implements Serializable {
 
     public void setRecords(JSONArray records) {
         this.records = records;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

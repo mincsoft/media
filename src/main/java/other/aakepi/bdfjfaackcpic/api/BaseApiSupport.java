@@ -65,6 +65,10 @@ public abstract class BaseApiSupport {
 
             RkhdHttpClient rkhdHttpClient = new RkhdHttpClient();
             result = rkhdHttpClient.performRequest(rkhdHttpData);
+            JSONObject resultObj = JSONObject.fromObject(result);
+            if (resultObj.containsKey("error_code")){
+                logger.error("Mincsoft Error Tips:========="+resultObj.getString("message"));
+            }
         } catch (IOException e){
             logger.error(e.getMessage());
         }

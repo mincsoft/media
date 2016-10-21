@@ -39,6 +39,10 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
         condition.put("dept", request.getParameter("dept"));
         condition.put("contract", request.getParameter("contract"));
         condition.put("keyword", request.getParameter("keyword"));
+        condition.put("operator", request.getParameter("operator"));
+        condition.put("mediaForms", request.getParameter("mediaForms"));
+
+
 
         System.out.println("condition-------" + condition.toString());
 
@@ -55,13 +59,15 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
             //媒体查询
             result = getSalesMediaAdventList(condition, first, size);
         }
-        JSONArray records = new JSONArray();
+        JSONArray records = null;
         if (result != null) {
             records = result.getRecords();
-            if (records != null)
+            if (records != null){
                 System.out.println("records-----------" + records.toString());
+                return records.toString();
+            }
         }
-        return records.toString();
+        return "";
     }
 
     /**
@@ -117,6 +123,7 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
                         record = new JSONObject();
                         record.put("contract", contract.getString("code"));
                         record.put("operator", contract.getString("operator"));
+                        record.put("id", spot.getString("id"));
                         record.put("startAt", spot.getString("startAt"));
                         record.put("endAt", spot.getString("endAt"));
                         record.put("color", getRowColor(spot.getString("endAt")));
@@ -169,7 +176,7 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
     }
 
     private boolean isNotNull(JSONObject condition, String time) {
-        return condition != null && condition.containsKey(time) && StringUtils.isNotBlank(time);
+        return condition != null && condition.containsKey(time) && StringUtils.isNotBlank(condition.getString(time));
     }
 
     /**
@@ -180,10 +187,87 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
     private QueryResult getSalesMediaAdventList(JSONObject condition, int first, int size) {
 
         StringBuffer sql = new StringBuffer();
-        sql.append("select id,mediaId,contractId,address,endDate from salesContractSpot ");
-        sql.append(" limit ").append(first).append(",").append(size);
+        JSONArray records = new JSONArray();
+        JSONObject record = null;
+        JSONObject result = new JSONObject();
 
-        return queryResult(sql.toString());
+        //1 先查询合同
+        sql.append("select id,accountId,customerSigner from contract where id>0");
+        if (isNotNull(condition, "dept")) {
+            sql.append(" and dimDepart = "+condition.getString("dept"));
+        }
+        if (isNotNull(condition, "operator")) {
+            sql.append(" and (customerSigner like '%" + condition.getString("operator") + "%')");
+        }
+        if (isNotNull(condition, "customer")) {
+            sql.append(" and accountId = "+condition.getString("customer"));
+        }
+        JSONArray contractArray = queryResultArray(sql.toString());
+        if (contractArray != null && contractArray.size() > 0) {
+            JSONObject contract = null;
+            for (int i = 0; i < contractArray.size(); i++) {
+                contract = contractArray.getJSONObject(i);
+                if (contract == null) continue;
+                sql = new StringBuffer();
+                sql.append("select id,meidaId,endDate from saleContractSpot ");
+                sql.append(" where contractId = " + contract.getString("id"));
+                if (isNotNull(condition, "time")) {
+                    if ("25".equals(condition.getString("time"))) {
+                        sql.append(" and endDate >= " + DateUtil.getTodayStart().getTime());
+                        sql.append(" and endDate <= " + DateUtil.getOneMonthEnd().getTime());
+                    } else if ("26".equals(condition.getString("time"))) {
+                        sql.append(" and endDate >= " + DateUtil.getTwoMonthStart().getTime());
+                        sql.append(" and endDate <=" + DateUtil.getTwoMonthEnd().getTime());
+                    } else if ("27".equals(condition.getString("time"))) {
+                        sql.append(" and endDate >= " + DateUtil.getThreeMonthStart().getTime());
+                        sql.append(" and endDate <= " + DateUtil.getThreeMonthEnd().getTime());
+                    }else if("all".equals(condition.getString("time"))){
+                        sql.append(" and endDate >= " + DateUtil.getTodayStart().getTime());
+                        sql.append(" and endDate <= " + DateUtil.getThreeMonthEnd().getTime());
+                    }
+                }
+
+                //2 查询排期明细
+                JSONArray spotArray = queryResultArray(sql.toString());
+                JSONObject spot = null;
+                if (spotArray != null && spotArray.size() > 0) {
+                    for (int j = 0; j < spotArray.size(); j++) {
+                        spot = spotArray.getJSONObject(j);
+                        if (spot == null) continue;
+                        record = new JSONObject();
+                        record.put("customer", contract.getString("accountId"));
+                        record.put("operator", contract.getString("customerSigner"));
+                        record.put("id", spot.getString("id"));
+                        record.put("endAt", spot.getString("endDate"));
+                        record.put("dayQty", DateUtil.getBetweenDay(DateUtil.getTodayStart(),DateUtil.getDate(spot.getString("endDate"))));
+                        record.put("color", getRowColor(spot.getString("endDate")));
+
+                        sql = new StringBuffer();
+                        sql.append("select id,code,name,address from media ");
+                        sql.append(" where id = " + spot.getString("meidaId"));
+                        JSONArray mediaArray = queryResultArray(sql.toString());
+                        JSONObject media;
+                        if (mediaArray != null && mediaArray.size() > 0) {
+                            media = mediaArray.getJSONObject(0);
+                            if (media != null) {
+                                record.put("mediaCode", media.getString("code"));
+                                record.put("mediaName", media.getString("name"));
+                                record.put("address", media.getString("address"));
+                            }
+                        }
+
+                        records.add(record);
+
+                    }
+                }
+
+            }
+            result.put("records", records);
+            result.put("totalSize", records.size());
+            result.put("count", records.size());
+        }
+
+        return (QueryResult) JSONObject.toBean(result, QueryResult.class);
     }
 
 
