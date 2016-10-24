@@ -44,14 +44,15 @@ $(function(){
 
         AMap.event.addListener(autocomplete, "select", function(e){
             //TODO 针对选中的poi实现自己的功能
-            placeSearch.search(e.poi.name)
+            commonSearch();
+            // placeSearch.search(e.poi.name)
         });
     });
 
-    //查询按钮响应事件
-    $("[act=search_media]").click(function () {
-        commonSearch();
-    });
+    // //查询按钮响应事件
+    // $("[act=search_media]").click(function () {
+    //
+    // });
 
 
 });
