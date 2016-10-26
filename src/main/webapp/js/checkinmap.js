@@ -13,6 +13,7 @@ var client_secret = "562e34991cd545d5f499a3331b5cb592";
 var debug = "dev";
 var mapMarkerIndex = 101;
 var pic_pre = "/static/img/v3.0/industryFMCG";
+var currLnglat;
 
 
 $(function(){
@@ -85,12 +86,15 @@ $(function(){
     // $("[act=search_media]").click(function () {
     //
     // });
-
+     $("#meterSelect").change(function (e) {
+         commonSearch(currLnglat);
+    });
 
 });
 
 
 function commonSearch(lnglat,flag) {
+    currLnglat = lnglat;
     var startDate;
     var userId = $("#userTree").val();
     var inputValue = $("#analysisChartCalendar").val();
@@ -184,7 +188,8 @@ var _searchTrackPosition = function (lnglat, startDate,distance) {
                 var n2 = document.createElement("div");
                 n2.className = "checkin-map-div checkin-map-count";
                 n2.innerHTML = "当天无媒体信息";
-                parentDio.append(n2)
+                parentDio.append(n2);
+                mapObj.clearMap();
             } else {
                 var userinfo = document.createElement("div");
                 userinfo.className = "checkin-map-div  checkin-map-count";
@@ -218,7 +223,7 @@ var _searchTrackPosition = function (lnglat, startDate,distance) {
                         $(this).parent().parent().css("z-index", "9999")
                     }
                 });
-                var dir = $(this.childNodes[2]).attr("dir");
+                var dir = $(this.childNodes[3]).attr("dir");
                 var lastMarker = dir.split("###");
                 if (lastMarker[0] != "" && lastMarker[1] != "") {
                     mapObj.setCenter(lastMarker);
@@ -329,12 +334,11 @@ var _getInfoWindow = function (track) {
     html += '<div class="checkinmap-track-content"><div class="industry-track-content">';
     html += '<div class="industry-track-body">';
     html += '<div class="industry-track-mes ">';
-    html += '<span class="track-ico track-adress-ico lfloat"></span>';
-    html += '<span class="track-des lfloat industry-track-mes-bottom">' + track.locationDetail + "</span>";
+    html += '<span class="track-ico track-time-ico lfloat"></span>';
+    html += '<span class="track-des lfloat industry-track-mes-bottom">' + track.media + "</span>";
     html += "</div>";
     html += '<div class="industry-track-mes">';
-    var time = Globalize.format(new Date(eval(track.startTime)), "yyyy-MM-dd HH:mm");
-    html += '<span class="track-ico track-time-ico lfloat"></span><span class="track-des lfloat">' + time + "</span>";
+    html += '<span class="track-ico track-adress-ico lfloat"></span><span class="track-des lfloat">' + track.locationDetail + "</span>";
     html += "</div>";
     html += '</div></div><div class="checkinmap-triangle-down"></div></div>';
     return html
@@ -353,18 +357,19 @@ var _drawDialogs = function (parentDio, index, track) {
     a.appendChild(n1);
     var n2 = document.createElement("span");
     n2.className = "checkin-map-div-span2";
-    n2.title = track.location;
-    n2.innerHTML = track.location;
+    n2.title = $("#userTree").val();
+    n2.innerHTML = $("#userTree").val();
     a.appendChild(n2);
     var n3 = document.createElement("span");
-    n3.dir = track.longitude + "###" + track.latitude;
     n3.className = "checkin-map-div-span3";
-    n3.innerHTML = track.locationDetail;
+    n3.innerHTML = track.media;
     a.appendChild(n3);
     var n4 = document.createElement("span");
+    n4.dir = track.longitude + "###" + track.latitude;
     n4.className = "checkin-map-div-span4";
-    n4.innerHTML = Globalize.format(new Date(eval(track.startTime)), "yyyy-MM-dd HH:mm");
+    n4.innerHTML = track.locationDetail;
     a.appendChild(n4);
+
     root.append(m);
     return root
 }

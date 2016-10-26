@@ -33,7 +33,6 @@ public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
                 //调用高德API获取经纬度
                 MincsoftHttpClient mincsoftHttpClient = new MincsoftHttpClient();
                 String resultJson = mincsoftHttpClient.sendSimpleGet("http://restapi.amap.com/v3/geocode/geo","address="+address+"&output=JSON&key="+map_key);
-//                String resultJson = "{\"status\":\"1\",\"info\":\"OK\",\"infocode\":\"10000\",\"count\":\"1\",\"geocodes\":[{\"formatted_address\":\"北京市朝阳区五建小区\",\"province\":\"北京市\",\"citycode\":\"010\",\"city\":\"北京市\",\"district\":\"朝阳区\",\"township\":[],\"neighborhood\":{\"name\":[],\"type\":[]},\"building\":{\"name\":[],\"type\":[]},\"adcode\":\"110105\",\"street\":[],\"number\":[],\"location\":\"116.375282,39.997779\",\"level\":\"兴趣点\"}]}";
                 if (StringUtils.isNotBlank(resultJson)) {
                     JSONObject object = JSONObject.fromObject(resultJson);
                     if (object.getInt("status")==1){

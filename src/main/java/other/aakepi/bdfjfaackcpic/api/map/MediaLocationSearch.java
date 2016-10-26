@@ -8,7 +8,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
-import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import other.aakepi.bdfjfaackcpic.util.MapUtil;
 
 import java.util.HashMap;
@@ -79,38 +78,43 @@ public class MediaLocationSearch extends BaseApiSupport implements ApiSupport {
                     cond.append(",");
             }
 
-            sql = new StringBuffer();
-            sql.append("select id,name,address,mediaStatus,lng,lat from media ");
-            sql.append(" where id in (" + cond.toString() + ") ");
+            double base_distance = condition.getDouble("distance");
+            double base_lng = condition.getDouble("lng");
+            double base_lat = condition.getDouble("lat");
 
+            JSONObject squPointRange = MapUtil.getSquareRange(base_lng, base_lat, base_distance);
+            if (squPointRange != null) {
+                double lngL = squPointRange.getDouble("lngL");
+                double lngR = squPointRange.getDouble("lngR");
+                double latB = squPointRange.getDouble("latB");
+                double latT = squPointRange.getDouble("latT");
+
+                sql = new StringBuffer();
+                sql.append("select id,name,address,mediaStatus,lng,lat from media ");
+                sql.append(" where id in (" + cond.toString() + ") ");
+                sql.append(" and ((lng >= " + lngL + " and lng <=" + lngR + ") or (lng >= " + lngR + " and lng <=" + lngL + ")) ");
+                sql.append(" and ((lat >= " + latB + " and lat <=" + latT + ") or (lat >= " + latT + " and lat <=" + latB + ")) ");
+            }
             JSONArray mediaArray = queryResultArray(sql.toString());
 
             if (mediaArray != null) {
                 JSONObject media = null;
-                double base_distance = condition.getDouble("distance");
-                double base_lng = condition.getDouble("lng");
-                double base_lat = condition.getDouble("lat");
 
                 for (int i = 0; i < mediaArray.size(); i++) {
                     media = mediaArray.getJSONObject(i);
                     if (media == null) continue;
-                    double lng = media.getDouble("lng");
-                    double lat = media.getDouble("lat");
-
-                    if (MapUtil.GetDistance(base_lng, base_lat, lng, lat) < base_distance) {
-                        //{\"id\":\"16228428\",\"latitude\":\"39.999203\",\"longitude\":\"116.375786\",
-                        // \"location\":\"奥运村\",\"locationDetail\":\"中科院物理所\",\"day\":\"1476979200000\",
-                        // \"startTime\":\"1477053707554\"}
-                        record = new JSONObject();
-                        record.put("id", media.getInt("id"));
-                        record.put("latitude", media.getString("lat"));
-                        record.put("longitude", media.getString("lng"));
-                        record.put("location", media.getString("address"));
-                        record.put("locationDetail", media.getString("address"));
-                        record.put("day", DateUtil.getDate(condition.getString("startDate")));
-                        record.put("startTime", DateUtil.getDate(condition.getString("startDate"), "yyyy-MM-dd HH:mm"));
-                        records.add(record);
-                    }
+                    //{\"id\":\"16228428\",\"latitude\":\"39.999203\",\"longitude\":\"116.375786\",
+                    // \"location\":\"奥运村\",\"locationDetail\":\"中科院物理所\",\"day\":\"1476979200000\",
+                    // \"startTime\":\"1477053707554\"}
+                    record = new JSONObject();
+                    record.put("id", media.getInt("id"));
+                    record.put("latitude", media.getString("lat"));
+                    record.put("longitude", media.getString("lng"));
+                    record.put("location", media.getString("address"));
+                    record.put("locationDetail", media.getString("address"));
+                    record.put("media", media.getString("name"));
+//                    record.put("startTime", DateUtil.getDate(condition.getString("startDate"), "yyyy-MM-dd HH:mm"));
+                    records.add(record);
                 }
             }
 
