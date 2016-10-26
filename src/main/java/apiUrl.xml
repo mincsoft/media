@@ -45,6 +45,10 @@
             <class>other.aakepi.bdfjfaackcpic.api.media.PurContractSpotSave</class>
             <url>/save-purcontractspot</url>
         </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.map.MediaLocationSearch</class>
+            <url>/media-map</url>
+        </api>
     </config>
 </configs>
 

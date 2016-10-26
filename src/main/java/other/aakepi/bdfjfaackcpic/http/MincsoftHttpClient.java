@@ -6,6 +6,12 @@ import com.rkhd.platform.sdk.http.Request;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
 import com.rkhd.platform.sdk.log.Logger;
 import com.rkhd.platform.sdk.log.LoggerFactory;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -138,4 +144,42 @@ public class MincsoftHttpClient {
         }
         return result;
     }
+
+
+    /**
+     * 通用get请求
+     *
+     * @param getUrl 地址，其中token用#代替
+     * @return 请求结果
+     */
+    public String sendSimpleGet(String url,String param) {
+        String resResult="";
+        BufferedReader in = null;
+        String urlNameString = url;
+        if (StringUtils.isNotBlank(param))
+            urlNameString+="?"+param;
+        System.out.println("url================"+urlNameString);
+
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet var9 = new HttpGet(url);
+
+        try {
+            CloseableHttpResponse var10 = httpClient.execute(var9);
+            BufferedReader var11 = new BufferedReader(new InputStreamReader(var10.getEntity().getContent()));
+            StringBuffer var12 = new StringBuffer();
+
+            while((resResult = var11.readLine()) != null) {
+                var12.append(resResult);
+            }
+
+            httpClient.getConnectionManager().shutdown();
+            System.out.println("result================"+var12.toString());
+            return var12.toString();
+        } catch (IOException var8) {
+            System.out.println("++++++HttpGet URL:" + url);
+            var8.printStackTrace();
+            return "";
+        }
+    }
+
 }

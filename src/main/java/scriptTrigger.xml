@@ -98,6 +98,16 @@
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.contract.ContractTrigger</class>
         </trigger>
+
+        <!--媒体保存自动生成经纬度-->
+        <trigger>
+            <object>media</object>
+            <operate>add,update</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>after</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.media.MediaTrigger</class>
+        </trigger>
     </config>
 </configs>
 

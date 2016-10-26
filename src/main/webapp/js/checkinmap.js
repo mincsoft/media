@@ -44,9 +44,41 @@ $(function(){
 
         AMap.event.addListener(autocomplete, "select", function(e){
             //TODO 针对选中的poi实现自己的功能
-            commonSearch();
+            commonSearch(e.poi.location);
             // placeSearch.search(e.poi.name)
         });
+    });
+
+    AMap.plugin('AMap.Geocoder',function(){
+        var geocoder = new AMap.Geocoder({
+            city: "010"//城市，默认：“全国”
+        });
+        var marker = new AMap.Marker({
+            map:mapObj,
+            bubble:true
+        })
+        mapObj.on('click',function(e){
+            marker.setPosition(e.lnglat);
+            commonSearch(e.lnglat);
+            geocoder.getAddress(e.lnglat,function(status,result){
+                if(status=='complete'){
+                    $("#userTree").val(result.regeocode.formattedAddress);
+                }else{
+                }
+            })
+        })
+
+        // $("#userTree").change(function (e) {
+        //     var address = $("#userTree").val();
+        //     geocoder.getLocation(address,function(status,result){
+        //         if(status=='complete'&&result.geocodes.length){
+        //             marker.setPosition(result.geocodes[0].location);
+        //             mapObj.setCenter(marker.getPosition());
+        //             commonSearch();
+        //         }
+        //     })
+        // });
+
     });
 
     // //查询按钮响应事件
@@ -58,8 +90,7 @@ $(function(){
 });
 
 
-
-function commonSearch(flag) {
+function commonSearch(lnglat,flag) {
     var startDate;
     var userId = $("#userTree").val();
     var inputValue = $("#analysisChartCalendar").val();
@@ -109,7 +140,7 @@ function commonSearch(flag) {
             startDate = inputValue;
         }
     }
-    _searchTrackPosition(userId, startDate);
+    _searchTrackPosition(lnglat, startDate,$("#meterSelect").val());
     if ($("#analysisChartCalendar").val() == _DatePrev(today)) {
         $("#analysisChartCalendar").val("昨天");
     } else if ($("#analysisChartCalendar").val() == today) {
@@ -117,15 +148,15 @@ function commonSearch(flag) {
     }
 }
 
-var _searchTrackPosition = function (userIds, startDate) {
+var _searchTrackPosition = function (lnglat, startDate,distance) {
     startDate = new Date(startDate.replace(new RegExp("-", "gm"), "/")).getTime();
     if(mapObj != null&&mapObj!=undefined){
-        mapObj.clearMap();
-        mapObj.setZoom(12);
+        // mapObj.clearMap();
+        // mapObj.setZoom(12);
     }
-    mapObj = new AMap.Map("mapContainer", {resizeEnable: true, view: new AMap.View2D({zoom: 12})});
+    // mapObj = new AMap.Map("mapContainer", {resizeEnable: true, view: new AMap.View2D({zoom: 12})});
     openLoading();
-    var data = {userIds: userIds, startDate: startDate};
+    var data = {lng: lnglat.lng,lat: lnglat.lat,  startDate: startDate,distance:distance};
     tokenAjax({
         url: urlTitle + media_map,    //请求的url地址
         //dataType: "json",   //返回格式为json
@@ -173,7 +204,7 @@ var _searchTrackPosition = function (userIds, startDate) {
                         _drawDialogs(parentDio, k - count, track)
                     }
                 }
-                u2.innerHTML = "共签到" + originalLength + "次";
+                u2.innerHTML = "共发现媒体数：" + originalLength + "";
                 _addTrackPoints(checkinLength, json.data)
             }
             $(".user-info-detail .checkin-map-div  a").on("mouseover", function (event) {
@@ -208,13 +239,13 @@ var _searchTrackPosition = function (userIds, startDate) {
 
 
 var _addTrackPoints = function (checkinLength, visitRecords) {
-    if (!mapCount) {
-        mapObj = new AMap.Map("mapContainer", {resizeEnable: true, view: new AMap.View2D({zoom: 12})});
-        mapObj.plugin(["AMap.ToolBar"], function () {
-            var toolBar = new AMap.ToolBar;
-            mapObj.addControl(toolBar)
-        });
-        mapCount = 1
+    if (mapCount>0) {
+        mapObj.clearMap();
+        // mapObj = new AMap.Map("mapContainer", {resizeEnable: true, view: new AMap.View2D({zoom: 12})});
+        // mapObj.plugin(["AMap.ToolBar"], function () {
+        //     var toolBar = new AMap.ToolBar;
+        //     mapObj.addControl(toolBar)
+        // });
     }
     var currMarkers = {};
     var allPointMap = {};
@@ -286,6 +317,7 @@ var _addTrackPoints = function (checkinLength, visitRecords) {
     if (lastMarker.length > 0) {
         mapObj.setCenter(lastMarker)
     }
+    mapCount = 1;
 }
 
 var _getTrackHtml = function (visitRecord, index) {
