@@ -153,7 +153,12 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
             result.put("count", records.size());
         }
 
-        return (QueryResult) JSONObject.toBean(result, QueryResult.class);
+        QueryResult queryResult = new QueryResult();
+        queryResult.setStatus(result.containsKey("status")?result.getString("status"):"1");
+        queryResult.setTotalSize(result.containsKey("totalSize")?result.getInt("totalSize"):0);
+        queryResult.setCount(result.containsKey("count")?result.getInt("count"):0);
+        queryResult.setRecords(result.containsKey("records")?result.getJSONArray("records"):new JSONArray());
+        return queryResult;
     }
 
     private String getRowColor(String endAt) {
@@ -267,7 +272,12 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
             result.put("count", records.size());
         }
 
-        return (QueryResult) JSONObject.toBean(result, QueryResult.class);
+        QueryResult queryResult = new QueryResult();
+        queryResult.setStatus(result.containsKey("status")?result.getString("status"):"1");
+        queryResult.setTotalSize(result.containsKey("totalSize")?result.getInt("totalSize"):0);
+        queryResult.setCount(result.containsKey("count")?result.getInt("count"):0);
+        queryResult.setRecords(result.containsKey("records")?result.getJSONArray("records"):new JSONArray());
+        return queryResult;
     }
 
 

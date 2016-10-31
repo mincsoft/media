@@ -102,7 +102,15 @@
         <!--媒体保存自动生成经纬度-->
         <trigger>
             <object>media</object>
-            <operate>add,update</operate>
+            <operate>add</operate>
+            <processor>customEntitySaveProcessor</processor>
+            <position>after</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.media.MediaTrigger</class>
+        </trigger>
+        <trigger>
+            <object>media</object>
+            <operate>update</operate>
             <processor>customEntitySaveProcessor</processor>
             <position>after</position>
             <order>1</order>

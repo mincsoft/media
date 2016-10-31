@@ -160,7 +160,7 @@ var _searchTrackPosition = function (lnglat, startDate,distance) {
     }
     // mapObj = new AMap.Map("mapContainer", {resizeEnable: true, view: new AMap.View2D({zoom: 12})});
     openLoading();
-    var data = {lng: lnglat.lng,lat: lnglat.lat,  startDate: startDate,distance:distance};
+    var data = {lng: lnglat.lng,lat: lnglat.lat,  startDate: startDate,distance:distance,access_token:access_token};
     tokenAjax({
         url: urlTitle + media_map,    //请求的url地址
         //dataType: "json",   //返回格式为json

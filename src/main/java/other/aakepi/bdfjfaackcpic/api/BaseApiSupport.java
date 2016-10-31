@@ -20,16 +20,17 @@ import java.util.Map;
  */
 public abstract class BaseApiSupport {
 
-   protected Logger logger = LoggerFactory.getLogger();
+    protected Logger logger = LoggerFactory.getLogger();
 
 
     /**
      * 获得请求对象
+     *
      * @param callString
-     * @param call_type POST,GET
+     * @param call_type  POST,GET
      * @return
      */
-    private RkhdHttpData getRkhdHttpData(String callString,String call_type)  {
+    private RkhdHttpData getRkhdHttpData(String callString, String call_type) {
         RkhdHttpData rkhdHttpData = new RkhdHttpData();
         rkhdHttpData.setCallString(callString);
         rkhdHttpData.setCall_type(call_type);
@@ -38,38 +39,42 @@ public abstract class BaseApiSupport {
 
     /**
      * 获得请求对象,GET
+     *
      * @param callString
      * @return
      */
-    protected RkhdHttpData getRkhdHttpData(String callString)  {
-        return getRkhdHttpData(callString,"GET");
+    protected RkhdHttpData getRkhdHttpData(String callString) {
+        return getRkhdHttpData(callString, "GET");
     }
+
     /**
      * 获得请求对象 POST
+     *
      * @param callString
      * @return
      */
-    protected RkhdHttpData postRkhdHttpData(String callString)  {
-        return getRkhdHttpData(callString,"POST");
+    protected RkhdHttpData postRkhdHttpData(String callString) {
+        return getRkhdHttpData(callString, "POST");
     }
 
     /**
      * API请求
+     *
      * @param rkhdHttpData
      * @return
      */
-    protected String apiRequest(RkhdHttpData rkhdHttpData){
-        String result="";
-        try{
+    protected String apiRequest(RkhdHttpData rkhdHttpData) {
+        String result = "";
+        try {
             ScriptTriggerParam scriptTriggerParam = new ScriptTriggerParam();
 
             RkhdHttpClient rkhdHttpClient = new RkhdHttpClient();
             result = rkhdHttpClient.performRequest(rkhdHttpData);
             JSONObject resultObj = JSONObject.fromObject(result);
-            if (resultObj.containsKey("error_code")){
-                logger.error("Mincsoft Error Tips:========="+resultObj.getString("message"));
+            if (resultObj.containsKey("error_code")) {
+                logger.error("Mincsoft Error Tips:=========" + resultObj.getString("message"));
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             logger.error(e.getMessage());
         }
         return result;
@@ -82,7 +87,7 @@ public abstract class BaseApiSupport {
      * @return
      * @throws IOException
      */
-    protected String query(String sql)  {
+    protected String query(String sql) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/query");
         rkhdHttpData.putFormData("q", sql);
         return apiRequest(rkhdHttpData);
@@ -96,10 +101,11 @@ public abstract class BaseApiSupport {
      * @return
      * @throws IOException
      */
-    protected QueryResult queryResult(String sql)  {
-        String result=query(sql);
+    protected QueryResult queryResult(String sql) {
+        String result = query(sql);
         return getQueryResult(result);
     }
+
     /**
      * 查询语句，返回json结果
      *
@@ -107,13 +113,14 @@ public abstract class BaseApiSupport {
      * @return
      * @throws IOException
      */
-    protected JSONArray queryResultArray(String sql)  {
-        String result=query( sql);
+    protected JSONArray queryResultArray(String sql) {
+        String result = query(sql);
         QueryResult queryResult = getQueryResult(result);
-        if (queryResult==null) return new JSONArray();
-        if (queryResult.getCount()==0) return new JSONArray();
+        if (queryResult == null) return new JSONArray();
+        if (queryResult.getCount() == 0) return new JSONArray();
         return queryResult.getRecords();
     }
+
     /**
      * 查询语句，返回json结果
      *
@@ -121,24 +128,31 @@ public abstract class BaseApiSupport {
      * @return
      * @throws IOException
      */
-    private QueryResult getQueryResult(String result)  {
-        if (StringUtils.isBlank(result)){
+    private QueryResult getQueryResult(String result) {
+        if (StringUtils.isBlank(result)) {
             return null;
         }
         JSONObject jsonObject = JSONObject.fromObject(result);
-        if (jsonObject ==null || jsonObject.isNullObject())
+        if (jsonObject == null || jsonObject.isNullObject())
             return null;
-        if (jsonObject.containsKey("error_code")){
+        if (jsonObject.containsKey("error_code")) {
             return null;
         }
         logger.info("getQueryResult:" + result);
-        return (QueryResult)JSONObject.toBean(jsonObject,QueryResult.class);
+        QueryResult queryResult = new QueryResult();
+        queryResult.setStatus(jsonObject.containsKey("status")?jsonObject.getString("status"):"1");
+        queryResult.setTotalSize(jsonObject.containsKey("totalSize")?jsonObject.getInt("totalSize"):0);
+        queryResult.setCount(jsonObject.containsKey("count")?jsonObject.getInt("count"):0);
+        queryResult.setRecords(jsonObject.containsKey("records")?jsonObject.getJSONArray("records"):new JSONArray());
+        return queryResult;
     }
+
     /**
      * 获得全部业务对象
+     *
      * @return
      */
-    protected QueryResult getAllBelongs(){
+    protected QueryResult getAllBelongs() {
         RkhdHttpData rkhdHttpData = getRkhdHttpData("/data/v1/picks/dimension/belongs");
         String result = apiRequest(rkhdHttpData);
         return getQueryResult(result);
@@ -146,21 +160,22 @@ public abstract class BaseApiSupport {
 
     /**
      * 从全部结果集合查询实体ID
+     *
      * @param result
      * @param belongName，实体名称
      * @return
      */
-    protected long getBelongId(QueryResult result,String belongName){
+    protected long getBelongId(QueryResult result, String belongName) {
         long belongId = -1;
         if (StringUtils.isBlank(belongName)) return belongId;
         if (result == null) return belongId;
-        if (result.getTotalSize() == null ) return belongId;
+        if (result.getTotalSize() == null) return belongId;
         //全部的媒体记录
         JSONArray records = result.getRecords();
         for (int i = 0; i < records.size(); i++) {
             JSONObject record = records.getJSONObject(i);
             if (belongName.equalsIgnoreCase(record.getString("name")) ||
-                    belongName.equalsIgnoreCase(record.getString("belongName")) ){
+                    belongName.equalsIgnoreCase(record.getString("belongName"))) {
                 belongId = record.getLong("belongId");
                 break;
             }
@@ -170,41 +185,42 @@ public abstract class BaseApiSupport {
 
     /**
      * 获得实体配置的全部select参数（含entityType）
+     *
      * @param mediaBelongsDes key:字段名，value：名值对Map
      * @return
      */
-    protected Map<String,Map<Object,String>> getBelongSelectItem(JSONObject mediaBelongsDes){
-        Map<String,Map<Object,String>> selectMap = new HashMap<String, Map<Object, String>>();
-        if (mediaBelongsDes==null) return selectMap;
-        if (mediaBelongsDes.containsKey("entityTypes")){
+    protected Map<String, Map<Object, String>> getBelongSelectItem(JSONObject mediaBelongsDes) {
+        Map<String, Map<Object, String>> selectMap = new HashMap<String, Map<Object, String>>();
+        if (mediaBelongsDes == null) return selectMap;
+        if (mediaBelongsDes.containsKey("entityTypes")) {
             JSONArray entityTypesArray = mediaBelongsDes.getJSONArray("entityTypes");
-            Map<Object,String> entityTypesMap = new HashMap<Object,String>();
+            Map<Object, String> entityTypesMap = new HashMap<Object, String>();
             for (int i = 0; i < entityTypesArray.size(); i++) {
                 JSONObject entityTypesObj = entityTypesArray.getJSONObject(i);
                 Object key = entityTypesObj.get("id");
                 String value = entityTypesObj.getString("name");
-                entityTypesMap.put(key,value);
+                entityTypesMap.put(key, value);
             }
             //entityType
-            selectMap.put("entityType",entityTypesMap);
+            selectMap.put("entityType", entityTypesMap);
         }
-        if (mediaBelongsDes.containsKey("fields")){
+        if (mediaBelongsDes.containsKey("fields")) {
             JSONArray fieldsArray = mediaBelongsDes.getJSONArray("fields");
-            for (int i = 0; i < fieldsArray.size() ; i++) {
+            for (int i = 0; i < fieldsArray.size(); i++) {
                 JSONObject fieldObj = fieldsArray.getJSONObject(i);
                 //下拉选项
-                if (fieldObj.containsKey("selectitem")){
+                if (fieldObj.containsKey("selectitem")) {
                     JSONArray selectitemArray = fieldObj.getJSONArray("selectitem");
-                    Map<Object,String> map = new HashMap<Object,String>();
+                    Map<Object, String> map = new HashMap<Object, String>();
                     for (int j = 0; j < selectitemArray.size(); j++) {
                         JSONObject selectitemObj = selectitemArray.getJSONObject(j);
                         Object key = selectitemObj.get("value");
                         String value = selectitemObj.getString("label");
-                        map.put(key,value);
+                        map.put(key, value);
                     }
                     //字段名称
                     String filedName = fieldObj.getString("propertyname");
-                    selectMap.put(filedName,map);
+                    selectMap.put(filedName, map);
                 }
             }
         }
@@ -214,10 +230,11 @@ public abstract class BaseApiSupport {
 
     /**
      * 获得自定义业务实体描述接口
+     *
      * @param belongId 自定义ID
      * @return
      */
-    protected JSONObject getBelongsDesc(long belongId){
+    protected JSONObject getBelongsDesc(long belongId) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/describe");
         rkhdHttpData.putFormData("belongId", belongId);
         String result = apiRequest(rkhdHttpData);
@@ -226,28 +243,30 @@ public abstract class BaseApiSupport {
 
     /**
      * 创建自定义实体
+     *
      * @param belongId 自定义ID
-     * @param record 记录信息
+     * @param record   记录信息
      * @return
      */
-    protected JSONObject createBelongs(long belongId,JSONObject record){
+    protected JSONObject createBelongs(long belongId, JSONObject record) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/create");
         JSONObject body = new JSONObject();
         body.accumulate("belongId", belongId);
         body.accumulate("record", record);
         rkhdHttpData.setBody(body.toString());
 
-        String result = apiRequest( rkhdHttpData);
+        String result = apiRequest(rkhdHttpData);
         logger.info("createBelongs:" + result);
         return JSONObject.fromObject(result);
     }
 
     /**
      * 更新自定义实体
+     *
      * @param record 记录信息
      * @return
      */
-    protected JSONObject updateBelongs(JSONObject record){
+    protected JSONObject updateBelongs(JSONObject record) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
         rkhdHttpData.setBody(record.toString());
         String result = apiRequest(rkhdHttpData);
@@ -257,10 +276,11 @@ public abstract class BaseApiSupport {
 
     /**
      * 删除自定义实体
+     *
      * @param id 记录
      * @return
      */
-    protected JSONObject deleteBelongs(long id){
+    protected JSONObject deleteBelongs(long id) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/delete");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(rkhdHttpData);
@@ -270,10 +290,11 @@ public abstract class BaseApiSupport {
 
     /**
      * 查询自定义实体
+     *
      * @param id 对象主键
      * @return
      */
-    protected JSONObject getBelongs(long id){
+    protected JSONObject getBelongs(long id) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/info");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(rkhdHttpData);
@@ -282,10 +303,11 @@ public abstract class BaseApiSupport {
 
     /**
      * 获得用户信息
+     *
      * @param id 对象主键
      * @return
      */
-    protected JSONObject getUserInfo(long id){
+    protected JSONObject getUserInfo(long id) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/user/info");
         rkhdHttpData.putFormData("id", id);
         String result = apiRequest(rkhdHttpData);
@@ -294,16 +316,16 @@ public abstract class BaseApiSupport {
 
 
     //转换对象，避免null对象转json时出错
-    protected Object convertObject(Object value){
-        if(value == null)
+    protected Object convertObject(Object value) {
+        if (value == null)
             return "";
-        if(value instanceof String){
-            return (String)value;
-        }else if(value instanceof Integer){
+        if (value instanceof String) {
+            return (String) value;
+        } else if (value instanceof Integer) {
             return (Integer) value;
-        }else if(value instanceof Date)
+        } else if (value instanceof Date)
             return ((Date) value).getTime();
-        else if(value instanceof Number)
+        else if (value instanceof Number)
             return ((Number) value);
 
         return value.toString();

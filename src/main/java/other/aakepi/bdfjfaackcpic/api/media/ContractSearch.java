@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
-import other.aakepi.bdfjfaackcpic.config.SpotConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +87,12 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
                 return null;
             }
             logger.info("getQueryResult:" + result);
-            return (QueryResult)JSONObject.toBean(jsonObject,QueryResult.class);
+            QueryResult queryResult = new QueryResult();
+            queryResult.setStatus(jsonObject.containsKey("status")?jsonObject.getString("status"):"1");
+            queryResult.setTotalSize(jsonObject.containsKey("totalSize")?jsonObject.getInt("totalSize"):0);
+            queryResult.setCount(jsonObject.containsKey("count")?jsonObject.getInt("count"):0);
+            queryResult.setRecords(jsonObject.containsKey("records")?jsonObject.getJSONArray("records"):new JSONArray());
+            return queryResult;
 
         }catch(Exception e){
             e.printStackTrace();
