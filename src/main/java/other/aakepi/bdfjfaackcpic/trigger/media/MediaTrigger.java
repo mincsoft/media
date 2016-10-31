@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import other.aakepi.bdfjfaackcpic.http.MincsoftHttpClient;
 import other.aakepi.bdfjfaackcpic.trigger.BaseTrigger;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -31,7 +32,12 @@ public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
             String address = dataModel.getAttribute("address") + "";
             if (StringUtils.isNotBlank(address)){
                 //调用高德API获取经纬度
-                MincsoftHttpClient mincsoftHttpClient = new MincsoftHttpClient();
+                MincsoftHttpClient mincsoftHttpClient = null;
+                try {
+                    mincsoftHttpClient = new MincsoftHttpClient();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 String resultJson = mincsoftHttpClient.sendSimpleGet("http://restapi.amap.com/v3/geocode/geo","address="+address+"&output=JSON&key="+map_key);
                 if (StringUtils.isNotBlank(resultJson)) {
                     JSONObject object = JSONObject.fromObject(resultJson);
