@@ -56,10 +56,10 @@ var loadMediaData = function () {
             //request.setRequestHeader("Authorization", access_token);
         },
         success: function (req) {
-            // var datar = JSON.parse(req.result);
+            var datar = JSON.parse(req.result);
             cleanHtmls();
             //请求成功时处理
-            $.each(req.result, function(i,val){
+            $.each(datar, function(i,val){
                 var body = $("#spot-list");
                 var tr = $('<tr class="'+val.color+'">').appendTo(body);
                 var td = $('<td width="10%"><a target="_blank" href="https://crm.xiaoshouyi.com/final/customize.action?id='+val.id+'&belongId=100018388"><span>'+val.contract+'</span></a></td>').appendTo(tr);

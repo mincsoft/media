@@ -49,16 +49,21 @@ $(function () {
 });
 
 var initDeptTreeComb = function () {
+    var data = {};
+    data['access_token'] = access_token;
+
     tokenAjax({
         url: urlTitle + dept_list,    //请求的url地址
         //dataType: "json",   //返回格式为json
         type: "GET",   //请求方式
+        data: data,
         beforeSend: function (request) {
             //request.setRequestHeader("Authorization", access_token);
         },
         success: function (req) {
             //请求成功时处理
-            $.each(req.result, function(i,val){
+            var datar = JSON.parse(req.result);
+            $.each(datar, function(i,val){
                 var deptlist = $("#dept_tree");
                 if(i==0){
                     $('<option value="'+val.id+'" selected>'+val.name+'</option>').appendTo(deptlist);
@@ -71,16 +76,21 @@ var initDeptTreeComb = function () {
 }
 
 var initCustomerComb = function () {
+    var data = {};
+    data['access_token'] = access_token;
+
     tokenAjax({
         url: urlTitle + cust_list,    //请求的url地址
         //dataType: "json",   //返回格式为json
+        data:data,
         type: "GET",   //请求方式
         beforeSend: function (request) {
             //request.setRequestHeader("Authorization", access_token);
         },
         success: function (req) {
             //请求成功时处理
-            $.each(req.result, function(i,val){
+            var datar = JSON.parse(req.result);
+            $.each(datar, function(i,val){
                 var customerSelect = $("#customerSelect");
                 // if(i==0){
                 //     $('<option value="'+val.id+'" selected>'+val.accountName+'</option>').appendTo(customerSelect);
@@ -111,10 +121,10 @@ var loadMediaData = function () {
             //request.setRequestHeader("Authorization", access_token);
         },
         success: function (req) {
-            // var datar = JSON.parse(req.result);
+            var datar = JSON.parse(req.result);
             cleanHtmls();
             //请求成功时处理
-            $.each(req.result, function(i,val){
+            $.each(datar, function(i,val){
                 var body = $("#spot-list");
                 var tr = $('<tr class="'+val.color+'">').appendTo(body);
                 var td = $('<td width="10%"><a target="_blank" href="https://crm.xiaoshouyi.com/final/customize.action?id='+val.id+'&belongId=100018388"><span>'+val.mediaCode+'</span></a></td>').appendTo(tr);

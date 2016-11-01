@@ -88,6 +88,7 @@
 //                    request.setRequestHeader("Authorization","Bearer "+ access_token);
                 },
                 success: function(req) {
+                    cleanHtmls();
 //                    var result = JSON.parse(req.result);
                     var records = JSON.parse(req.result);
 //                    alert(records.length);
@@ -133,8 +134,7 @@
 //                    request.setRequestHeader("Authorization","Bearer "+ access_token);
                 },
                 success: function(req) {
-
-                    cleanHtmls();
+//                    cleanHtmls();
 //                    var result = JSON.parse(req.result);
                     var records = JSON.parse(req.result);
 //                    alert(records.length);

@@ -81,7 +81,6 @@
                 //request.setRequestHeader("Authorization", access_token);
             },
             success: function(req) {
-//                var result = req.result;
                 var result = JSON.parse(req.result);
                 if (result){
                     var contract = result.contract;

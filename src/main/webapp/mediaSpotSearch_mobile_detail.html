@@ -100,7 +100,6 @@
                 //request.setRequestHeader("Authorization", access_token);
             },
             success: function(req) {
-//                var result = req.result;
                 var result = JSON.parse(req.result);
                 if (result){
                     var mediaObj = result.mediaObj;
@@ -148,7 +147,6 @@
                 },
                 success: function(req) {
                     cleanHtmls();
-//                    var result = req.result;
                     var result = JSON.parse(req.result);
                     if (result){
                         loadSpot(result.spot);
