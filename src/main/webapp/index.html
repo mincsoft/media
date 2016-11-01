@@ -90,7 +90,7 @@
 
                     cleanHtmls();
 //                    var result = JSON.parse(req.result);
-                    var records = req.result;
+                    var records = JSON.parse(req.result);
 //                    alert(records.length);
                     if (records){
                         for(var j=0 ; j < records.length;j++){
@@ -133,7 +133,7 @@
 
                     cleanHtmls();
 //                    var result = JSON.parse(req.result);
-                    var records = req.result;
+                    var records = JSON.parse(req.result);
 //                    alert(records.length);
                     if (records){
                         for(var j=0 ; j < records.length;j++){

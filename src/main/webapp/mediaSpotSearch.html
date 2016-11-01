@@ -118,8 +118,8 @@
                     //request.setRequestHeader("Authorization", access_token);
                 },
                 success: function(req) {
-//                    var result = JSON.parse(req.result);
-                    var result = req.result;
+                    var result = JSON.parse(req.result);
+//                    var result = req.result;
                     if (result){
                         var sheet = result.sheet;
 //                    cleanHtmls();

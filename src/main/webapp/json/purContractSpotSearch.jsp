@@ -2,6 +2,7 @@
 <%@ page import="other.aakepi.bdfjfaackcpic.api.media.SaleContractSpotSearch" %>
 <%@ page import="java.util.Enumeration" %>
 <%@ page import="other.aakepi.bdfjfaackcpic.api.media.PurContractSpotSearch" %>
+<%@ page import="other.aakepi.bdfjfaackcpic.util.JSONUtil" %>
 <%@ page contentType="text/json;charset=UTF-8" language="java" %>
 <%
 
@@ -19,9 +20,7 @@
   //返回的结果
   String json = apiSearch.execute(rkhdRequest,null,null);
 
-  JSONObject result = new JSONObject();
-   result.accumulate("result", json);
-  result.accumulate("status", "0");
-  out.print(result.toString());
+  String newJson = JSONUtil.string2Json(json);
 
 %>
+{"status":"0","result":"<%= newJson%>"}
