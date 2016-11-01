@@ -78,14 +78,16 @@
             },
             success: function(req) {
                 cleanHtmls();
-                var records = req.result;
-                if (records){
-                    for(var j=0 ; j < records.length;j++){
-                        var record = records[j];
-                        toMediaSearchHtml(record,j+1);
-                    }
+//                var records = req.result;
+                var datar = JSON.parse(req.result);
+                cleanHtmls();
+                //请求成功时处理
+                $.each(datar, function(i,val){
+                    toMediaSearchHtml(val,i+1);
+                });
 
-                    loadMore(records);
+                if (datar){
+                    loadMore(datar);
                 }
             }
         });

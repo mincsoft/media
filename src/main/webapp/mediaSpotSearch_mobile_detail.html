@@ -100,7 +100,7 @@
                 //request.setRequestHeader("Authorization", access_token);
             },
             success: function(req) {
-                var result = req.result;
+                var result = JSON.parse(req.result);
                 if (result){
                     var mediaObj = result.mediaObj;
                     //初始化排期点位数据
@@ -147,7 +147,7 @@
                 },
                 success: function(req) {
                     cleanHtmls();
-                    var result = req.result;
+                    var result = JSON.parse(req.result);
                     if (result){
                         loadSpot(result.spot);
                     }
