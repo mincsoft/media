@@ -89,14 +89,21 @@
                 },
                 success: function(req) {
 //                    var result = JSON.parse(req.result);
-                    var records = req.result;
-//                    alert(records.length);
-                    if (records){
-                        for(var j=0 ; j < records.length;j++){
-                            var contract = records[j];
-                            toHtml(contract,j+1);
-                        }
-                    }
+//                    var records = req.result;
+////                    alert(records.length);
+//                    if (records){
+//                        for(var j=0 ; j < records.length;j++){
+//                            var contract = records[j];
+//                            toHtml(contract,j+1);
+//                        }
+//                    }
+
+                    var datar = JSON.parse(req.result);
+                    cleanHtmls();
+                    //请求成功时处理
+                    $.each(datar, function(i,val){
+                        toHtml(val,i+1);
+                    });
                 }
             });
         });
@@ -134,16 +141,22 @@
                 },
                 success: function(req) {
 
+//                    cleanHtmls();
+////                    var result = JSON.parse(req.result);
+//                    var records = req.result;
+////                    alert(records.length);
+//                    if (records){
+//                        for(var j=0 ; j < records.length;j++){
+//                            var contract = records[j];
+//                            toPurContractHtml(contract,j+1);
+//                        }
+//                    }
+                    var datar = JSON.parse(req.result);
                     cleanHtmls();
-//                    var result = JSON.parse(req.result);
-                    var records = req.result;
-//                    alert(records.length);
-                    if (records){
-                        for(var j=0 ; j < records.length;j++){
-                            var contract = records[j];
-                            toPurContractHtml(contract,j+1);
-                        }
-                    }
+                    //请求成功时处理
+                    $.each(datar, function(i,val){
+                        toPurContractHtml(val,i+1);
+                    });
                 }
             });
         });

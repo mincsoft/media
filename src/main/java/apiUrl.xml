@@ -38,6 +38,10 @@
             <url>/search-deptlist</url>
         </api>
         <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.CustSearch</class>
+            <url>/search-custlist</url>
+        </api>
+        <api>
             <class>other.aakepi.bdfjfaackcpic.api.media.PurContractSpotSearch</class>
             <url>/search-purcontractspot</url>
         </api>

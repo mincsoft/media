@@ -169,7 +169,8 @@ var _searchTrackPosition = function (lnglat, startDate,distance) {
         beforeSend: function (request) {
             //request.setRequestHeader("Authorization", access_token);
         },
-        success: function (json) {
+        success: function (data) {
+            var json = JSON.parse(data.result);
             closeLoading();
             if (json.status != 0) {
                 $.msg("查询出错了");
@@ -256,6 +257,8 @@ var _addTrackPoints = function (checkinLength, visitRecords) {
     var allPointMap = {};
     var lastMarker = [];
     var count = 0;
+
+
     $.map(visitRecords.trackData, function (visitRecord, index) {
         if (visitRecord.longitude != "" && visitRecord.latitude != "") {
             var pointHtml = _getTrackHtml(visitRecord, checkinLength - count++);

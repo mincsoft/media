@@ -26,6 +26,7 @@ public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
             throws ScriptBusinessException {
         List<DataModel> list = scriptTriggerParam.getDataModelList();
 
+        System.out.println("------entry in------other.aakepi.bdfjfaackcpic.trigger.media.MediaTrigger.execute");
         if (list != null && list.size() > 0) {
             DataModel dataModel = list.get(0);
             Integer id = Integer.parseInt(dataModel.getAttribute("id") + "");
@@ -38,6 +39,7 @@ public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                System.out.println("------address------"+address);
                 String resultJson = mincsoftHttpClient.sendSimpleGet("http://restapi.amap.com/v3/geocode/geo","address="+address+"&output=JSON&key="+map_key);
                 if (StringUtils.isNotBlank(resultJson)) {
                     JSONObject object = JSONObject.fromObject(resultJson);
