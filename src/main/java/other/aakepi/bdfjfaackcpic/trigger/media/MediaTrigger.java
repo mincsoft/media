@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * 合同生效后自动生成上画记录
+ * 媒体保存，自动获取经纬度坐标
  */
 public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
     String map_key = "242940e21d575db5ec2f2c0ff4daa6b0";//正式
@@ -26,7 +26,7 @@ public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
             throws ScriptBusinessException {
         List<DataModel> list = scriptTriggerParam.getDataModelList();
 
-        System.out.println("------entry in------other.aakepi.bdfjfaackcpic.trigger.media.MediaTrigger.execute");
+        logger.debug("------entry in------other.aakepi.bdfjfaackcpic.trigger.media.MediaTrigger.execute");
         if (list != null && list.size() > 0) {
             DataModel dataModel = list.get(0);
             Integer id = Integer.parseInt(dataModel.getAttribute("id") + "");
@@ -39,8 +39,10 @@ public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println("------address------"+address);
+                logger.debug("------address------"+address);
                 String resultJson = mincsoftHttpClient.sendSimpleGet("http://restapi.amap.com/v3/geocode/geo","address="+address+"&output=JSON&key="+map_key);
+                logger.debug("------resultJson------"+resultJson);
+
                 if (StringUtils.isNotBlank(resultJson)) {
                     JSONObject object = JSONObject.fromObject(resultJson);
                     if (object.getInt("status")==1){

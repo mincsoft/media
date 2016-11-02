@@ -25,6 +25,7 @@ public class SaveMettingTrigger implements ScriptTrigger{
 	public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
 			throws ScriptBusinessException {
 		List<DataModel> list = scriptTriggerParam.getDataModelList();
+		logger.debug("------entry in------SaveMettingTrigger.execute");
 		Object huiyishiName = list.get(0).getAttribute("meetingRoom");
 		Object beginTime = list.get(0).getAttribute("beginTime");
 		Object end_time = list.get(0).getAttribute("end_time");

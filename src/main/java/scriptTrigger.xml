@@ -4,7 +4,6 @@
         <trigger>
             <object>meetingRoomPreRecord</object>
             <operate>add</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>before</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.meeting.SaveMettingTrigger</class>
@@ -12,7 +11,6 @@
         <trigger>
             <object>meetingRoomPreRecord</object>
             <operate>update</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>before</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.meeting.UpdateMeetingTrigger</class>
@@ -20,7 +18,6 @@
         <trigger>
             <object>paymentRecord</object>
             <operate>update</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>after</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.pur.PaymentTrigger</class>
@@ -28,7 +25,6 @@
         <trigger>
             <object>invoiceRecord</object>
             <operate>update</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>after</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.pur.InvoiceTrigger</class>
@@ -37,7 +33,6 @@
         <trigger>
             <object>mediaKeeping</object>
             <operate>add</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>before</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.SaveMediaKeeping</class>
@@ -45,7 +40,6 @@
         <trigger>
             <object>mediaKeeping</object>
             <operate>add</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>after</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.SaveMediaKeepingAfter</class>
@@ -53,7 +47,6 @@
         <trigger>
             <object>mediaKeeping</object>
             <operate>update</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>before</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.UpdateMediaKeeping</class>
@@ -61,7 +54,6 @@
         <trigger>
             <object>mediaKeeping</object>
             <operate>update</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>after</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.UpdateMediaKeepingAfter</class>
@@ -75,7 +67,6 @@
         <trigger>
             <object>contractMediaPaint</object>
             <operate>add</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>before</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.contract.UpdateContractPaintTrigger</class>
@@ -83,7 +74,6 @@
         <trigger>
             <object>contractMediaPaint</object>
             <operate>update</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>before</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.contract.UpdateContractPaintTrigger</class>
@@ -93,7 +83,6 @@
         <trigger>
             <object>contract</object>
             <operate>update</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>after</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.contract.ContractTrigger</class>
@@ -103,7 +92,6 @@
         <trigger>
             <object>media</object>
             <operate>add</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>after</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.media.MediaTrigger</class>
@@ -111,7 +99,6 @@
         <trigger>
             <object>media</object>
             <operate>update</operate>
-            <processor>customEntitySaveProcessor</processor>
             <position>after</position>
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.media.MediaTrigger</class>
