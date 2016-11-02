@@ -4,6 +4,8 @@ import com.rkhd.platform.sdk.ScriptTrigger;
 import com.rkhd.platform.sdk.exception.ScriptBusinessException;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpData;
+import com.rkhd.platform.sdk.log.Logger;
+import com.rkhd.platform.sdk.log.LoggerFactory;
 import com.rkhd.platform.sdk.model.DataModel;
 import com.rkhd.platform.sdk.param.ScriptTriggerParam;
 import com.rkhd.platform.sdk.param.ScriptTriggerResult;
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 public class UpdateMeetingTrigger implements ScriptTrigger{
+	protected Logger logger = LoggerFactory.getLogger();
 
 	@Override
 	public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
@@ -84,7 +87,7 @@ public class UpdateMeetingTrigger implements ScriptTrigger{
 			sb.append(" order by beginTime,end_time");
 			sb.append(" limit ").append(first).append(",").append(size);
 			sql = sql + sb.toString();
-			System.out.println(sql);
+			logger.debug(sql);
 			rkhdHttpData.putFormData("q", sql);
 			
 			String s = rkhdHttpClient.performRequest(rkhdHttpData);

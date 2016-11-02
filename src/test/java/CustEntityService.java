@@ -121,7 +121,7 @@ public class CustEntityService extends BaseApiSupport {
         rkhdHttpData.setCall_type("POST");
 
         rkhdHttpData.putFormData("q", sql);
-        System.out.println("sql---------" + sql);
+        logger.debug("sql---------" + sql);
 
         String recordResultJson = null;
         try {
@@ -129,7 +129,7 @@ public class CustEntityService extends BaseApiSupport {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("recordResultJson---------" + recordResultJson);
+        logger.debug("recordResultJson---------" + recordResultJson);
         JSONObject planResult = JSONObject.fromObject(recordResultJson);
         QueryResult queryResult = (QueryResult)JSONObject.toBean(planResult,QueryResult.class);
 

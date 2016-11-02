@@ -1,5 +1,8 @@
 package com;
 
+import com.rkhd.platform.sdk.log.Logger;
+import com.rkhd.platform.sdk.log.LoggerFactory;
+
 import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -11,6 +14,7 @@ import java.util.zip.ZipOutputStream;
  * Created by yangyixin on 16/10/11.
  */
 public class ZipUtil {
+    private static final Logger logger = LoggerFactory.getLogger();
     /**
      * 压缩文件-由于out要在递归调用外,所以封装一个方法用来
      * 调用ZipFiles(ZipOutputStream out,String path,File... srcFiles)
@@ -24,7 +28,7 @@ public class ZipUtil {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zip));
         ZipFiles(out, path, srcFiles);
         out.close();
-        System.out.println("*****************压缩完毕*******************");
+        logger.debug("*****************压缩完毕*******************");
     }
     /**
      * 压缩文件-File
@@ -52,7 +56,7 @@ public class ZipUtil {
                 }
                 else{
                     FileInputStream in = new FileInputStream(srcFiles[i]);
-                    System.out.println(path + srcFiles[i].getName());
+                    logger.debug(path + srcFiles[i].getName());
                     out.putNextEntry(new ZipEntry(path + srcFiles[i].getName()));
                     int len;
                     while((len=in.read(buf))>0){

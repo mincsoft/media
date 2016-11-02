@@ -139,7 +139,7 @@ public class SearchMeetings implements ApiSupport{
 			sb.append(" order by beginTime,end_time");
 			sb.append(" limit ").append(first).append(",").append(size);
 			sql = sql + sb.toString();
-			System.out.println(sql);
+			logger.debug(sql);
 			rkhdHttpData.putFormData("q", sql);
 			
 			String s = rkhdHttpClient.performRequest(rkhdHttpData);

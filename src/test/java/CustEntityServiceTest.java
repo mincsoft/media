@@ -16,7 +16,7 @@ public class CustEntityServiceTest {
         access_token = custEntityService.getAuthToken();
 //        if (StringUtils.isEmpty(access_token))
 //        access_token = Configuration.getInstance().getValue("access_token");
-//        System.out.println("access_token=============:"+access_token);
+//        logger.debug("access_token=============:"+access_token);
     }
 
 
@@ -34,25 +34,25 @@ public class CustEntityServiceTest {
     @Test
     public void testGetEnityList(){
         QueryResult result=custEntityService.getEnityList(access_token);
-        System.out.println(result.getRecords());
+        logger.debug(result.getRecords());
     }
 //
 //    @Test
 //    public void testGetEnityDetail(){
 //        JSONObject result=custEntityService.getEnityDetail(100018193L);
-////        System.out.println(result.toJSONString());
+////        logger.debug(result.toJSONString());
 //    }
 //
 //    @Test
 //    public void testetPayRecordEntity(){
 //        JSONObject result=custEntityService.getPayRecordEntity();
-////        System.out.println(result.toJSONString());
+////        logger.debug(result.toJSONString());
 //    }
 //
 //    @Test
 //    public void testGetPayPlanEntity(){
 //        JSONObject result=custEntityService.getPayPlanEntity();
-////        System.out.println(result.toJSONString());
+////        logger.debug(result.toJSONString());
 //    }
 //
 //    @Test
@@ -63,6 +63,6 @@ public class CustEntityServiceTest {
     @Test
     public void testqueryData(){
         JSONArray array = custEntityService.queryData();
-        System.out.println("========="+array.toString());
+        logger.debug("========="+array.toString());
     }
 }

@@ -40,15 +40,15 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
 
 //        com.alibaba.fastjson.JSONArray cellArray = null;
         JSONArray cellArray = null;
-        System.out.println("load start:" + (System.currentTimeMillis() - start) + " ms");
+        logger.debug("load start:" + (System.currentTimeMillis() - start) + " ms");
 //        com.alibaba.fastjson.JSONObject obj1 = com.alibaba.fastjson.JSONObject.parseObject(json);
 
         JSONObject obj1 = JSONObject.fromObject(json);
         if (obj1.containsKey("cells")) {
             cellArray = obj1.getJSONArray("cells");
-            //System.out.println("size:"+cellArray.size()+"value:" +cellArray.get(0));
+            //logger.debug("size:"+cellArray.size()+"value:" +cellArray.get(0));
         }
-        System.out.println("load start obj:" + (System.currentTimeMillis() - start) + " ms");
+        logger.debug("load start obj:" + (System.currentTimeMillis() - start) + " ms");
 
 
         if (StringUtils.isBlank(json) || startDate == null || endDate == null || StringUtils.isBlank(contractId) || cellArray == null || cellArray.isEmpty()) {
@@ -71,7 +71,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
         List<HashMap<String, String>> spotList = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> uuidMap = new HashMap<String, String>(cellArray.size());
 
-        System.out.println("load title:" + (System.currentTimeMillis() - start) + " ms");
+        logger.debug("load title:" + (System.currentTimeMillis() - start) + " ms");
         //行号，spot的行号
         //解析全部数据
         for (int i = 0; i < cellArray.size(); i++) {
@@ -133,12 +133,12 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                     dataMap.put(key, data);
                 }
 
-                System.out.println("row:" + row + ";col=" + col + ";key="+key+";data=" + data + ";value=" + value + ";id=" + id + ";all:" + cellArray.get(i));
-//				System.out.println("load data :"+ i +" : "+ (System.currentTimeMillis() - start) + " ms");
+                logger.debug("row:" + row + ";col=" + col + ";key="+key+";data=" + data + ";value=" + value + ";id=" + id + ";all:" + cellArray.get(i));
+//				logger.debug("load data :"+ i +" : "+ (System.currentTimeMillis() - start) + " ms");
             }
         }
 
-        System.out.println("load data:" + (System.currentTimeMillis() - start) + " ms");
+        logger.debug("load data:" + (System.currentTimeMillis() - start) + " ms");
         start = System.currentTimeMillis();
 
 
@@ -150,7 +150,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
         boolean hasSpotItem = false;
         for (int i = 0; i < spotList.size(); i++) {
             HashMap<String, String> dataMap = spotList.get(i);
-            System.out.println("i:" + i + ";" + dataMap);
+            logger.debug("i:" + i + ";" + dataMap);
 
             String spotId =  dataMap.get("uuid");//行唯一编号
             String mediaId = dataMap.get("mediaId");//媒体ID
@@ -288,7 +288,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                     endCal.add(Calendar.DATE, 1);//最后日期加一天，便于循环
                     while (startCal.before(endCal)) {
                         String date = DateUtil.getDateStr(startCal.getTime());//String.format("%tF", startCal.getTime());
-                        //System.out.println(date+";"+dateColumns+";"+ SheetUtil.indexToColumn(dateColumns));
+                        //logger.debug(date+";"+dateColumns+";"+ SheetUtil.indexToColumn(dateColumns));
                         colTempMap.put(dateColumns, date);
                         dateColumns++;
                         startCal.add(Calendar.DATE, 1);//开始日期加1

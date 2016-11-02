@@ -19,14 +19,13 @@ import java.util.List;
  * 媒体保存，自动获取经纬度坐标
  */
 public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
-    String map_key = "242940e21d575db5ec2f2c0ff4daa6b0";//正式
+    String map_key = "f72b538c18087025ccc8bc3eb8c778e7";//mincsoft 正式key
 //    String map_key = "e6dead6d2e043ada9f9e8da4ff524165";//测试
 
     public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
             throws ScriptBusinessException {
         List<DataModel> list = scriptTriggerParam.getDataModelList();
 
-        logger.debug("------entry in------other.aakepi.bdfjfaackcpic.trigger.media.MediaTrigger.execute");
         if (list != null && list.size() > 0) {
             DataModel dataModel = list.get(0);
             Integer id = Integer.parseInt(dataModel.getAttribute("id") + "");
@@ -39,7 +38,6 @@ public class MediaTrigger extends BaseTrigger implements ScriptTrigger {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                logger.debug("------address------"+address);
                 String resultJson = mincsoftHttpClient.sendSimpleGet("http://restapi.amap.com/v3/geocode/geo","address="+address+"&output=JSON&key="+map_key);
                 logger.debug("------resultJson------"+resultJson);
 

@@ -75,7 +75,7 @@ public class ContractSearch extends BaseApiSupport implements ApiSupport {
             RkhdHttpData rkhdHttpData = new RkhdHttpData();
             rkhdHttpData.setCallString("/data/v1/query");
             rkhdHttpData.setCall_type("POST");
-            System.out.println(sql);
+            logger.debug(sql.toString());
             rkhdHttpData.putFormData("q", sql);
 
             String result = rkhdHttpClient.performRequest(rkhdHttpData);

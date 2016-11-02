@@ -35,7 +35,7 @@ public class MediaLocationSearch extends BaseApiSupport implements ApiSupport {
         condition.put("distance", request.getParameter("distance"));
         condition.put("startDate", request.getParameter("startDate"));
 
-        System.out.println("condition-------" + condition.toString());
+        logger.debug("condition-------" + condition.toString());
 
         String start = request.getParameter("start");
         if (StringUtils.isNotBlank(start)) {

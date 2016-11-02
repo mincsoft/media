@@ -44,7 +44,7 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
 
 
 
-        System.out.println("condition-------" + condition.toString());
+        logger.debug("condition-------" + condition.toString());
 
         QueryResult result = null;
         String start = request.getParameter("start");
@@ -63,7 +63,7 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
         if (result != null) {
             records = result.getRecords();
             if (records != null){
-                System.out.println("records-----------" + records.toString());
+                logger.debug("records-----------" + records.toString());
                 return records.toString();
             }
         }

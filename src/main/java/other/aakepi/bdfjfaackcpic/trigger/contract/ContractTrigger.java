@@ -25,15 +25,25 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
 
         if (list != null && list.size() > 0) {
             DataModel dataModel = list.get(0);
+            logger.debug("data========"+dataModel.toString());
             Integer id = Integer.parseInt(dataModel.getAttribute("id") + "");
             Integer accountId = Integer.parseInt(dataModel.getAttribute("accountId") + "");
+            String lockStatus = dataModel.getAttribute("lockStatus") + "";
             String status = dataModel.getAttribute("status") + "";
-            if ("2".equals(status)) {//合同生效
+            logger.debug("status========"+status);
+            if ("2".equals(lockStatus)&&!"2".equals(status)) {//合同生效
+                // 1 更新合同状态
+                JSONObject contract = new JSONObject();
+                contract.put("id",id);
+                contract.put("status",2);
+                updateBelongs(contract);
+
                 JSONArray mediaRecords = getSalesMediaRecord(id);
+                logger.debug("mediaRecords========"+mediaRecords);
                 JSONObject media = null;
                 if (mediaRecords != null) {
 
-                    //生成上画记录
+                    //2 生成上画记录
                     JSONObject paint = null;
                     for (int i = 0; i < mediaRecords.size(); i++) {
                         media = mediaRecords.getJSONObject(i);

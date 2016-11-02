@@ -50,7 +50,7 @@ public class PaymentTrigger extends BaseTrigger  implements ScriptTrigger {
                         rkhdHttpData.setCall_type("POST");
                         rkhdHttpData.putFormData("json", json);
                         String resultStr = rkhdHttpClient.performRequest(rkhdHttpData);
-                        System.out.println("result ----------"+resultStr);
+                        logger.debug("result ----------"+resultStr);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -64,10 +64,10 @@ public class PaymentTrigger extends BaseTrigger  implements ScriptTrigger {
 //                rkhdHttpData.setCall_type("POST");
 //
 //                rkhdHttpData.putFormData("q", sql);
-//                System.out.println("sql---------" + sql);
+//                logger.debug("sql---------" + sql);
 //
 //                String planResultJson = rkhdHttpClient.performRequest(rkhdHttpData);
-//                System.out.println("planResultJson---------" + planResultJson);
+//                logger.debug("planResultJson---------" + planResultJson);
 //                JSONObject planResult = JSONObject.fromObject(planResultJson);
 //                QueryResult queryResult = (QueryResult)JSONObject.toBean(planResult,QueryResult.class);
 //

@@ -287,7 +287,7 @@ public class DoubleUtil {
     }
 
     public static void main(String[] args) {
-//        System.out.println(getValue(null));
+//        logger.debug(getValue(null));
         System.out.println(getValue("aaa"));
         System.out.println(getValue("10", 0));
         System.out.println(getValue("10.123455"));

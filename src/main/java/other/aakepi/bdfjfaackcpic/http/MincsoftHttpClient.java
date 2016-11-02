@@ -3,6 +3,8 @@ package other.aakepi.bdfjfaackcpic.http;
 import com.rkhd.platform.sdk.http.CommonData;
 import com.rkhd.platform.sdk.http.CommonHttpClient;
 import com.rkhd.platform.sdk.http.RkhdHttpClient;
+import com.rkhd.platform.sdk.log.Logger;
+import com.rkhd.platform.sdk.log.LoggerFactory;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.BufferedReader;
@@ -17,6 +19,7 @@ import java.net.URLConnection;
  */
 public class MincsoftHttpClient extends RkhdHttpClient {
     private CommonHttpClient client = new CommonHttpClient();
+    private static final Logger logger = LoggerFactory.getLogger();
 
     public MincsoftHttpClient() throws IOException {
         super();
@@ -59,9 +62,9 @@ public class MincsoftHttpClient extends RkhdHttpClient {
             while ((line = in.readLine()) != null) {
                 result += line;
             }
-            System.out.println("result:-----------" + result);
+            logger.info("result:-----------" + result);
         } catch (Exception e) {
-            System.out.println("发送 POST 请求出现异常！" + e);
+            logger.debug("发送 POST 请求出现异常！" + e);
             e.printStackTrace();
         }
         //使用finally块来关闭输出流、输入流
@@ -88,18 +91,16 @@ public class MincsoftHttpClient extends RkhdHttpClient {
      * @return 请求结果
      */
     public String sendSimpleGet(String url, String param) {
-        String resResult = "";
-        BufferedReader in = null;
         String urlNameString = url;
         if (StringUtils.isNotBlank(param))
             urlNameString += "?" + param;
-        System.out.println("url================" + urlNameString);
+        logger.debug("url================" + urlNameString);
 
         CommonData data = new CommonData();
         data.setCall_type("GET");
         data.setCallString(urlNameString);
         String result = this.client.performRequest(data);
-        System.out.println("url================" + result);
+        logger.info("result================" + result);
 
         return result;
     }

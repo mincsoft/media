@@ -208,7 +208,7 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
                                 monthMergeJson.accumulate("name", previousMonthName);
                                 monthMergeJson.accumulate("ftype", "meg");
                                 monthMergeJson.accumulate("json", " [1," + (monthStartCol) + ",1," + (lastSpotColumn + dateColumns - 1) + "]");
-//								System.out.println(monthMergeJson);
+//								logger.debug(monthMergeJson);
                                 floatingArray.add(monthMergeJson);
 
                                 JSONObject groupJson = new JSONObject();
@@ -308,7 +308,7 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
             group.accumulate("sheet", sheetId);
             group.accumulate("name", "colGroups");
             group.accumulate("ftype", "colgroup");
-            //System.out.println(groupArray.toString());
+            //logger.debug(groupArray.toString());
             group.accumulate("json", " " + groupArray);
             floatingArray.add(group);
         }
