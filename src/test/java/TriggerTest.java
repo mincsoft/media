@@ -29,12 +29,12 @@ public class TriggerTest {
     public static void main(String[] args) {
         String scriptTrigger = "/Users/yangyixin/Documents/workspace/mincsoft/media/src/main/java/scriptTrigger.xml";
         //媒体保留，新增
-//        testSaveMediaKepping(scriptTrigger);
+        testSaveMediaKepping(scriptTrigger);
         //媒体保留，新增后保存点位
 //        testSaveMediaKeppingAfter(scriptTrigger);
 
         //销售合同媒体商户纪录，保存校验
-        testUpdateContractPaintTrigger(scriptTrigger);
+//        testUpdateContractPaintTrigger(scriptTrigger);
 
     }
 }

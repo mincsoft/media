@@ -31,11 +31,11 @@ public class CustEntityServiceTest {
 
     }
 //
-    @Test
-    public void testGetEnityList(){
-        QueryResult result=custEntityService.getEnityList(access_token);
-        logger.debug(result.getRecords());
-    }
+//    @Test
+//    public void testGetEnityList(){
+//        QueryResult result=custEntityService.getEnityList(access_token);
+//        logger.debug(result.getRecords());
+//    }
 //
 //    @Test
 //    public void testGetEnityDetail(){
@@ -60,9 +60,9 @@ public class CustEntityServiceTest {
 ////        custEntityService.createEntityData(access_token,"100018107001",result);
 //    }
 
-    @Test
-    public void testqueryData(){
-        JSONArray array = custEntityService.queryData();
-        logger.debug("========="+array.toString());
-    }
+//    @Test
+//    public void testqueryData(){
+//        JSONArray array = custEntityService.queryData();
+//        logger.debug("========="+array.toString());
+//    }
 }

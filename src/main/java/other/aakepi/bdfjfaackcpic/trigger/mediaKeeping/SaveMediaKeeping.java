@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import other.aakepi.bdfjfaackcpic.trigger.BaseTrigger;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -19,23 +18,29 @@ import java.util.List;
  * 新增媒体保留纪录 ：add Before
  */
 public class SaveMediaKeeping extends BaseTrigger implements ScriptTrigger {
-    @Override
+
+
     public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
             throws ScriptBusinessException {
+
+        logger.info("SaveMediaKeeping:begin------" );
         List<DataModel> list = scriptTriggerParam.getDataModelList();
+        logger.info("SaveMediaKeeping:begin:" + list.size());
         Object idObj = list.get(0).getAttribute("id");
         Object mediaIdObj = list.get(0).getAttribute("mediaId");
         Object startDateObj = list.get(0).getAttribute("startDate");
         Object endDateObj = list.get(0).getAttribute("endDate");
 
-        String keepId = idObj+"";
+        String keepId = idObj==null?"":idObj.toString();
         Date begin = DateUtil.getDate(startDateObj.toString());
         Date end = DateUtil.getDate(endDateObj.toString());
         String mediaId = mediaIdObj + "";
-
+        logger.debug("SaveMediaKeeping:keepId:" + keepId + ";begin=" + begin + ";end:" + end + ";mediaId=" + mediaId);
         if (!DateUtil.isBefore(begin,end)) {
             throw new ScriptBusinessException("begin time must before end time ");
         }
+
+        logger.debug("SaveMediaKeeping:getResult:");
 //
         JSONArray recordArray = getAllRecord(begin, end,keepId, scriptTriggerParam.getUserId(), -1L, mediaId, 0, 10);
 
@@ -67,10 +72,9 @@ public class SaveMediaKeeping extends BaseTrigger implements ScriptTrigger {
 
         String sql = "select id,ownerId,name,startDate,endDate,mediaId from mediaKeeping where id > 0 ";
         StringBuilder sb = new StringBuilder();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //排除自己
         if (StringUtils.isNotBlank(keepId)){
-            sb.append(" and id != ").append(keepId).append(") ");
+            sb.append(" and id != ").append(keepId);
         }
         if (StringUtils.isNotBlank(mediaId)) {
             sb.append(" and mediaId in( ").append(mediaId).append(") ");
@@ -87,6 +91,8 @@ public class SaveMediaKeeping extends BaseTrigger implements ScriptTrigger {
         sb.append(" order by startDate,endDate");
         sb.append(" limit ").append(first).append(",").append(size);
         sql = sql + sb.toString();
+
+        logger.debug(sql);
 
         return queryResultArray(sql.toString());
 

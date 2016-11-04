@@ -39,11 +39,14 @@ public class UpdateContractPaintTrigger extends BaseTrigger implements ScriptTri
             throw new ScriptBusinessException("媒体必须选择");
         }
 
+        logger.debug("UpdateContractPaintTrigger:idObj:" + idObj + ";contractId=" + contractId + ";mediaIdId:" + mediaIdId );
 
         JSONArray recordArray = getAllRecord(scriptTriggerParam.getUserId(), -1L, contractId, 0, 10);
         if(recordArray==null || recordArray.size()==0){
             throw new ScriptBusinessException("没有媒体纪录，不能添加上画纪录");
         }
+        logger.debug("UpdateContractPaintTrigger:该媒体是否在合同纪录中");
+
         HashMap<String,String> mediaMap = new HashMap<String, String>();
         for (int i = 0; i < recordArray.size(); i++) {
             JSONObject record =recordArray.getJSONObject(i);

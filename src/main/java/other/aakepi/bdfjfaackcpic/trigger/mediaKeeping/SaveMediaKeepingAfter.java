@@ -24,7 +24,7 @@ import java.util.List;
  * 增加点位
  */
 public class SaveMediaKeepingAfter extends BaseTrigger implements ScriptTrigger {
-    @Override
+
     public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
             throws ScriptBusinessException {
         List<DataModel> list = scriptTriggerParam.getDataModelList();
@@ -40,6 +40,7 @@ public class SaveMediaKeepingAfter extends BaseTrigger implements ScriptTrigger 
         String mediaId = mediaIdObj + "";
 
 
+        logger.debug("SaveMediaKeepingAfter:keepId:" + keepId + ";begin=" + startDate + ";end:" + endDate + ";mediaId=" + mediaId);
         //查询全部实体，获得对应的belongId：
         QueryResult allBelongs = getAllBelongs();
         //点位BelongId
