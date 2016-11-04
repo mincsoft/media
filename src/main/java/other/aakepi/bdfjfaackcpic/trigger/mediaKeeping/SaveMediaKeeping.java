@@ -30,10 +30,14 @@ public class SaveMediaKeeping extends BaseTrigger implements ScriptTrigger {
         Object mediaIdObj = list.get(0).getAttribute("mediaId");
         Object startDateObj = list.get(0).getAttribute("startDate");
         Object endDateObj = list.get(0).getAttribute("endDate");
+//        logger.debug("SaveMediaKeeping:idObj:" + idObj + ";startDateObj=" + startDateObj + ";endDateObj:" + endDateObj + ";mediaIdObj=" + mediaIdObj);
 
         String keepId = idObj==null?"":idObj.toString();
-        Date begin = DateUtil.getDate(startDateObj.toString());
-        Date end = DateUtil.getDate(endDateObj.toString());
+        String beginStr = startDateObj.toString();
+        String endStr = endDateObj.toString();
+
+        Date begin =  new Date(Long.parseLong(beginStr)) ;
+        Date end = new Date(Long.parseLong(endStr));
         String mediaId = mediaIdObj + "";
         logger.debug("SaveMediaKeeping:keepId:" + keepId + ";begin=" + begin + ";end:" + end + ";mediaId=" + mediaId);
         if (!DateUtil.isBefore(begin,end)) {
@@ -91,8 +95,6 @@ public class SaveMediaKeeping extends BaseTrigger implements ScriptTrigger {
         sb.append(" order by startDate,endDate");
         sb.append(" limit ").append(first).append(",").append(size);
         sql = sql + sb.toString();
-
-        logger.debug(sql);
 
         return queryResultArray(sql.toString());
 

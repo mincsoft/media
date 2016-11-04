@@ -38,9 +38,9 @@ public class ZipUtil {
      */
     public static void ZipFiles(ZipOutputStream out,String path,File... srcFiles){
         path = path.replaceAll("\\*", "/");
-        if(!path.endsWith("/")){
-            path+="/";
-        }
+//        if(!path.endsWith("/")){
+//            path+="/";
+//        }
         byte[] buf = new byte[1024];
         try {
             for(int i=0;i<srcFiles.length;i++){
@@ -74,6 +74,8 @@ public class ZipUtil {
     public static void main(String[] args){
         String path = "/Users/yangyixin/Documents/workspace/mincsoft/media/src/main/java/";
         String zipPath = "/Users/yangyixin/Documents/workspace/mincsoft/media/target/code.zip";
+
+         zipPath = "/Users/yangyixin/Desktop/Win7 Share/code/code.zip";
 
 
         try{

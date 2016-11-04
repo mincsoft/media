@@ -25,10 +25,14 @@ public class UpdateSaleContractTrigger extends BaseTrigger implements ScriptTrig
         Object idObj = list.get(0).getAttribute("id");
         Object startDateObj = list.get(0).getAttribute("startDate");
         Object endDateObj = list.get(0).getAttribute("endDate");
+        String beginStr = startDateObj.toString();
+        String endStr = endDateObj.toString();
 
         String contractId = idObj+"";
-        Date begin = DateUtil.getDate(startDateObj.toString());
-        Date end = DateUtil.getDate(endDateObj.toString());
+        Date begin =  new Date(Long.parseLong(beginStr)) ;
+        Date end = new Date(Long.parseLong(endStr));
+        logger.debug("UpdateSaleContractTrigger:contractId:" + contractId + ";begin=" + begin + ";end:" + end );
+
 
         if (!DateUtil.isBefore(begin,end)) {
             throw new ScriptBusinessException("begin time must before end time ");
