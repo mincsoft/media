@@ -35,8 +35,11 @@ public class SaveMediaKeepingAfter extends BaseTrigger implements ScriptTrigger 
         Object dimDepartObj = list.get(0).getAttribute("dimDepart");
 
         String keepId = idObj+"";
-        Date startDate = DateUtil.getDate(startDateObj.toString());
-        Date endDate = DateUtil.getDate(endDateObj.toString());
+        String beginStr = startDateObj.toString();
+        String endStr = endDateObj.toString();
+
+        Date startDate = new Date(Long.parseLong(beginStr)) ;
+        Date endDate =  new Date(Long.parseLong(endStr));
         String mediaId = mediaIdObj + "";
 
 
