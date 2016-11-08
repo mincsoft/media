@@ -17,7 +17,6 @@ import java.util.List;
  * 合同生效后自动生成上画记录
  */
 public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
-    long paintBelongId = 100018291;
 
     public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
             throws ScriptBusinessException {
@@ -67,6 +66,7 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                         paint.put("createdAt", (new Date().getTime()));
                         paint.put("lockStatus", "1");
                         //创建上画记录
+                        long paintBelongId = getBelongId("contractMediaPaint");
                         createBelongs(paintBelongId,paint);
                     }
                 }

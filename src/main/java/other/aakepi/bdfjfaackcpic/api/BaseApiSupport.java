@@ -183,6 +183,12 @@ public abstract class BaseApiSupport {
         return belongId;
     }
 
+    protected long getBelongId(String belongName) {
+        QueryResult queryResult = getAllBelongs();
+
+        return getBelongId(queryResult,belongName);
+    }
+
     /**
      * 获得实体配置的全部select参数（含entityType）
      *
