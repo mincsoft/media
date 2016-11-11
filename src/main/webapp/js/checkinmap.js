@@ -86,10 +86,44 @@ $(function(){
     // $("[act=search_media]").click(function () {
     //
     // });
-     $("#meterSelect").change(function (e) {
+    $("#meterSelect").change(function (e) {
          commonSearch(currLnglat);
     });
 
+    //日期处理及事件响应
+    $("#checkin_date_after").on("click", function (event) {
+        $("#analysisChartCalendar").attr("type","text");
+        $("#analysisChartCalendar").attr("readonly","readonly");
+        $("#analysisChartCalendar").attr("style",null);
+
+        commonSearch(currLnglat,"after");
+    });
+    $("#checkin_date_prev").on("click", function (event) {
+        $("#analysisChartCalendar").attr("type","text");
+        $("#analysisChartCalendar").attr("readonly","readonly");
+        $("#analysisChartCalendar").attr("style",null);
+
+        commonSearch(currLnglat,"prev");
+    });
+
+    $("#analysisChartCalendar").val('今天');
+    $("#analysisChartCalendar").on("click",function (e) {
+        $(this).attr("type","date");
+        $(this).removeAttr("readonly");
+        $(this).attr("style","height:30px;border:none;text-align:right;");
+
+        var now = new Date();
+        var year = now.getFullYear() + "";       //年
+        var month = (now.getMonth() + 1) + "";     //月
+        var day = now.getDate() + "";
+        if(month.length == 1){
+            month = "0" + month;
+        }
+        if(day.length == 1){
+            day = "0" + day;
+        }
+        $("#analysisChartCalendar").val(year+"-"+month+"-"+day);
+    });
 });
 
 
@@ -153,6 +187,8 @@ function commonSearch(lnglat,flag) {
 }
 
 var _searchTrackPosition = function (lnglat, startDate,distance) {
+    if (lnglat == undefined||startDate == null) return;
+
     startDate = new Date(startDate.replace(new RegExp("-", "gm"), "/")).getTime();
     if(mapObj != null&&mapObj!=undefined){
         // mapObj.clearMap();
