@@ -15,6 +15,37 @@
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.meeting.UpdateMeetingTrigger</class>
         </trigger>
+
+        <trigger>
+            <object>paymentPlan</object>
+            <operate>add</operate>
+            <position>before</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.pur.PaymentPlanBeforeTrigger</class>
+        </trigger>
+        <trigger>
+            <object>paymentPlan</object>
+            <operate>update</operate>
+            <position>before</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.pur.PaymentPlanBeforeTrigger</class>
+        </trigger>
+
+        <trigger>
+            <object>paymentRecord</object>
+            <operate>add</operate>
+            <position>before</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.pur.PaymentBeforeTrigger</class>
+        </trigger>
+        <trigger>
+            <object>paymentRecord</object>
+            <operate>update</operate>
+            <position>before</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.pur.PaymentBeforeTrigger</class>
+        </trigger>
+
         <trigger>
             <object>paymentRecord</object>
             <operate>update</operate>

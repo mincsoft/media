@@ -44,6 +44,7 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
 
                     //2 生成上画记录
                     JSONObject paint = null;
+                    logger.debug("scriptTriggerParam.getUserId()========"+scriptTriggerParam.getUserId());
                     for (int i = 0; i < mediaRecords.size(); i++) {
                         media = mediaRecords.getJSONObject(i);
                         if (media == null) continue;
@@ -52,6 +53,7 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                         paint.put("contractId", id);
                         paint.put("mediaId", media.getLong("meidaId"));
 //                        paint.put("name", media.getInt("id") + 1);
+
                         long currUserId = scriptTriggerParam.getUserId()==0?563814:scriptTriggerParam.getUserId();
                         paint.put("ownerId", currUserId);
                         JSONObject currUser = getUserInfo(currUserId);
@@ -65,6 +67,7 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                         paint.put("createdBy", currUserId);
                         paint.put("createdAt", (new Date().getTime()));
                         paint.put("lockStatus", "1");
+                        paint.put("status", "1");
                         //创建上画记录
                         long paintBelongId = getBelongId("contractMediaPaint");
                         createBelongs(paintBelongId,paint);

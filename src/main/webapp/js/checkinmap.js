@@ -206,6 +206,7 @@ var _searchTrackPosition = function (lnglat, startDate,distance) {
             //request.setRequestHeader("Authorization", access_token);
         },
         success: function (data) {
+            console.info("======="+data);
             var json = JSON.parse(data.result);
             closeLoading();
             if (json.status != 0) {

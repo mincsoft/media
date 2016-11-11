@@ -19,5 +19,6 @@
   String json = apiSearch.execute(rkhdRequest,null,null);
   String newJson = JSONUtil.string2Json(json);
 
+//  out.print(newJson);
 %>
-<%= newJson%>
+<%=newJson%>

@@ -53,6 +53,10 @@
             <class>other.aakepi.bdfjfaackcpic.api.map.MediaLocationSearch</class>
             <url>/media-map</url>
         </api>
+        <api>
+            <class>other.aakepi.bdfjfaackcpic.api.media.UpdatePaint</class>
+            <url>/batch-paint</url>
+        </api>
     </config>
 </configs>
 
