@@ -47,14 +47,23 @@
     var access_user;
     var client_id = "e3829850419b7ec442b0314c3cf2ff58";
     var client_secret = "562e34991cd545d5f499a3331b5cb592";
+    var debug ;
 
     $(function(){
         hideAll();
         code = request.getParam("code");
         access_token = request.getParam("access_token");
+        debug = request.getParam("debug");
         if(access_token){
             $("#token").val(access_token);
         }
+
+        //本地测试
+        if ("dev"== debug){
+            urlTitle = "http://localhost:8081/media";
+            urlSearchContract="/json/contract.jsp";
+        }
+
         initHtml();
     });
 
@@ -151,7 +160,7 @@
     };
 
     var toHtml = function(contract,index){
-        var html = '<li>'+index+'、<a href="saleContractSpotSearch.html?access_token='+access_token+'&id='+contract.id+'">'+contract.title+'</a></li>';
+        var html = '<li>'+index+'、<a href="saleContractSpotSearch.html?access_token='+access_token+'&id='+contract.id+'&debug='+debug+'">'+contract.title+'</a></li>';
         //return html;
         $(".room-list").append(html);
     }
@@ -164,7 +173,7 @@
     }
 
     var toPurContractHtml = function(record,index){
-        var html = '<li>'+index+'、<a href="purContractSpotSearch.html?access_token='+access_token+'&id='+record.id+'&mediaName='+record.name+'">'+record.name+'</a></li>';
+        var html = '<li>'+index+'、<a href="purContractSpotSearch.html?access_token='+access_token+'&id='+record.id+'&mediaName='+record.name+'&debug='+debug+'">'+record.name+'</a></li>';
         //return html;
         $(".room-list").append(html);
     }
@@ -284,9 +293,9 @@
 <div class="header" act="tables">
     <div class="search-wapper container-fluid">
         <form act="query_form">
-            <div class="search col-xs-6 col-md-2 col-lg-4">
+            <div class="search col-xs-6 col-md-2 col-lg-4" style="display: none">
                 <label>先输入有效的Token：</label>
-                <input name="access_token" id="token"  type="text" placeholder="输入token，点击查询" value="bab2c474cf2488ce39d2055483466bbd9b8d291e7c7cdfc447a23f475826cb96"/><!-- name="begin" -->
+                <input name="access_token" id="token"  type="text" placeholder="输入token，点击查询" value="64978bce33a2ed0cba5e540cf1b42b8283168f3dea285454f362a32be1bad964"/><!-- name="begin" -->
             </div>
 
             <div class="search col-xs-12 col-md-2 col-lg-1">

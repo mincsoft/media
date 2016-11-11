@@ -1,4 +1,5 @@
 <%@ page import="other.aakepi.bdfjfaackcpic.api.map.MediaLocationSearch" %>
+<%@ page import="other.aakepi.bdfjfaackcpic.util.JSONUtil" %>
 <%@ page import="java.util.Enumeration" %>
 <%@ page contentType="text/json;charset=UTF-8" language="java" %>
 <%
@@ -16,6 +17,7 @@
   MediaLocationSearch apiSearch = new MediaLocationSearch();
 //  //返回的结果
   String json = apiSearch.execute(rkhdRequest,null,null);
-  out.print(json);
+  String newJson = JSONUtil.string2Json(json);
 
 %>
+<%= newJson%>
