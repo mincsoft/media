@@ -50,6 +50,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         spotConfig.addField("opMode", 80, null);
 //        spotConfig.addField("saleStatus", 80, null);
         spotConfig.addField("retailPrice", 100, " fm: \"money||2|none\"");
+        spotConfig.addField("postionCost", 100, " fm: \"money||2|none\"");
 //        spotConfig.addFieldNotMedia("orderPrice", "折后单价",80, " fm: \"money||2|none\"");
         spotConfig.addFieldNotMedia("totalNum", "总投放数", 80, " fm: \"money||2|none\"");
         spotConfig.addFieldNotMedia("totalRetailAmount", "刊例总价", 100, " fm: \"money||2|none\"");
@@ -109,7 +110,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                             int spotNum = DateUtil.getBetweenDay(startDate,endDate);
                             headData.add(getColCalItemObject(sheetId, startRow,colIdex , "=SUM("+cellIndex(startRow,startCol)+":"+cellIndex(startRow,(startCol+spotNum))+")"));
                         } else if ("totalRetailAmount".equals(fieldName)){//媒体名称，增加ID
-                            headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=F"+startRow+"*"+"E"+startRow));
+                            headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=G"+startRow+"*"+"E"+startRow));
                         }
 //                        else if ("totalOrderAmount".equals(fieldName)){//媒体名称，增加ID
 //                            headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=G"+startRow+"*"+"F"+startRow));

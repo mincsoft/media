@@ -180,8 +180,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                             String other = "";
                             if((buyMedia&& !purSpotDateMap.containsKey(date))||saleSpotDateMap.containsKey(date)){
                                 other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
-                            }
-                            if(keepingSpotDate.containsKey(date)){
+                            }else if(keepingSpotDate.containsKey(date)){
                                 other =", bgc: '#87cefa'";
                             }
                             boolean hasSpotItem = false;

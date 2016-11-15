@@ -240,7 +240,11 @@ public class MediaAdventSearch extends BaseApiSupport implements ApiSupport {
                         spot = spotArray.getJSONObject(j);
                         if (spot == null) continue;
                         record = new JSONObject();
-                        record.put("customer", contract.getString("accountId"));
+                        sql = new StringBuffer();
+                        sql.append("select accountName from account ");
+                        sql.append(" where id = " + contract.getString("accountId"));
+                        JSONArray accountArray = queryResultArray(sql.toString());
+                        record.put("customer", accountArray!=null&&accountArray.size()>0?accountArray.getJSONObject(0).getString("accountName"):"");
                         record.put("operator", contract.getString("customerSigner"));
                         record.put("id", spot.getString("id"));
                         record.put("endAt", spot.getString("endDate"));
