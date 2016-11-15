@@ -47,8 +47,11 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
     @Override
     public String execute(Request request, Long userId, Long tenantId) {
 
+
         initRequest(request);
         contractId= request.getParameter("id");
+        logger.debug("contractid============"+contractId);
+
         if (StringUtils.isBlank(contractId)) contractId="-1";
         JSONObject contract = getContract(contractId);
 

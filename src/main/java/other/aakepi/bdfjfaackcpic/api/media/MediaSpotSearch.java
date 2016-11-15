@@ -177,12 +177,15 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
      * @return
      */
     private QueryResult getAllMedia(int first, int size) {
+        String mediaId = request.getParameter("mediaId");
         String mediaName = request.getParameter("mediaName");
 
         String spotField = spotConfig.getSql();
         StringBuffer sql = new StringBuffer();
         sql.append("select id").append(spotField).append(",opMode from media ");
-        if (StringUtils.isNotBlank(mediaName)) {
+        if (StringUtils.isNotBlank(mediaId)) {
+            sql.append(" where id =").append(mediaId);
+        }else if (StringUtils.isNotBlank(mediaName)) {
             sql.append(" where name like '%").append(mediaName).append("%'");
         }
         sql.append(" order by name");

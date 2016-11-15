@@ -69,7 +69,7 @@
         tokenAjax({
             url: urlTitle + urlSearchMedia,
             //dataType: "json",   //返回格式为json
-            data: {'access_token':access_token,
+            data: {
                 'op':'mediaSearchMobile',
                 'start':0} ,   //参数值
             type: "POST",   //请求方式
@@ -98,7 +98,7 @@
             for(var i=0 ; i < array.length;i++){
                 data[array[i].name] = array[i].value;
             }
-            data['access_token']=access_token;
+
             data['start']=0;
 
             tokenAjax({
@@ -157,7 +157,7 @@
         for(var i=0 ; i < array.length;i++){
             data[array[i].name] = array[i].value;
         }
-        data['access_token']=access_token;
+
 
         tokenAjax({
 //                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
@@ -193,7 +193,7 @@
                 url: o.url,    //请求的url地址
                 beforeSend: o.beforeSend,
                 //dataType: "json",   //返回格式为json
-                data: o.data ,   //参数值
+                headers: {'Authorization': "Bearer " + access_token},         data: o.data,   //参数值 ,   //参数值
                 type: o.type,   //请求方式
                 contentType:o.contentType,
                 success: function(req) {
@@ -208,7 +208,7 @@
             url: obj.url,    //请求的url地址
             beforeSend: obj.beforeSend,
 //            dataType: "json",   //返回格式为json
-            data: obj.data ,   //参数值
+            headers: {'Authorization': "Bearer " + access_token},         data: obj.data,   //参数值 ,   //参数值
             type: obj.type,   //请求方式
             contentType:obj.contentType,
             success: function(req) {

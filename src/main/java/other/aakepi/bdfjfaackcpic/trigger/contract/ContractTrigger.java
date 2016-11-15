@@ -21,7 +21,7 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
     public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
             throws ScriptBusinessException {
         List<DataModel> list = scriptTriggerParam.getDataModelList();
-
+        logger.debug("entry in ContractTrigger========");
         if (list != null && list.size() > 0) {
             DataModel dataModel = list.get(0);
             logger.debug("data========"+dataModel.toString());
@@ -29,6 +29,7 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
             Integer accountId = Integer.parseInt(dataModel.getAttribute("accountId") + "");
             String lockStatus = dataModel.getAttribute("lockStatus") + "";
             String status = dataModel.getAttribute("status") + "";
+            logger.debug("lockStatus========"+lockStatus);
             logger.debug("status========"+status);
             if ("2".equals(lockStatus)&&!"2".equals(status)) {//合同生效
                 // 1 更新合同状态

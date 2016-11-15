@@ -2,14 +2,12 @@ package other.aakepi.bdfjfaackcpic.api.media;
 
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
-import com.rkhd.platform.sdk.http.RkhdHttpData;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
-import other.aakepi.bdfjfaackcpic.enums.OpMode;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
 import java.util.*;
@@ -47,6 +45,7 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
 
         initRequest(request);
         contractId= request.getParameter("id");
+        logger.debug("contractid================"+contractId);
         if (StringUtils.isBlank(contractId)) contractId="-1";
         JSONObject contract = getContract(contractId);
 

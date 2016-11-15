@@ -607,7 +607,7 @@ overflow-y:hidden;
 			for(var i=0 ; i < array.length;i++){
 				data[array[i].name] = array[i].value;
 			}
-			data['access_token']=access_token;
+
 			var beginDate = $("[act=beginTime]").val();
 			var beginDateTime = $("[act=beginTime_time]").val();
 			var beginTime1 = beginDate + " " + beginDateTime;
@@ -769,7 +769,7 @@ overflow-y:hidden;
 							saveData["beginTime"] = beginTime1;
 							saveData["end_time"] = endTime1;
 							var to_saveData = {"belongId":meetingRoomReservationBelongId,"record":saveData};
-							//to_saveData['access_token']=access_token;
+							//to_save
 							var to_saveData_string = JSON.stringify(to_saveData);
 				        	tokenAjax({
 								//url: urlTitle + "/data/v1/objects/customize/create?access_token="+access_token,    //请求的url地址
@@ -914,7 +914,7 @@ overflow-y:hidden;
 				url: o.url,    //请求的url地址
 				beforeSend: o.beforeSend,
 				//dataType: "json",   //返回格式为json
-				data: o.data ,   //参数值
+				headers: {'Authorization': "Bearer " + access_token},         data: o.data,   //参数值 ,   //参数值
 				type: o.type,   //请求方式
 				contentType:o.contentType,
 				success: function(req) {
@@ -929,7 +929,7 @@ overflow-y:hidden;
 				url: obj.url,    //请求的url地址
 				beforeSend: obj.beforeSend,
 				//dataType: "json",   //返回格式为json
-				data: obj.data ,   //参数值
+				headers: {'Authorization': "Bearer " + access_token},         data: obj.data,   //参数值 ,   //参数值
 				type: obj.type,   //请求方式
 				contentType:obj.contentType,
 				success: function(req) {

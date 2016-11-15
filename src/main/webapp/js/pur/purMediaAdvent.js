@@ -41,7 +41,7 @@ $(function () {
 
 var loadMediaData = function () {
     var data = {};
-    data['access_token'] = access_token;
+    // data['Authorization'] = "Bearer " + access_token;
     data["time"] = $(".goal_top_title span.view_name").attr("data-value");
     data["customer"] = $("#customerSelect").val();
     data["contract"] = $("#contractSelect").val();
@@ -59,16 +59,16 @@ var loadMediaData = function () {
             var datar = JSON.parse(req.result);
             cleanHtmls();
             //请求成功时处理
-            $.each(datar, function(i,val){
+            $.each(datar, function (i, val) {
                 var body = $("#spot-list");
-                var tr = $('<tr class="'+val.color+'">').appendTo(body);
-                var td = $('<td width="10%"><a target="_blank" href="https://crm.xiaoshouyi.com/final/customize.action?id='+val.id+'&belongId=100018388"><span>'+val.contract+'</span></a></td>').appendTo(tr);
-                var td = $('<td width="10%"><span>'+val.mediaCode+'</span></td>').appendTo(tr);
-                var td = $('<td width="30%"><span>'+val.mediaName+'</span></td>').appendTo(tr);
-                var td = $('<td width="15%"><span>'+val.disAmount+'</span></td>').appendTo(tr);
-                var td = $('<td width="15%"><span>'+val.startAt+'</span></td>').appendTo(tr);
-                var td = $('<td width="15%"><span>'+val.endAt+'</span></td>').appendTo(tr);
-                var td = $('<td width="10%"><span>'+val.operator+'</span></td>').appendTo(tr);
+                var tr = $('<tr class="' + val.color + '">').appendTo(body);
+                var td = $('<td width="10%"><a target="_blank" href="https://crm.xiaoshouyi.com/final/customize.action?id=' + val.id + '&belongId=100018388"><span>' + val.contract + '</span></a></td>').appendTo(tr);
+                var td = $('<td width="10%"><span>' + val.mediaCode + '</span></td>').appendTo(tr);
+                var td = $('<td width="30%"><span>' + val.mediaName + '</span></td>').appendTo(tr);
+                var td = $('<td width="15%"><span>' + val.disAmount + '</span></td>').appendTo(tr);
+                var td = $('<td width="15%"><span>' + val.startAt + '</span></td>').appendTo(tr);
+                var td = $('<td width="15%"><span>' + val.endAt + '</span></td>').appendTo(tr);
+                var td = $('<td width="10%"><span>' + val.operator + '</span></td>').appendTo(tr);
             });
             // showUsers();
         }
@@ -84,8 +84,8 @@ var tokenAjax = function (obj) {
         $.ajax({
             url: o.url,    //请求的url地址
             beforeSend: o.beforeSend,
-            //dataType: "json",   //返回格式为json
-            data: o.data,   //参数值
+            headers: {'Authorization': "Bearer " + access_token},
+            data: o.data,   //参数值,   //参数值,   //参数值
             type: o.type,   //请求方式
             contentType: o.contentType,
             success: function (req) {
@@ -95,12 +95,12 @@ var tokenAjax = function (obj) {
             }
         });
     };
-
     $.ajax({
         url: obj.url,    //请求的url地址
         beforeSend: obj.beforeSend,
         //dataType: "json",   //返回格式为json
-        data: obj.data,   //参数值
+        headers: {'Authorization': "Bearer " + access_token},
+        data: obj.data,   //参数值,   //参数值
         type: obj.type,   //请求方式
         contentType: obj.contentType,
         success: function (req) {

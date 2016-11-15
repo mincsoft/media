@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>销售合同排期</title>
@@ -14,287 +14,41 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="./js/bootstrap.min.js"></script>
+    <script src="js/sales/salesMediaSpotSearch.js?v=1.0"></script>
 </head>
 <body>
 
+<script type="text/javascript">
+    function setCookie(c_name, value, expiredays) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + expiredays);
+        alert(exdate.getDate() + expiredays);
+        document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()) + ";path=/;domain=b.com";
+    }
+    window.onload = function () {
+        setCookie("listallwjh", "sfwjh");
+        alert("Cookie设置成功！");
+    }
+    function getCookie(c_name) {
+        if (document.cookie.length > 0) {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) c_end = document.cookie.length;
+                return unescape(document.cookie.substring(c_start, c_end));
+            }
+        }
+        return "";
+    }
+    window.onload = function () {
+        var c_name = "listallwjh";
+        if (getCookie("listallwjh") != null) {
+            alert(getCookie("listallwjh"));
+        }
+    } </script>
+
 <script>
-    var request = {
-        getParam:function (name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]); return null;
-        },
-        pathName:function () {
-            return window.location.pathname;
-        },
-        path:function () {
-            var pa = window.location.pathname.lastIndexOf("/");
-            return window.location.pathname.substr(0,pa);
-        }
-    };
-    var urlTitle = "https://api.xiaoshouyi.com";
-    var urlSearchMedia="/script-api/customopenapi/search-salecontractspot";//查询合同排期数据
-    var urlSaveMedia="/script-api/customopenapi/save-salecontractspot";//保存
-    var belongId = "100019547";
-    var access_token;
-    var refresh_token;
-    var code;
-    var users = {};
-    var access_user;
-    var client_id = "e3829850419b7ec442b0314c3cf2ff58";
-    var client_secret = "562e34991cd545d5f499a3331b5cb592";
-    var debug="";
-    var contractId="-1";
-    var sheetData;
-    var op;
-
-    $(function(){
-        hideAll();
-        code = request.getParam("code");
-        access_token = request.getParam("access_token");
-        debug = request.getParam("debug");
-        contractId= request.getParam("id");
-        op= request.getParam("op");
-        //本地测试
-        if ("dev"==debug){
-            urlTitle = "http://localhost:8081/media";
-            urlSearchMedia="/json/saleContractSpotSearch.jsp";
-            urlSaveMedia="/json/saleContractSpotSave.jsp";
-        }
-
-        initHtml();
-
-        if(op == 'edit'){
-            $("[act=save_spot]").show();
-        }else {
-            $("[act=save_spot]").hide();
-        }
-    });
-
-    var initHtml = function(){
-
-        var cleanHtmls = function(){
-            $(".room-list").html("");
-            meettingsObjectArray = [];
-            //users = {};
-            meetingDetails = {};
-        }
-
-        tokenAjax({
-            url: urlTitle + urlSearchMedia,
-            //dataType: "json",   //返回格式为json
-            data: {'access_token':access_token,'id':contractId} ,   //参数值
-            type: "POST",   //请求方式
-            beforeSend: function(request) {
-                //request.setRequestHeader("Authorization", access_token);
-            },
-            success: function(req) {
-                var result = JSON.parse(req.result);
-                if (result){
-                    var contract = result.contract;
-                    //初始化排期点位数据
-                    loadContract(contract);
-//                    console.info("loadContract");
-
-                    sheetData = result.sheet;
-
-                    setTimeout(function(){
-                        if (sheet_iframe.window && $.isFunction(sheet_iframe.window.loadParentData) ){
-                            sheet_iframe.window.loadParentData();
-                        }
-                    },1000);
-//
-                }
-            }
-        });
-        $("[act=load_spot]").click(function(){
-            loadSpot();
-        });
-
-        $("[act=save_spot]").click(function(){
-            var array = $("[act=query_form]").serializeArray();
-            var data = {};
-            for(var i=0 ; i < array.length;i++){
-                data[array[i].name] = array[i].value;
-            }
-            data['access_token']=access_token;
-            data["id"] = contractId;
-            if ($("#contractId").val() ==""){
-                alert("合同未正确加载");
-                return;
-            }
-            if (sheet_iframe.window && $.isFunction(sheet_iframe.window.loadData) ){
-                var json = sheet_iframe.window.submitData();
-                data["json"] = json;
-            }
-
-            tokenAjax({
-                url:  urlTitle+urlSaveMedia,    //请求的url地址
-//                dataType: "json",   //返回格式为json
-                data: data ,   //参数值
-                type: "POST",   //请求方式
-                beforeSend: function(request) {
-                    //request.setRequestHeader("Authorization", access_token);
-                },
-                success: function(req) {
-                    var result = JSON.parse(req.result);
-//                    var result = req.result;
-                    if (result.message){
-                       alert(result.message);
-                    }
-                }
-            });
-        });
-
-
-
-
-    };
-    //加载合同信息
-    var loadContract = function(contract){
-//        alert(json.sheets);
-        if(contract){
-            $("#contractName").val(contract.title);
-            $("#startDate").val(contract.startDate);
-            $("#endDate").val(contract.endDate);
-            $("#contractId").val(contract.id);
-        }
-    }
-
-    //加载排期控件
-    var loadSpot = function(jsonTitle,maxCol){
-
-        console.info("search.html= loadSpot");
-        //JSON
-        if (sheet_iframe.window && $.isFunction(sheet_iframe.window.loadData) && jsonTitle){
-
-            console.info("search.html= sheet_iframe loadSpot");
-            //加载数据
-            sheet_iframe.window.loadData(jsonTitle);
-            ////最大列数
-            sheet_iframe.window.setMaxCol(maxCol);
-        } else{
-//            alert("正在加载控件");
-        }
-    }
-
-
-
-    //加载排期数据数据
-    function getSheetData(){
-        return sheetData;
-    }
-
-
-    var tokenAjax = function(obj){
-        showLoading();
-        var success = function(o,req){
-            if(!o.data.access_token){
-                o.data.access_token = req.access_token;
-            }
-            $.ajax({
-                url: o.url,    //请求的url地址
-                beforeSend: o.beforeSend,
-                //dataType: "json",   //返回格式为json
-                data: o.data ,   //参数值
-                type: o.type,   //请求方式
-                contentType:o.contentType,
-                success: function(req) {
-                    //请求成功时处理
-                    o.success(req);
-                    hideLoading();
-                }
-            });
-        };
-
-        $.ajax({
-            url: obj.url,    //请求的url地址
-            beforeSend: obj.beforeSend,
-//            dataType: "json",   //返回格式为json
-            data: obj.data ,   //参数值
-            type: obj.type,   //请求方式
-            contentType:obj.contentType,
-            success: function(req) {
-                if(req.error_code == 20000002 && req.message == "invalid access token"){
-                    if(refresh_token){
-                        getToken({
-                            type:'refresh_token',
-                            success:function(req){
-                                success(obj,req);
-                                hideLoading();
-                            }
-                        });
-                    } else if(code){
-                        getToken({
-                            type:'code',
-                            success:function(req){
-                                success(obj,req);
-                                hideLoading();
-                            }
-                        });
-                    }
-                }else{
-                    //请求成功时处理
-                    obj.success(req);
-                    hideLoading();
-                }
-            },
-            error:function(data){
-                alert('error');
-                hideLoading();
-            }
-        });
-    }
-
-    var getToken = function(obj){
-        var pathName= request.pathName();
-        var url = urlTitle + "/oauth2/token.action?grant_type=authorization_code&client_id="+client_id+"&client_secret="+client_secret+"&redirect_uri=https://lapp.ingageapp.com"+pathName+"&code="+code;
-        if(obj.type != "code"){
-            url = urlTitle + "/oauth2/token.action?grant_type=refresh_token&client_id="+client_id+"&client_secret="+client_secret+"&redirect_uri=https://lapp.ingageapp.com"+pathName+"&refresh_token="+refresh_token;
-        }
-        $.ajax({
-            url: url,    //请求的url地址
-            //dataType: "json",   //返回格式为json
-            data: {} ,   //参数值
-            type: "GET",   //请求方式
-            success: function(req) {
-                req.access_token = "Bearer " + req.access_token;
-                access_token = req.access_token;
-                refresh_token = req.refresh_token;
-                //请求成功时处理
-                obj.success(req);
-            }
-        });
-    }
-    var hideAll = function(){
-        $("[act=infoSuccess]").hide();
-        $("[act=infoFailed]").hide();
-        $("#rk-panel_loading").hide();
-    }
-
-    var alertSuccess = function(title){
-        $("[act=infoSuccess]").show();
-        setInterval('$("[act=infoSuccess]").hide()',3000);
-    }
-
-    var alertFailed = function(title){
-        if(title){
-            $("[act=infoFailed]").find("p").html(title);
-        }else{
-            $("[act=infoFailed]").find("p").html('预定失败');
-        }
-        $("[act=infoFailed]").show();
-        setInterval('$("[act=infoFailed]").hide()',3000);
-    }
-
-    var showLoading = function(){
-        $("#rk-panel_loading").show();
-    }
-    var hideLoading = function(){
-        $("#rk-panel_loading").hide();
-    }
-
-
 
 </script>
 
@@ -304,7 +58,8 @@
             <input name="contractId" id="contractId" type="hidden">
             <div class="search col-xs-6 col-md-6 col-lg-3">
                 <label>合同名称</label>
-                <input name="contractName" id="contractName"  type="text" placeholder="未加载" readonly="readonly"/><!-- name="begin" -->
+                <input name="contractName" id="contractName" type="text" placeholder="未加载" readonly="readonly"/>
+                <!-- name="begin" -->
             </div>
 
             <!--<div class="search">
@@ -321,21 +76,21 @@
             </div>
             <div class="search col-xs-2 col-md-2 col-lg-2">
                 <label>结束日期</label>
-                <input name="endDate" id="endDate"  type="text" placeholder="未加载" readonly="readonly"/>
+                <input name="endDate" id="endDate" type="text" placeholder="未加载" readonly="readonly"/>
             </div>
             <!--<div class="search col-xs-6 col-md-2 col-lg-2">-->
-                <!--<label>持续</label>-->
-                <!--<select act="continued">-->
-                    <!--<option value="1">1天</option>-->
-                    <!--<option value="7">7天</option>-->
-                    <!--<option value="15">15天</option>-->
-                    <!--<option value="30">30天</option>-->
-                    <!--<option value="45">45天</option>-->
-                    <!--<option value="60">60天</option>-->
-                    <!--<option value="90">90天</option>-->
-                    <!--<option value="180">180天</option>-->
-                    <!--<option value="365">365天</option>-->
-                <!--</select>-->
+            <!--<label>持续</label>-->
+            <!--<select act="continued">-->
+            <!--<option value="1">1天</option>-->
+            <!--<option value="7">7天</option>-->
+            <!--<option value="15">15天</option>-->
+            <!--<option value="30">30天</option>-->
+            <!--<option value="45">45天</option>-->
+            <!--<option value="60">60天</option>-->
+            <!--<option value="90">90天</option>-->
+            <!--<option value="180">180天</option>-->
+            <!--<option value="365">365天</option>-->
+            <!--</select>-->
             <!--</div>-->
             <!--<div class="search">
                 <label>持续</label>
@@ -349,8 +104,9 @@
     </div>
 </div>
 
-<div id="rk-panel_loading" class="rk_cover_loading light_bg_color" style="position: fixed; width: 100%; height: 100%; top: 0px; left: 0px; z-index: 9999999;">
-    <div class="large-loading" >
+<div id="rk-panel_loading" class="rk_cover_loading light_bg_color"
+     style="position: fixed; width: 100%; height: 100%; top: 0px; left: 0px; z-index: 9999999;">
+    <div class="large-loading">
         <div id="floatingCirclesG" class="f_circle" style="top: 0px;">
 
             <div class="f_circleG" id="frotateG_06">
@@ -372,7 +128,8 @@
         </div>
     </div>
 </div>
-<iframe id="sheet_iframe" name="sheet_iframe" frameborder="0" style="width:99%;height:480px;" src="mediaSpot.html" scrolling="no"/>
+<iframe id="sheet_iframe" name="sheet_iframe" frameborder="0" style="width:99%;height:480px;" src="mediaSpot.html"
+        scrolling="no"/>
 
 
 </body>

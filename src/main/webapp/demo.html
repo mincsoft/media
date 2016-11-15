@@ -83,9 +83,9 @@
             var array = $("[act=query_form]").serializeArray();
             var data = {};
             for(var i=0 ; i < array.length;i++){
-                data[array[i].name] = array[i].value;
+//                data[array[i].name] = array[i].value;
             }
-//            data['access_token']=access_token;
+//
             data['op']="contract";//合同数据
             tokenAjax({
 //                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
@@ -129,7 +129,7 @@
             var array = $("[act=query_form]").serializeArray();
             var data = {};
             for(var i=0 ; i < array.length;i++){
-                data[array[i].name] = array[i].value;
+//                data[array[i].name] = array[i].value;
             }
             data['op']="purContract";//合同数据
 
@@ -160,7 +160,7 @@
     };
 
     var toHtml = function(contract,index){
-        var html = '<li>'+index+'、<a href="saleContractSpotSearch.html?access_token='+access_token+'&id='+contract.id+'&debug='+debug+'">'+contract.title+'</a></li>';
+        var html = '<li>'+index+'、<a href="saleContractSpotSearch.html?access_token='+access_token+'&contractId='+contract.id+'&debug='+debug+'">'+contract.title+'</a></li>';
         //return html;
         $(".room-list").append(html);
     }
@@ -173,7 +173,7 @@
     }
 
     var toPurContractHtml = function(record,index){
-        var html = '<li>'+index+'、<a href="purContractSpotSearch.html?access_token='+access_token+'&id='+record.id+'&mediaName='+record.name+'&debug='+debug+'">'+record.name+'</a></li>';
+        var html = '<li>'+index+'、<a href="purContractSpotSearch.html?access_token='+access_token+'&contractId='+record.id+'&mediaName='+record.name+'&debug='+debug+'">'+record.name+'</a></li>';
         //return html;
         $(".room-list").append(html);
     }
@@ -188,7 +188,8 @@
                 url: o.url,    //请求的url地址
                 beforeSend: o.beforeSend,
                 //dataType: "json",   //返回格式为json
-                data: o.data ,   //参数值
+                headers: {'Authorization': "Bearer " + access_token},
+                data: o.data,   //参数值 ,   //参数值
                 type: o.type,   //请求方式
                 contentType:o.contentType,
                 success: function(req) {
@@ -203,7 +204,8 @@
             url: obj.url,    //请求的url地址
             beforeSend: obj.beforeSend,
 //            dataType: "json",   //返回格式为json
-            data: obj.data ,   //参数值
+            headers: {'Authorization': "Bearer " + access_token},
+            data: obj.data,   //参数值
             type: obj.type,   //请求方式
             contentType:obj.contentType,
             success: function(req) {

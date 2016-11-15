@@ -175,7 +175,7 @@
                 url: o.url,    //请求的url地址
                 beforeSend: o.beforeSend,
                 //dataType: "json",   //返回格式为json
-                data: o.data ,   //参数值
+                headers: {'Authorization': "Bearer " + access_token},         data: o.data,   //参数值 ,   //参数值
                 type: o.type,   //请求方式
                 contentType:o.contentType,
                 success: function(req) {
@@ -190,7 +190,7 @@
             url: obj.url,    //请求的url地址
             beforeSend: obj.beforeSend,
 //            dataType: "json",   //返回格式为json
-            data: obj.data ,   //参数值
+            headers: {'Authorization': "Bearer " + access_token},         data: obj.data,   //参数值 ,   //参数值
             type: obj.type,   //请求方式
             contentType:obj.contentType,
             success: function(req) {

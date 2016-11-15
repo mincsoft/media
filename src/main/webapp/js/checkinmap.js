@@ -196,7 +196,7 @@ var _searchTrackPosition = function (lnglat, startDate,distance) {
     }
     // mapObj = new AMap.Map("mapContainer", {resizeEnable: true, view: new AMap.View2D({zoom: 12})});
     openLoading();
-    var data = {lng: lnglat.lng,lat: lnglat.lat,  startDate: startDate,distance:distance,access_token:access_token};
+    var data = {lng: lnglat.lng,lat: lnglat.lat,  startDate: startDate,distance:distance};
     tokenAjax({
         url: urlTitle + media_map,    //请求的url地址
         //dataType: "json",   //返回格式为json
@@ -453,7 +453,7 @@ var tokenAjax = function (obj) {
             url: o.url,    //请求的url地址
             beforeSend: o.beforeSend,
             //dataType: "json",   //返回格式为json
-            data: o.data,   //参数值
+            headers: {'Authorization': "Bearer " + access_token},         data: o.data,   //参数值,   //参数值
             type: o.type,   //请求方式
             contentType: o.contentType,
             success: function (req) {
@@ -468,7 +468,7 @@ var tokenAjax = function (obj) {
         url: obj.url,    //请求的url地址
         beforeSend: obj.beforeSend,
         //dataType: "json",   //返回格式为json
-        data: obj.data,   //参数值
+        headers: {'Authorization': "Bearer " + access_token},         data: obj.data,   //参数值,   //参数值
         type: obj.type,   //请求方式
         contentType: obj.contentType,
         success: function (req) {
