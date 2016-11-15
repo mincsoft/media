@@ -34,14 +34,20 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
         spotConfig.addField("form", 80, null);
         spotConfig.addField("entityType", 80, null);
         spotConfig.addField("opMode", 80, null);
-        spotConfig.addField("saleStatus", 80, null);
-        spotConfig.addField("address", 150, null);
+//        spotConfig.addField("saleStatus", 80, null);
+        spotConfig.addField("retailPrice", 80, null);
+        spotConfig.addFieldNotMedia("orderPrice", "折后单价",80, null);
+        spotConfig.addFieldNotMedia("totalNum", "总投放数", 80, null);
+        spotConfig.addFieldNotMedia("totalRetailAmount", "刊例总价", 100, null);
+        spotConfig.addFieldNotMedia("totalOrderAmount", "折后总价", 100, null);
 
         spotConfig.addFieldNotMedia("onlineTimeArange", "点位上线时间段", 100, null);
 //        spotConfig.addFieldNotMedia("boughtType", "购买单位形式", 100, null);
 
         //在单价后显示排期点位信息
         spotConfig.setShowSpotFieldName("onlineTimeArange");
+
+        spotConfig.addField("address", 450, null);
     }
 
     @Override
@@ -115,6 +121,8 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                 SpotField spotField = spotFieldList.get(j);
                 String fieldName = spotField.getEn();
                 Object value = record.get(fieldName);
+                if ("totalNum".equals(fieldName)||"totalRetailAmount".equals(fieldName)||"totalOrderAmount".equals(fieldName))
+                    value = 0;
                 if (value==null || StringUtils.isBlank(value.toString())){
                     //不处理
                     dateColumns++;
@@ -124,9 +132,19 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                     } else if (fieldName.equals("name")){//媒体名称，增加ID
                         Object meidaId = record.get("meidaId");
                         headData.add(getColItemIdValue(sheetId, startRow, dateColumns++, meidaId, value));
+                    } else if ("totalNum".equals(fieldName)){//媒体名称，增加ID
+                        int colIdex=dateColumns++;
+                        int startCol=colIdex+4;
+                        int spotNum = DateUtil.getBetweenDay(startDate,endDate);
+                        headData.add(getColCalItemObject(sheetId, startRow,colIdex , "=SUM("+cellIndex(startRow,startCol)+":"+cellIndex(startRow,(startCol+spotNum))+")"));
+                    } else if ("totalRetailAmount".equals(fieldName)){//媒体名称，增加ID
+                        headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=G"+startRow+"*"+"E"+startRow));
+                    }else if ("totalOrderAmount".equals(fieldName)){//媒体名称，增加ID
+                        headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=G"+startRow+"*"+"F"+startRow));
                     } else {
                         headData.add(getColItemObject(sheetId, startRow, dateColumns++, value));
                     }
+
                 }
                 //显示点位
                 boolean renderDateColumn = fieldName.equalsIgnoreCase(spotConfig.getShowSpotFieldName());
@@ -144,17 +162,28 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                         //date_0_2015-01-01
                         endCal.add(Calendar.DATE, 1);//最后日期加一天，便于循环
 
+//                        Map<String,String> purSpotDateMap = (Map<String,String> )record.get("purSpotDateMap");
+                        //保留点位
+                        Map<String,String> keepingSpotDate = getKeepingSpotDate(record.get("meidaId")+"");
+
+                        //已销售的点位
+                        Map<String,String> saleSpotDateMap = getSaleContractSpotDate(spotId,record.get("meidaId")+"");
                         //外购点位纪录
-                        Map<String,String> purSpotDateMap = (Map<String,String> )record.get("purSpotDateMap");
+                        Map<String,String> purSpotDateMap = new HashMap<String, String>();
+                        if (buyMedia)
+                            purSpotDateMap=getPurContractSpotDate(record.get("meidaId")+"");
+
                         while (startCal.before(endCal)) {
                             String date = String.format("%tF", startCal.getTime());
 
                             //控制是否允许填写
                             String other = "";
-                            if(buyMedia&& !purSpotDateMap.containsKey(date)){
+                            if((buyMedia&& !purSpotDateMap.containsKey(date))||saleSpotDateMap.containsKey(date)){
                                 other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
                             }
-
+                            if(keepingSpotDate.containsKey(date)){
+                                other =", bgc: '#87cefa'";
+                            }
                             boolean hasSpotItem = false;
                             if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {
 
@@ -200,7 +229,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
 
         JSONArray spotArray;
         StringBuffer sql = new StringBuffer();
-        sql.append("select id,meidaId,onlineTimeArange,boughtType,displayQuantity,orderPrice,retailPriceTotal,orderPriceTotal from saleContractSpot where contractId=").append(contractId);
+        sql.append("select id,meidaId,onlineTimeArange,boughtType,displayQuantity,orderPrice,retailPriceTotal,totalOrderAmount from saleContractSpot where contractId=").append(contractId);
         sql.append(" order by createdAt asc");
         QueryResult saleContractSpot = queryResult(sql.toString());
         if (saleContractSpot==null) return null;
@@ -239,10 +268,10 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                         //恢复spotId
                         spotObj.put("id", spotId);
                         //外购媒体，获得点位纪录
-                        if (OpMode.BUY.getCode().equals(opMode)){
-                            Map<String,String> purSpotDateMap = getPurContractSpotDate(mediaId);
-                            spotObj.put("purSpotDateMap",purSpotDateMap);
-                        }
+//                        if (OpMode.BUY.getCode().equals(opMode)){
+//                            Map<String,String> purSpotDateMap = getPurContractSpotDate(mediaId);
+//                            spotObj.put("purSpotDateMap",purSpotDateMap);
+//                        }
                         break;
                     }
                 }
@@ -283,6 +312,64 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
             String day = record.getString("day");
             String date = DateUtil.getDateStr(day);
             purSpotDateMap.put(date,date);
+        }
+        return purSpotDateMap;
+    }
+
+
+    /**
+     * 查询排期的点位纪录
+     * @return
+     */
+    private Map<String,String> getSaleContractSpotDate(String spotId,String mediaId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,day,spot from saleContractSpotDate where meidaId=").append(mediaId);
+        sql.append(" and spotId!="+spotId);//362989
+        if (startDate != null && endDate != null) {
+            Long beginLong = startDate.getTime();
+            Long endLong = endDate.getTime();
+            sql.append(" and day >= ").append(beginLong).append(" and day <= ").append(endLong);
+        }
+
+
+        JSONArray resultArray = queryResultArray( sql.toString());
+
+        Map<String,String> saleSpotDateMap=new HashMap<String, String>();
+        for (int i = 0; i < resultArray.size(); i++) {
+            JSONObject record = resultArray.getJSONObject(i);
+            String day = record.getString("day");
+            String date = DateUtil.getDateStr(day);
+            saleSpotDateMap.put(date,date);
+        }
+
+        return saleSpotDateMap;
+    }
+
+
+    /**
+     * 查询排期的点位纪录
+     * @return
+     */
+    private Map<String,String> getKeepingSpotDate(String mediaId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,day,ownerId from mediaKeepingSpotDate where mediaId=").append(mediaId);
+        if (startDate != null && endDate != null) {
+            Long beginLong = startDate.getTime();
+            Long endLong = endDate.getTime();
+            sql.append(" and day >= ").append(beginLong).append(" and day <= ").append(endLong);
+        }
+        JSONArray resultArray = queryResultArray( sql.toString());
+
+        Map<String,String> purSpotDateMap=new HashMap<String, String>();
+        for (int i = 0; i < resultArray.size(); i++) {
+            JSONObject record = resultArray.getJSONObject(i);
+            String day = record.getString("day");
+            String date = DateUtil.getDateStr(day);
+            //占用人信息
+            long ownerId = record.getLong("ownerId");
+            String userName = getUserName(ownerId);
+
+            purSpotDateMap.put(date,userName);
         }
         return purSpotDateMap;
     }

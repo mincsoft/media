@@ -5,7 +5,6 @@ import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import other.aakepi.bdfjfaackcpic.util.DoubleUtil;
@@ -172,6 +171,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
             //点位纪录
             JSONArray spotPlanDateList = getSpotDate(spotId);
 
+            int spotNum = 0;
             //------------------------------------------
             if (startDate != null && endDate != null) {
                 Calendar startCal = Calendar.getInstance();
@@ -204,6 +204,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                                 //设置新的点位
                                 spotDate.put("spot",dateValue);
                                 updateBelongs(spotDate);
+                                spotNum += DoubleUtil.getValue(dateValue);
                             }
                             existsData=true;
                             //匹配上则删除集合
@@ -221,6 +222,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                         spotDate.accumulate("meidaId",mediaId);
                         spotDate.accumulate("dimDepart",contract.getString("dimDepart"));
                         createBelongs(spotDateBelongId,spotDate);
+                        spotNum += DoubleUtil.getValue(dateValue);
                     }
 
                 }
@@ -236,6 +238,26 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                     stringBuffer_msg.append("第" + currentRow + "行广告位，必须有点位纪录\n");
 //						return getErrorResponse(currentRow, "必须有点位纪录！");
                 }
+
+                //自動計算总刊例数、刊例总价、折后总价
+                JSONArray spots= getSpot(spotId);
+
+                if (spots!=null&&spots.size()>0){
+
+                    JSONObject spot = spots.getJSONObject(0);
+                    Double retailPrice = spot.getDouble("retailPrice");
+                    Double orderPrice = spot.getDouble("orderPrice");
+                    spot.put("id",spotId);
+                    spot.put("displayQuantity",spotNum);
+                    spot.put("retailPriceTotal",DoubleUtil.mul(spotNum,retailPrice));
+                    spot.put("totalOrderAmount",DoubleUtil.mul(spotNum,orderPrice));
+
+                    //自动计算
+                    updateBelongs(spot);
+                }
+
+
+
             }
         }
 
@@ -307,6 +329,12 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
     private JSONArray getSpotDate(String spotId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,spot from saleContractSpotDate where spotId=").append(spotId);
+        return queryResultArray( sql.toString());
+    }
+
+    private JSONArray getSpot(String spotId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,retailPrice,orderPrice from saleContractSpot where id=").append(spotId);
         return queryResultArray( sql.toString());
     }
 

@@ -33,11 +33,16 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
         spotConfig.addField("form", 80, null);
         spotConfig.addField("entityType", 80, null);
         spotConfig.addField("opMode", 80, null);
-        spotConfig.addField("saleStatus", 80, null);
-        spotConfig.addField("address", 150, null);
+//        spotConfig.addField("saleStatus", 80, null);
+//        spotConfig.addField("retailPrice", 80, null);
+        spotConfig.addFieldNotMedia("disPrice", "采购刊例单价",80, null);
+        spotConfig.addFieldNotMedia("totalNum", "总投放数", 80, null);
+        spotConfig.addFieldNotMedia("totalRetailAmount", "刊例总价", 100, null);
+//        spotConfig.addFieldNotMedia("totalOrderAmount", "折后总价", 100, null);
 
         //在单价后显示排期点位信息
-        spotConfig.setShowSpotFieldName("address");
+        spotConfig.setShowSpotFieldName("totalRetailAmount");
+        spotConfig.addField("address", 450, null);
     }
 
     @Override
@@ -105,6 +110,8 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
                 SpotField spotField = spotFieldList.get(j);
                 String fieldName = spotField.getEn();
                 Object value = record.get(fieldName);
+                if ("totalNum".equals(fieldName)||"totalRetailAmount".equals(fieldName)||"totalOrderAmount".equals(fieldName))
+                    value = 0;
                 if (value==null || StringUtils.isBlank(value.toString())){
                     //不处理
                     dateColumns++;
@@ -114,7 +121,18 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
                     } else if (fieldName.equals("name")){//媒体名称，增加ID
                         Object mediaId = record.get("mediaId");
                         headData.add(getColItemIdValue(sheetId, startRow, dateColumns++, mediaId, value));
-                    } else {
+                    } else if ("totalNum".equals(fieldName)){//媒体名称，增加ID
+                        int colIdex=dateColumns++;
+                        int startCol=colIdex+3;
+                        int spotNum = DateUtil.getBetweenDay(startDate,endDate);
+                        headData.add(getColCalItemObject(sheetId, startRow,colIdex , "=SUM("+cellIndex(startRow,startCol)+":"+cellIndex(startRow,(startCol+spotNum))+")"));
+                    } else if ("totalRetailAmount".equals(fieldName)){//媒体名称，增加ID
+                        headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=F"+startRow+"*"+"E"+startRow));
+                    }
+//                    else if ("totalOrderAmount".equals(fieldName)){//媒体名称，增加ID
+//                        headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=F"+startRow+"*"+"E"+startRow));
+//                    }
+                    else {
                         headData.add(getColItemObject(sheetId, startRow, dateColumns++, value));
                     }
                 }

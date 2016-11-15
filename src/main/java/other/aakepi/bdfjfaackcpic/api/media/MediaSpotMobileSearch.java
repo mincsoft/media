@@ -4,15 +4,13 @@ import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
-import other.aakepi.bdfjfaackcpic.api.QueryResult;
-import other.aakepi.bdfjfaackcpic.config.SpotField;
-import other.aakepi.bdfjfaackcpic.enums.OpMode;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 媒体管理查询：手机段
@@ -36,7 +34,7 @@ public class MediaSpotMobileSearch extends BaseSpotSearch implements ApiSupport 
         endDate = DateUtil.getDate(request.getParameter("end"));
 
         JSONObject mediaObj = getBelongs(NumberUtils.toLong(mediaId));
-        JSONArray spotDataArray = getSpotData();
+        JSONArray spotDataArray = getSpotData(mediaObj);
 
         returnMap.put("mediaObj", mediaObj);
         returnMap.put("spot", spotDataArray);
@@ -63,11 +61,11 @@ public class MediaSpotMobileSearch extends BaseSpotSearch implements ApiSupport 
      *
      * @return
      */
-    protected JSONArray getSpotData( ) {
+    protected JSONArray getSpotData(JSONObject media) {
         JSONArray headData = new JSONArray();
 
-        //已经购买的点位
-        JSONArray spotPlanDateList = getSpotDate(mediaId);
+        //已经销售的点位
+//        JSONArray spotPlanDateList = getSpotDate(media.getString("id"));
         int dateColumns = 0;
         //------------------------------------------
         if (startDate != null && endDate != null) {
@@ -80,7 +78,11 @@ public class MediaSpotMobileSearch extends BaseSpotSearch implements ApiSupport 
 
 
             //保留点位
-            Map<String,String> keepingSpotDate = getKeepingSpotDate(mediaId);
+            Map<String,String> keepingSpotDate = getKeepingSpotDate(media.getString("id"));
+            //销售的点位
+            Map<String,String> saleSpotDate = getSaleSpotDate(media.getString("id"));
+            //已外购或可用的点位
+            Map<String,String> purSpotDate = getPurSpotDate(media);
 
             while (startCal.before(endCal)) {
                 String date = String.format("%tF", startCal.getTime());
@@ -90,30 +92,43 @@ public class MediaSpotMobileSearch extends BaseSpotSearch implements ApiSupport 
                 JSONObject dataObj = new JSONObject();
                 dataObj.put("day",date);
 
-                boolean hasSpotItem = false;
-                if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {
-
-                    for (int k = 0; k < spotPlanDateList.size(); k++) {
-                        JSONObject spotDate = spotPlanDateList.getJSONObject(k);
-                        Date spotDay = DateUtil.getDate(spotDate.getString("day"));
-                        if (date.equals(DateUtil.getDateStr(spotDay))) {
-
-                            long ownerId = spotDate.getLong("ownerId");
-                            status="1";
-                            ownerName=getUserName(ownerId);
-                            //配上则删除集合
-                            spotPlanDateList.remove(k);
-                            hasSpotItem=true;
-                            break;
-                        }
-                    }
-                }
-
-                //没有购买点位纪录，已经保留
-                if (!hasSpotItem && keepingSpotDate.containsKey(date)){
+                if (saleSpotDate.containsKey(date)){
+                    status="1";
+                    ownerName=saleSpotDate.get(date);
+                }else if (keepingSpotDate.containsKey(date)){
                     status="2";
                     ownerName = keepingSpotDate.get(date);
+                }else if (purSpotDate.containsKey(date)){
+                    status="0";
+//                    ownerName = keepingSpotDate.get(date);
+                }else {
+                    status="-1";
                 }
+
+//                boolean hasSpotItem = false;
+//                if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {
+//
+//                    for (int k = 0; k < spotPlanDateList.size(); k++) {
+//                        JSONObject spotDate = spotPlanDateList.getJSONObject(k);
+//                        Date spotDay = DateUtil.getDate(spotDate.getString("day"));
+//                        if (date.equals(DateUtil.getDateStr(spotDay))) {
+//
+//                            long ownerId = spotDate.getLong("ownerId");
+//                            status="1";
+//                            ownerName=getUserName(ownerId);
+//                            //配上则删除集合
+//                            spotPlanDateList.remove(k);
+//                            hasSpotItem=true;
+//                            break;
+//                        }
+//                    }
+//                }
+//
+//                //没有销售点位纪录，已经保留
+//                if (!hasSpotItem && keepingSpotDate.containsKey(date)){
+//                    status="2";
+//                    ownerName = keepingSpotDate.get(date);
+//                }
 
                 dataObj.put("status",status);
                 dataObj.put("ownerName",ownerName);
@@ -129,6 +144,8 @@ public class MediaSpotMobileSearch extends BaseSpotSearch implements ApiSupport 
     }
 
 
+
+
     /**
      * 查询排期的点位纪录
      * @return
@@ -140,10 +157,75 @@ public class MediaSpotMobileSearch extends BaseSpotSearch implements ApiSupport 
             Long beginLong = startDate.getTime();
             Long endLong = endDate.getTime();
             sql.append(" and day >= ").append(beginLong).append(" and day <= ").append(endLong);
+//            sql.append(" and spot = 1 ");
         }
 
         return queryResultArray(sql.toString());
     }
+
+    private Map<String, String> getPurSpotDate(JSONObject media) {
+
+        String mediaId = media.getString("id");
+        int opMode = media.getInt("opMode"); //经营方式
+        JSONArray resultArray = new JSONArray();
+        if(opMode == 1 ){ //自有媒体, 每天都可用
+            Calendar startCal = Calendar.getInstance();
+            startCal.setTime(startDate);
+            Calendar endCal = Calendar.getInstance();
+            endCal.setTime(endDate);
+            endCal.add(Calendar.DATE, 1);//最后日期加一天，便于循环
+
+            while (startCal.before(endCal)) {
+                JSONObject record = new JSONObject();
+                record.put("day",String.format("%tF", startCal.getTime()));
+                record.put("ownerId",0);
+                resultArray.add(record);
+                startCal.add(Calendar.DATE,1);
+            }
+        }else if(opMode == 2 ){ //外购媒体 买了才可用
+            StringBuffer sql = new StringBuffer();
+            sql.append("select id,day,spot,ownerId from purContractSpotDate where meidaId=").append(media);
+            if (startDate != null && endDate != null) {
+                Long beginLong = startDate.getTime();
+                Long endLong = endDate.getTime();
+                sql.append(" and day >= ").append(beginLong).append(" and day <= ").append(endLong);
+//                sql.append(" and spot = 1 ");
+            }
+            resultArray = queryResultArray(sql.toString());
+        }
+
+        Map<String,String> purSpotDateMap=new HashMap<String, String>();
+        for (int i = 0; i < resultArray.size(); i++) {
+            JSONObject record = resultArray.getJSONObject(i);
+            String day = record.getString("day");
+            String date = DateUtil.getDateStr(day);
+            //占用人信息
+            long ownerId = record.getLong("ownerId");
+            String userName = getUserName(ownerId);
+
+            purSpotDateMap.put(date,userName);
+        }
+        return purSpotDateMap;
+    }
+
+    private Map<String, String> getSaleSpotDate(String id) {
+
+        JSONArray resultArray = getSpotDate(id);
+
+        Map<String,String> saleSpotDateMap=new HashMap<String, String>();
+        for (int i = 0; i < resultArray.size(); i++) {
+            JSONObject record = resultArray.getJSONObject(i);
+            String day = record.getString("day");
+            String date = DateUtil.getDateStr(day);
+            //占用人信息
+            long ownerId = record.getLong("ownerId");
+            String userName = getUserName(ownerId);
+
+            saleSpotDateMap.put(date,userName);
+        }
+        return saleSpotDateMap;
+    }
+
 
 
     /**

@@ -61,6 +61,18 @@ public class SaveMediaKeeping extends BaseTrigger implements ScriptTrigger {
             throw new ScriptBusinessException(msg.toString());
         }
 
+        JSONArray salesArray = getSaleContractSpotDate(begin,end,mediaId);
+        if (salesArray!=null&&salesArray.size()>0){
+            StringBuffer msg = new StringBuffer();
+            msg.append("该媒体存在销售纪录：");
+            for (int i = 0; i <recordArray.size() ; i++) {
+                JSONObject record =recordArray.getJSONObject(i);
+                String day = record.getString("day");
+                msg.append("存在保留纪录：").append(day);
+            }
+            throw new ScriptBusinessException(msg.toString());
+        }
+
         //TODO 增加保留点位
 
         ScriptTriggerResult scriptTriggerResult = new ScriptTriggerResult();
@@ -98,6 +110,25 @@ public class SaveMediaKeeping extends BaseTrigger implements ScriptTrigger {
 
         return queryResultArray(sql.toString());
 
+    }
+
+
+    /**
+     * 查询排期的点位纪录
+     * @return
+     */
+    private JSONArray getSaleContractSpotDate(Date startDate, Date endDate,String mediaId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,day from saleContractSpotDate where meidaId=").append(mediaId);
+        if (startDate != null && endDate != null) {
+            Long beginLong = startDate.getTime();
+            Long endLong = endDate.getTime();
+            sql.append(" and day >= ").append(beginLong).append(" and day <= ").append(endLong);
+        }
+
+
+
+        return queryResultArray( sql.toString());
     }
 
 

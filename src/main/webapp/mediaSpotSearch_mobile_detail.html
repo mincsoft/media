@@ -182,8 +182,10 @@
             $("<td bgcolor='green'>已售</td>").appendTo(tr);
         } else if ("2"==status){
             $("<td bgcolor='#87cefa'>保留</td>").appendTo(tr);
-        } else {
+        } else if("0"==status){
             $("<td >可用</td>").appendTo(tr);
+        }else if("-1"==status){
+            $("<td >--</td>").appendTo(tr);
         }
 
         $("<td >"+record.ownerName+"</td>").appendTo(tr);

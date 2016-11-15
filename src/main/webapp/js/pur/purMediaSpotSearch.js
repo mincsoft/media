@@ -282,7 +282,7 @@ var request = {
 
 var getParentUrl = function () {
     var isInframe = (parent !== window);
-    var parentUrl = null;
+    var parentUrl = "";
 
     if(isInframe){
         parentUrl = document.referrer;

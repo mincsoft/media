@@ -14,41 +14,11 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="./js/bootstrap.min.js"></script>
-    <script src="js/sales/salesMediaSpotSearch.js?v=1.0"></script>
+    <script src="js/sales/salesMediaSpotSearch.js?v=1.1"></script>
 </head>
 <body>
 
 <script type="text/javascript">
-    function setCookie(c_name, value, expiredays) {
-        var exdate = new Date();
-        exdate.setDate(exdate.getDate() + expiredays);
-        alert(exdate.getDate() + expiredays);
-        document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()) + ";path=/;domain=b.com";
-    }
-    window.onload = function () {
-        setCookie("listallwjh", "sfwjh");
-        alert("Cookie设置成功！");
-    }
-    function getCookie(c_name) {
-        if (document.cookie.length > 0) {
-            c_start = document.cookie.indexOf(c_name + "=");
-            if (c_start != -1) {
-                c_start = c_start + c_name.length + 1;
-                c_end = document.cookie.indexOf(";", c_start);
-                if (c_end == -1) c_end = document.cookie.length;
-                return unescape(document.cookie.substring(c_start, c_end));
-            }
-        }
-        return "";
-    }
-    window.onload = function () {
-        var c_name = "listallwjh";
-        if (getCookie("listallwjh") != null) {
-            alert(getCookie("listallwjh"));
-        }
-    } </script>
-
-<script>
 
 </script>
 
@@ -101,6 +71,12 @@
                 <a href="javascript:;" class="sb" act="load_spot" style="display: none;">加载</a>
             </div>
         </form>
+    </div>
+
+    <div style="margin-left:5px;font-size: 11px">
+        温馨提示：<span style="color:#858987;">灰色</span>:为未购买或已销售；
+        <span style="color:#87cefa">蓝色</span>：为保留中；
+        <span style="color:green;">"1"</span>:为当前正排期；
     </div>
 </div>
 

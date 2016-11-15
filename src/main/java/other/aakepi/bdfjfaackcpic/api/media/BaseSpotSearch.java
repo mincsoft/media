@@ -464,6 +464,45 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
         return cols;
     }
 
+
+
+    protected JSONObject getColCalItemObject(Integer sheetId,int row, int col,String value) {
+        JSONObject cols = getItemObject(sheetId, row, col);
+        JSONObject data = new JSONObject();
+        data.put("data",value);
+        data.put("cal",true);
+        data.put("ta","right");
+        data.put("va","middle");
+        String fm="money||0|negative1";
+        data.put("fm",fm);
+        data.put("dsd","ed");
+        cols.accumulate("json", data.toString());
+        return cols;
+    }
+
+    protected String cellIndex(int iRow,int iCol) {
+        String strCol = "";
+        if(iCol>0) iCol=iCol-1;
+        int baseCol = 65 + iCol;
+        if (baseCol > 90) {
+            // 十位位置
+            int i2 = 0;
+            if ((baseCol - 90) / 26 > 0) {
+                i2 = 65 + ((baseCol - 90 - 1) / 26);
+            } else {
+                i2 = 65;
+            }
+            // 个位位置
+            int i1 = ((baseCol - 90 - 1) % 26);
+            i1 = 65 + i1;
+
+            strCol = String.valueOf((char) i2) + String.valueOf((char) i1);
+        } else {
+            strCol = String.valueOf((char) baseCol);
+        }
+        return strCol+iRow;
+    }
+
     /**
      * 获得排期Cell对象
      * @param sheetId
@@ -515,6 +554,7 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
      */
     protected String getUserName(Long userId){
         String userName = "";
+        if(userId == 0) return "";
 
         if(userMap.containsKey(userId)){
             userName= userMap.get(userId);

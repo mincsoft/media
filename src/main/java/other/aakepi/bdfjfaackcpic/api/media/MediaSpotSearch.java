@@ -48,12 +48,16 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         spotConfig.addField("form", 80, null);
         spotConfig.addField("entityType", 80, null);
         spotConfig.addField("opMode", 80, null);
-        spotConfig.addField("saleStatus", 80, null);
-        spotConfig.addField("address", 150, null);
+//        spotConfig.addField("saleStatus", 80, null);
         spotConfig.addField("retailPrice", 100, " fm: \"money||2|none\"");
+//        spotConfig.addFieldNotMedia("orderPrice", "折后单价",80, " fm: \"money||2|none\"");
+        spotConfig.addFieldNotMedia("totalNum", "总投放数", 80, " fm: \"money||2|none\"");
+        spotConfig.addFieldNotMedia("totalRetailAmount", "刊例总价", 100, " fm: \"money||2|none\"");
+//        spotConfig.addFieldNotMedia("totalOrderAmount", "折后总价", 100, " fm: \"money||2|none\"");
 
         //在单价后显示排期点位信息
-        spotConfig.setShowSpotFieldName("retailPrice");
+        spotConfig.setShowSpotFieldName("totalRetailAmount");
+        spotConfig.addField("address", 450, null);
     }
 
 
@@ -91,13 +95,26 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                     SpotField spotField = spotFieldList.get(j);
                     String fieldName = spotField.getEn();
                     Object value = record.get(fieldName);
+                    if ("totalNum".equals(fieldName)||"totalRetailAmount".equals(fieldName)||"totalOrderAmount".equals(fieldName))
+                        value = 0;
                     if (value == null || StringUtils.isBlank(value.toString())){
                         //不处理
                         dateColumns++;
                     }  else{
                         if ("select".equals(spotField.getType()) || "entityType".equals(spotField.getType())) {
                             headData.add(getColItemSelect(sheetId, startRow, dateColumns++, record, fieldName));
-                        } else {
+                        } else if ("totalNum".equals(fieldName)){//媒体名称，增加ID
+                            int colIdex=dateColumns++;
+                            int startCol=colIdex+2;
+                            int spotNum = DateUtil.getBetweenDay(startDate,endDate);
+                            headData.add(getColCalItemObject(sheetId, startRow,colIdex , "=SUM("+cellIndex(startRow,startCol)+":"+cellIndex(startRow,(startCol+spotNum))+")"));
+                        } else if ("totalRetailAmount".equals(fieldName)){//媒体名称，增加ID
+                            headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=F"+startRow+"*"+"E"+startRow));
+                        }
+//                        else if ("totalOrderAmount".equals(fieldName)){//媒体名称，增加ID
+//                            headData.add(getColCalItemObject(sheetId,startRow, dateColumns++, "=G"+startRow+"*"+"F"+startRow));
+//                        }
+                        else {
                             headData.add(getColItemObject(sheetId, startRow, dateColumns++, value));
                         }
                     }
@@ -109,7 +126,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                     boolean buyMedia = OpMode.BUY.getCode().equals(opMode);
 
                     if (renderDateColumn) {
-                        //已经购买的点位
+                        //已经销售的点位
                         spotPlanDateList = getSpotDate(mediaId);
                         //------------------------------------------
                         if (startDate != null && endDate != null) {
@@ -122,11 +139,13 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
 
                             //保留点位
                             Map<String,String> keepingSpotDate = getKeepingSpotDate(mediaId);
+                            //外购的点位
+                            Map<String,String> purSpotDate = getPurContractSpotDate(mediaId);
 
                             while (startCal.before(endCal)) {
                                 String date = String.format("%tF", startCal.getTime());
 
-                                //购买正常绿色
+                                //销售正常绿色
                                 String other = ",bgc: '#D7E3BC'";
 
                                 boolean hasSpotItem = false;
@@ -148,7 +167,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                                     }
                                 }
 
-                                //没有购买点位纪录，已经保留
+                                //没有销售点位纪录，已经保留
                                 if (!hasSpotItem && keepingSpotDate.containsKey(date)){
                                     other =", bgc: '#87cefa'";
                                     String userName = keepingSpotDate.get(date);
@@ -157,6 +176,13 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
 //                                    }
                                     headData.add(getColItemObject(sheetId, startRow, dateColumns, userName,other));
                                 }
+
+                                if(buyMedia&&!purSpotDate.containsKey(date)){
+                                    other =", bgc: '#C9D0CD'";
+                                    headData.add(getColItemObject(sheetId, startRow, dateColumns, "",other));
+                                }
+
+
                                 startCal.add(Calendar.DATE, 1);//开始日期加1
                                 //列加+1
                                 dateColumns++;
@@ -188,7 +214,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         }else if (StringUtils.isNotBlank(mediaName)) {
             sql.append(" where name like '%").append(mediaName).append("%'");
         }
-        sql.append(" order by name");
+        sql.append(" order by opMode");
         sql.append(" limit ").append(first).append(",").append(size);
 
         return queryResult( sql.toString());

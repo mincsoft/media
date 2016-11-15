@@ -20,8 +20,9 @@ $(function(){
     access_token = request.getParam("access_token");
     debug = request.getParam("debug");
     contractId= request.getParam("contractId");
+    op = request.getParam("op");
     if(contractId == null) contractId = request.getParentParam("contractId");
-    op= request.getParentParam("op");
+    if(op == null) op= request.getParentParam("op");
     //本地测试
     if ("dev"==debug){
         urlTitle = "http://localhost:8081/media";
@@ -283,7 +284,7 @@ var request = {
 
 var getParentUrl = function () {
     var isInframe = (parent !== window);
-    var parentUrl = null;
+    var parentUrl = "";
 
     if(isInframe){
         parentUrl = document.referrer;
