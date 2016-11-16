@@ -36,10 +36,10 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
         spotConfig.addField("opMode", 80, null);
 //        spotConfig.addField("saleStatus", 80, null);
         spotConfig.addField("retailPrice", 80, null);
-        spotConfig.addFieldNotMedia("orderPrice", "折后单价",80, null);
+        spotConfig.addFieldNotMedia("orderPrice", "折后单价",80, " fm: \"money||2|none\"");
         spotConfig.addFieldNotMedia("totalNum", "总投放数", 80, null);
-        spotConfig.addFieldNotMedia("totalRetailAmount", "刊例总价", 100, null);
-        spotConfig.addFieldNotMedia("totalOrderAmount", "折后总价", 100, null);
+        spotConfig.addFieldNotMedia("totalRetailAmount", "刊例总价", 100, " fm: \"money||2|none\"");
+        spotConfig.addFieldNotMedia("totalOrderAmount", "折后总价", 100, " fm: \"money||2|none\"");
 
         spotConfig.addFieldNotMedia("onlineTimeArange", "点位上线时间段", 100, null);
 //        spotConfig.addFieldNotMedia("boughtType", "购买单位形式", 100, null);

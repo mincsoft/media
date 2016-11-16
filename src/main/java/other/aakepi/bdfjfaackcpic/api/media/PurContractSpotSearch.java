@@ -35,9 +35,9 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
         spotConfig.addField("opMode", 80, null);
 //        spotConfig.addField("saleStatus", 80, null);
 //        spotConfig.addField("retailPrice", 80, null);
-        spotConfig.addFieldNotMedia("disPrice", "采购刊例单价",80, null);
+        spotConfig.addFieldNotMedia("disPrice", "采购刊例单价",80, " fm: \"money||2|none\"");
         spotConfig.addFieldNotMedia("totalNum", "总投放数", 80, null);
-        spotConfig.addFieldNotMedia("totalRetailAmount", "刊例总价", 100, null);
+        spotConfig.addFieldNotMedia("totalRetailAmount", "刊例总价", 100, " fm: \"money||2|none\"");
 //        spotConfig.addFieldNotMedia("totalOrderAmount", "折后总价", 100, null);
 
         //在单价后显示排期点位信息
