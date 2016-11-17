@@ -178,33 +178,57 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
 
                             //控制是否允许填写
                             String other = "";
-                            if((buyMedia&& !purSpotDateMap.containsKey(date))||saleSpotDateMap.containsKey(date)){
+                            if((buyMedia&& !purSpotDateMap.containsKey(date))||saleSpotDateMap.containsKey(date)){//1 没买的或者已经销售的
                                 other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
-                            }else if(keepingSpotDate.containsKey(date)){
+                                headData.add(getColItemObject(sheetId, startRow, dateColumns, null,other));
+                            }else if(keepingSpotDate.containsKey(date)){// 2 已保留的
+                                //显示保留人
                                 other =", bgc: '#87cefa'";
-                            }
-                            boolean hasSpotItem = false;
-                            if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {
+                                String userName = keepingSpotDate.get(date);
+                                headData.add(getColItemObject(sheetId, startRow, dateColumns, userName,other));
+                            }else {
+                                if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {//3 当中正排期的
 
-                                for (int k = 0; k < spotPlanDateList.size(); k++) {
-                                    JSONObject spotDate = spotPlanDateList.getJSONObject(k);
-                                    Date spotDay = DateUtil.getDate(spotDate.getString("day"));
-                                    if (date.equals(DateUtil.getDateStr(spotDay))) {
-                                        //点位信息
-                                        String spot = spotDate.getString("spot");
-                                        headData.add(getColItemObject(sheetId, startRow, dateColumns, spot,other));
+                                    for (int k = 0; k < spotPlanDateList.size(); k++) {
+                                        JSONObject spotDate = spotPlanDateList.getJSONObject(k);
+                                        Date spotDay = DateUtil.getDate(spotDate.getString("day"));
+                                        if (date.equals(DateUtil.getDateStr(spotDay))) {
+                                            //点位信息
+                                            String spot = spotDate.getString("spot");
 
-                                        //配上则删除集合
-                                        spotPlanDateList.remove(k);
-                                        hasSpotItem=true;
-                                        break;
+                                            headData.add(getColItemObject(sheetId, startRow, dateColumns, spot,other));
+                                            //配上则删除集合
+                                            spotPlanDateList.remove(k);
+//                                            hasSpotItem=true;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                            //没有点位纪录，
-                            if (!hasSpotItem && StringUtils.isNotBlank(other)){
-                                headData.add(getColItemObject(sheetId, startRow, dateColumns, null,other));
-                            }
+
+//                            boolean hasSpotItem = false;
+//                            if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {
+//
+//                                for (int k = 0; k < spotPlanDateList.size(); k++) {
+//                                    JSONObject spotDate = spotPlanDateList.getJSONObject(k);
+//                                    Date spotDay = DateUtil.getDate(spotDate.getString("day"));
+//                                    if (date.equals(DateUtil.getDateStr(spotDay))) {
+//                                        //点位信息
+//                                        String spot = spotDate.getString("spot");
+//
+//                                        headData.add(getColItemObject(sheetId, startRow, dateColumns, spot,other));
+//
+//                                        //配上则删除集合
+//                                        spotPlanDateList.remove(k);
+//                                        hasSpotItem=true;
+//                                        break;
+//                                    }
+//                                }
+//                            }
+//                            //没有点位纪录，
+//                            if (!hasSpotItem && StringUtils.isNotBlank(other)){
+//                                headData.add(getColItemObject(sheetId, startRow, dateColumns, null,other));
+//                            }
                             startCal.add(Calendar.DATE, 1);//开始日期加1
                             //列加+1
                             dateColumns++;
