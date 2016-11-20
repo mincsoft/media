@@ -9,6 +9,8 @@ import other.aakepi.bdfjfaackcpic.config.SpotField;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import other.aakepi.bdfjfaackcpic.util.DoubleUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -243,13 +245,24 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                 JSONArray spots= getSpot(spotId);
 
                 if (spots!=null&&spots.size()>0){
-
                     JSONObject spot = spots.getJSONObject(0);
-                    Double retailPrice = spot.getDouble("retailPrice");
+//                    Double retailPrice = spot.getDouble("retailPrice");
                     Double orderPrice = spot.getDouble("orderPrice");
                     spot.put("id",spotId);
+                    //日期
+                    JSONArray spotDateArray = getSpotDate(spotId);
+                    if (spotDateArray!=null&&spotDateArray.size()>0){
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            spot.put("startAt",format.parse(spotDateArray.getJSONObject(0).getString("day")).getTime());
+                            spot.put("endAt",format.parse(spotDateArray.getJSONObject(spotDateArray.size()-1).getString("day")).getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     spot.put("displayQuantity",spotNum);
-                    spot.put("retailPriceTotal",DoubleUtil.mul(spotNum,retailPrice));
+//                    spot.put("retailPriceTotal",DoubleUtil.mul(spotNum,retailPrice));
                     spot.put("totalOrderAmount",DoubleUtil.mul(spotNum,orderPrice));
 
                     //自动计算
@@ -329,12 +342,13 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
     private JSONArray getSpotDate(String spotId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,spot from saleContractSpotDate where spotId=").append(spotId);
+        sql.append(" order by day ");
         return queryResultArray( sql.toString());
     }
 
     private JSONArray getSpot(String spotId) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select id,retailPrice,orderPrice from saleContractSpot where id=").append(spotId);
+        sql.append("select id,orderPrice from saleContractSpot where id=").append(spotId);
         return queryResultArray( sql.toString());
     }
 

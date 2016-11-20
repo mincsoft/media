@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
+import other.aakepi.bdfjfaackcpic.enums.OpMode;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
 import java.util.*;
@@ -99,7 +100,7 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
             int dateColumns = 0;
             JSONObject record = records.getJSONObject(i);
             String spotId =record.getString("id");
-//            String opMode =record.getString("opMode");
+            String opMode =record.getString("opMode");
 
             JSONObject col0 = getItemObject(sheetId, startRow, dateColumns++);
             col0.accumulate("json", "{id: \"" + spotId + "\"}");
@@ -138,6 +139,8 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
                 }
                 //显示点位
                 boolean renderDateColumn = fieldName.equalsIgnoreCase(spotConfig.getShowSpotFieldName());
+//外购媒体
+                boolean buyMedia = OpMode.BUY.getCode().equals(opMode);
 
                 if (renderDateColumn) {
                     spotPlanDateList = getSpotDate(spotId);
@@ -150,11 +153,21 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
                         //date_0_2015-01-01
                         endCal.add(Calendar.DATE, 1);//最后日期加一天，便于循环
 
+                        //外购点位纪录
+                        Map<String,String> purSpotDateMap = new HashMap<String, String>();
+                        if (buyMedia)
+                            purSpotDateMap=getPurContractSpotDate(spotId,record.get("mediaId")+"");
+
                         while (startCal.before(endCal)) {
                             String date = String.format("%tF", startCal.getTime());
 
                             //控制是否允许填写
                             String other = "";
+
+                            if((buyMedia&&purSpotDateMap.containsKey(date))){//1 没买的或者已经销售的
+                                other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
+                                headData.add(getColItemObject(sheetId, startRow, dateColumns, null,other));
+                            }
 
                             boolean hasSpotItem = false;
                             if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {
@@ -263,9 +276,11 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
      * 获得采购合同点位ID
      * @return
      */
-    private Map<String,String> getPurContractSpotDate(String mediaId) {
+    private Map<String,String> getPurContractSpotDate(String spotId,String mediaId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day from purContractSpotDate where mediaId=").append(mediaId);
+
+        sql.append(" and spotId!="+spotId);//362989
         if (startDate != null && endDate != null) {
             Long beginLong = startDate.getTime();
             Long endLong = endDate.getTime();
