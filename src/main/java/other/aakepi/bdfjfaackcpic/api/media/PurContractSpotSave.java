@@ -9,6 +9,8 @@ import other.aakepi.bdfjfaackcpic.config.SpotField;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import other.aakepi.bdfjfaackcpic.util.DoubleUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -171,6 +173,8 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
             //点位纪录
             JSONArray spotPlanDateList = getSpotDate(spotId);
 
+            int spotNum = 0;
+
             //------------------------------------------
             if (startDate != null && endDate != null) {
                 Calendar startCal = Calendar.getInstance();
@@ -234,6 +238,32 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
                 if (!hasSpot) {
                     stringBuffer_msg.append("第" + currentRow + "行广告位，必须有点位纪录\n");
 //						return getErrorResponse(currentRow, "必须有点位纪录！");
+                }
+
+                //自動計算总刊例数、刊例总价、折后总价
+                JSONArray spots= getSpot(spotId);
+
+                if (spots!=null&&spots.size()>0){
+                    JSONObject spot = spots.getJSONObject(0);
+                    Double orderPrice = spot.getDouble("orderPrice");
+                    spot.put("id",spotId);
+                    //日期
+                    JSONArray spotDateArray = getSpotDate(spotId);
+                    if (spotDateArray!=null&&spotDateArray.size()>0){
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            spot.put("startAt",format.parse(spotDateArray.getJSONObject(0).getString("day")).getTime());
+                            spot.put("endAt",format.parse(spotDateArray.getJSONObject(spotDateArray.size()-1).getString("day")).getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    spot.put("displayQuantity",spotNum);
+                    spot.put("totalOrderAmount",DoubleUtil.mul(spotNum,orderPrice));
+
+                    //自动计算
+                    updateBelongs(spot);
                 }
             }
         }
@@ -306,6 +336,13 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
     private JSONArray getSpotDate(String spotId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,qty from purContractSpotDate where spotId=").append(spotId);
+        sql.append(" order by day ");
+        return queryResultArray( sql.toString());
+    }
+
+    private JSONArray getSpot(String spotId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,orderPrice from purContractSpot where id=").append(spotId);
         return queryResultArray( sql.toString());
     }
 

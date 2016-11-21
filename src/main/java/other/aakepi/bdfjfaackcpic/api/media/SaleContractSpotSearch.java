@@ -182,11 +182,6 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                                 other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
                                 headData.add(getColItemObject(sheetId, startRow, dateColumns, null,other));
                             }else if(keepingSpotDate.containsKey(date)){// 2 已保留的
-                                //显示保留人
-                                other =", bgc: '#87cefa'";
-                                String userName = keepingSpotDate.get(date);
-                                headData.add(getColItemObject(sheetId, startRow, dateColumns, userName,other));
-                            }else {
                                 if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {//3 当中正排期的
 
                                     for (int k = 0; k < spotPlanDateList.size(); k++) {
@@ -204,6 +199,11 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
                                         }
                                     }
                                 }
+                            }else {
+                                //显示保留人
+                                other =", bgc: '#87cefa'";
+                                String userName = keepingSpotDate.get(date);
+                                headData.add(getColItemObject(sheetId, startRow, dateColumns, userName,other));
                             }
 
 //                            boolean hasSpotItem = false;
