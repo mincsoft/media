@@ -208,6 +208,7 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
                                 spotDate.put("qty",dateValue);
                                 updateBelongs(spotDate);
                             }
+                            spotNum += DoubleUtil.getValue(dateValue);
                             existsData=true;
                             //匹配上则删除集合
                             spotPlanDateList.remove(j);
@@ -224,6 +225,7 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
                         spotDate.accumulate("mediaId",mediaId);
                         spotDate.accumulate("dimDepart",contract.getString("dimDepart"));
                         createBelongs(spotDateBelongId,spotDate);
+                        spotNum += DoubleUtil.getValue(dateValue);
                     }
 
                 }
@@ -245,7 +247,7 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
 
                 if (spots!=null&&spots.size()>0){
                     JSONObject spot = spots.getJSONObject(0);
-                    Double orderPrice = spot.getDouble("orderPrice");
+                    Double orderPrice = spot.getDouble("disPrice");
                     spot.put("id",spotId);
                     //日期
                     JSONArray spotDateArray = getSpotDate(spotId);
@@ -259,8 +261,8 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
                         }
                     }
 
-                    spot.put("displayQuantity",spotNum);
-                    spot.put("totalOrderAmount",DoubleUtil.mul(spotNum,orderPrice));
+                    spot.put("qty",spotNum);
+                    spot.put("purAmount",DoubleUtil.mul(spotNum,orderPrice));
 
                     //自动计算
                     updateBelongs(spot);
@@ -342,7 +344,7 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
 
     private JSONArray getSpot(String spotId) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select id,orderPrice from purContractSpot where id=").append(spotId);
+        sql.append("select id,disPrice from purContractSpot where id=").append(spotId);
         return queryResultArray( sql.toString());
     }
 

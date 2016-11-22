@@ -51,7 +51,7 @@ public class SaveMediaKeeping extends BaseTrigger implements ScriptTrigger {
             msg.append("该媒体：");
             for (int i = 0; i < purSpotDateArray.size(); i++) {
                 String day = purSpotDateArray.getString(i);
-                msg.append("未购买纪：").append(day);
+                msg.append("未购买：").append(day);
             }
             throw new ScriptBusinessException(msg.toString());
         }

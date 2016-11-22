@@ -124,7 +124,7 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
                         headData.add(getColItemIdValue(sheetId, startRow, dateColumns++, mediaId, value));
                     } else if ("totalNum".equals(fieldName)){//媒体名称，增加ID
                         int colIdex=dateColumns++;
-                        int startCol=colIdex+3;
+                        int startCol=colIdex+2;
                         int spotNum = DateUtil.getBetweenDay(startDate,endDate);
                         headData.add(getColCalItemObject(sheetId, startRow,colIdex , "=SUM("+cellIndex(startRow,startCol)+":"+cellIndex(startRow,(startCol+spotNum))+")"));
                     } else if ("totalRetailAmount".equals(fieldName)){//媒体名称，增加ID

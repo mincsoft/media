@@ -206,8 +206,8 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                                 //设置新的点位
                                 spotDate.put("spot",dateValue);
                                 updateBelongs(spotDate);
-                                spotNum += DoubleUtil.getValue(dateValue);
                             }
+                            spotNum += DoubleUtil.getValue(dateValue);
                             existsData=true;
                             //匹配上则删除集合
                             spotPlanDateList.remove(j);
