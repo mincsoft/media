@@ -2,6 +2,9 @@ package other.aakepi.bdfjfaackcpic.api.media;
 
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
+import com.rkhd.platform.sdk.log.Logger;
+import com.rkhd.platform.sdk.log.LoggerFactory;
+import com.sun.org.apache.xerces.internal.impl.xs.SchemaSymbols;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -17,17 +20,18 @@ import java.util.*;
  * Created by yangyixin on 16/10/4.
  */
 public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
-
+    protected Logger logger = LoggerFactory.getLogger();
 
     protected  Date startDate;
     protected  Date endDate;
     @Override
     public String execute(Request request, Long userId, Long tenantId) {
-
+        long startTime=System.currentTimeMillis();
         initRequest(request);
 
         initParam();
-
+        long  initParamTime=System.currentTimeMillis()-startTime;
+        System.out.println("=========initParam tast time============="+initParamTime);
         Map<String, Object> returnMap = new HashMap<String, Object>();
 
         startDate = DateUtil.getDate(request.getParameter("begin"));
@@ -35,6 +39,8 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         JSONObject sheetObj = sheet(startDate, endDate, null);
 
         returnMap.put("sheet", sheetObj);
+        long endTime=System.currentTimeMillis();
+        System.out.println("==========消耗时间为：===="+(endTime-startTime));
         return JSONObject.fromObject(returnMap).toString();
     }
 
@@ -72,9 +78,9 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
     protected JSONArray getMediaSpotCellData( int first, int size, int sheetId) {
         JSONArray headData = new JSONArray();
         QueryResult result = getAllMedia(first, size);
+        logger.debug("==getAllMedia====="+result);
         if (result == null) return headData;
         if (result.getTotalSize() == null) return headData;
-
         if (result.getTotalSize() > 0) {
             //全部的媒体记录
             JSONArray records = result.getRecords();
@@ -128,7 +134,10 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
 
                     if (renderDateColumn) {
                         //已经销售的点位
+                        long start= System.currentTimeMillis();
                         spotPlanDateList = getSpotDate(mediaId);
+                        long tastTime=System.currentTimeMillis()-start;
+                        logger.info("==getSpotDate tasttime="+tastTime);
                         //------------------------------------------
                         if (startDate != null && endDate != null) {
                             Calendar startCal = Calendar.getInstance();
@@ -139,9 +148,11 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                             endCal.add(Calendar.DATE, 1);//最后日期加一天，便于循环
 
                             //保留点位
-                            Map<String,String> keepingSpotDate = getKeepingSpotDate(mediaId);
+                               Map<String,String> keepingSpotDate =getKeepingSpotDate(mediaId);
+//                            Map<String,String> keepingSpotDate = new HashMap<String, String>();
                             //外购的点位
                             Map<String,String> purSpotDate = getPurContractSpotDate(mediaId);
+//                            Map<String,String> purSpotDate = new HashMap<String, String>();
 
                             while (startCal.before(endCal)) {
                                 String date = String.format("%tF", startCal.getTime());
@@ -204,6 +215,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
      * @return
      */
     private QueryResult getAllMedia(int first, int size) {
+        long start=System.currentTimeMillis();
         String mediaId = request.getParameter("mediaId");
         String mediaName = request.getParameter("mediaName");
 
@@ -217,7 +229,9 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         }
         sql.append(" order by opMode");
         sql.append(" limit ").append(first).append(",").append(size);
-
+        long tastTime=System.currentTimeMillis()-start;
+        logger.info("===getAllMedia==="+tastTime);
+        System.out.println("======getAllMedia'sSQL========="+sql);
         return queryResult( sql.toString());
     }
 
@@ -226,6 +240,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
      * @return
      */
     private JSONArray getSpotDate(String mediaId) {
+
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,spot from saleContractSpotDate where meidaId=").append(mediaId);
         if (startDate != null && endDate != null) {

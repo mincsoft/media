@@ -230,7 +230,7 @@ public abstract class BaseApiSupport {
                 }
             }
         }
-
+        logger.info("getBelongSelectItem：:" + selectMap);
         return selectMap;
     }
 
@@ -244,6 +244,7 @@ public abstract class BaseApiSupport {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/describe");
         rkhdHttpData.putFormData("belongId", belongId);
         String result = apiRequest(rkhdHttpData);
+        logger.info("getBelongsDesc：:" + result);
         return JSONObject.fromObject(result);
     }
 

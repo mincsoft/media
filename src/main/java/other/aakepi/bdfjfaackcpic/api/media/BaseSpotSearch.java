@@ -51,12 +51,15 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
         mediaBelongId = getBelongId(allBelongs, "media");
         //字段描述
         mediaBelongsDes = getBelongsDesc( mediaBelongId);
+
+        logger.info("==initParam.getBelongsDesc:=="+mediaBelongsDes);
         //下拉选项
         mediaSelectMap = getBelongSelectItem(mediaBelongsDes);
         //排期配置对象
         spotConfig = new SpotConfig(mediaBelongsDes);
-
+        logger.info("==initParam.new SpotConfig(mediaBelongsDes):==" + spotConfig.getSpotFielList());
         initSpotConfig();
+        logger.info("==initParam.initSpotConfig:=="+spotConfig.getSpotFielList());
     }
 
     /**
