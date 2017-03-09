@@ -1,5 +1,6 @@
 package other.aakepi.bdfjfaackcpic.api.media;
 
+import com.Configuration;
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
@@ -26,7 +27,8 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
      */
     protected void initParam() {
         super.initParam();
-        spotDateBelongId = getBelongId(allBelongs, "saleContractSpotDate");
+//        spotDateBelongId = getBelongId(allBelongs, "saleContractSpotDate");
+        spotDateBelongId=mediaBelongId =Long.parseLong(Configuration.getInstance().getValue("saleContractSpotDateBelongId")) ;
     }
     @Override
     public String execute(Request request, Long userId, Long tenantId) {
@@ -36,6 +38,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
         startDate = DateUtil.getDate(request.getParameter("startDate"));
         endDate = DateUtil.getDate(request.getParameter("endDate"));
         String json = request.getParameter("json");
+        logger.debug("==request.getParameter(\"json\")=="+json);
 
         JSONObject jsonResult = new JSONObject();
 
@@ -172,7 +175,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
             hasSpotItem = true;
             //点位纪录
             JSONArray spotPlanDateList = getSpotDate(spotId);
-
+            logger.info("==excute.getSpotDate======"+spotPlanDateList);
             int spotNum = 0;
             //------------------------------------------
             if (startDate != null && endDate != null) {
@@ -198,6 +201,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                     boolean existsData = false;
                     for (int j = 0; j < spotPlanDateList.size(); j++) {
                         JSONObject spotDate = spotPlanDateList.getJSONObject(j);
+                        logger.info("===spotPlanDateList.getJSONObject(j)========="+spotDate);
                         Date spotDay = DateUtil.getDate(spotDate.getString("day"));
                         String spot = spotDate.getString("spot");
                         if (date.equals(DateUtil.getDateStr(spotDay))) {

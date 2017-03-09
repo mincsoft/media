@@ -136,6 +136,7 @@
             <order>1</order>
             <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.SaveMediaKeepingAfter</class>
         </trigger>
+
     </config>
 </configs>
 

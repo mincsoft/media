@@ -1,5 +1,6 @@
 package other.aakepi.bdfjfaackcpic.api.media;
 
+import com.Configuration;
 import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -46,15 +47,18 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
      */
     protected void initParam() {
         //查询全部实体，获得对应的belongId：
-        allBelongs = getAllBelongs();
+//        allBelongs = getAllBelongs();
+//        logger.info("==initParam.allBelongs:=="+allBelongs);
         //媒体对象的ID
-        mediaBelongId = getBelongId(allBelongs, "media");
+        mediaBelongId =Long.parseLong(Configuration.getInstance().getValue("mediaBelongId")) ;
+        logger.info("==initParam.mediaBelongId:=="+mediaBelongId);
         //字段描述
-        mediaBelongsDes = getBelongsDesc( mediaBelongId);
+        mediaBelongsDes = getBelongsDesc(mediaBelongId);
 
         logger.info("==initParam.getBelongsDesc:=="+mediaBelongsDes);
         //下拉选项
         mediaSelectMap = getBelongSelectItem(mediaBelongsDes);
+        logger.info("==initParam.getBelongSelectItem:=="+mediaSelectMap);
         //排期配置对象
         spotConfig = new SpotConfig(mediaBelongsDes);
         logger.info("==initParam.new SpotConfig(mediaBelongsDes):==" + spotConfig.getSpotFielList());

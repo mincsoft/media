@@ -83,7 +83,7 @@ public class SaleContractSpotSearch extends BaseSpotSearch implements ApiSupport
      * @return
      */
     protected JSONObject getContract( String contractId) {
-        StringBuffer sql = new StringBuffer();
+
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/contract/info");
         rkhdHttpData.putFormData("id", contractId);
         String result = apiRequest( rkhdHttpData);

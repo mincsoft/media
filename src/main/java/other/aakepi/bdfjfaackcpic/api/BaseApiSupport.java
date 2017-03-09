@@ -276,6 +276,7 @@ public abstract class BaseApiSupport {
     protected JSONObject updateBelongs(JSONObject record) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
         rkhdHttpData.setBody(record.toString());
+        logger.info("updateBelongs(record):" + record);
         String result = apiRequest(rkhdHttpData);
         logger.info("updateBelongs:" + result);
         return JSONObject.fromObject(result);
