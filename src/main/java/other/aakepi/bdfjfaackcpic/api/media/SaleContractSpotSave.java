@@ -1,11 +1,12 @@
 package other.aakepi.bdfjfaackcpic.api.media;
 
-import com.Configuration;
+
 import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import other.aakepi.bdfjfaackcpic.Configuration4Belong;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import other.aakepi.bdfjfaackcpic.util.DoubleUtil;
@@ -21,6 +22,7 @@ import java.util.*;
 public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiSupport {
 
     long spotDateBelongId;//点位表BelongId
+    long mediaSpotDate888BelongID;  //媒体库点位表
     /**
      * 初始化
      *
@@ -28,7 +30,8 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
     protected void initParam() {
         super.initParam();
 //        spotDateBelongId = getBelongId(allBelongs, "saleContractSpotDate");
-        spotDateBelongId=mediaBelongId =Long.parseLong(Configuration.getInstance().getValue("saleContractSpotDateBelongId")) ;
+        spotDateBelongId =100018293;//Long.parseLong(Configuration4Belong.getInstance().getValue("saleContractSpotDateBelongId")) ;
+        mediaSpotDate888BelongID=100274711; //Long.parseLong(Configuration4Belong.getInstance().getValue("mediaSpotDate888BelongId"));
     }
     @Override
     public String execute(Request request, Long userId, Long tenantId) {
@@ -176,6 +179,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
             //点位纪录
             JSONArray spotPlanDateList = getSpotDate(spotId);
             logger.info("==excute.getSpotDate======"+spotPlanDateList);
+
             int spotNum = 0;
             //------------------------------------------
             if (startDate != null && endDate != null) {
@@ -198,7 +202,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                         hasSpot = true;
                     }
                     if (StringUtils.isBlank(dateValue)) continue;
-                    boolean existsData = false;
+                    boolean existsSalSpotData = false;
                     for (int j = 0; j < spotPlanDateList.size(); j++) {
                         JSONObject spotDate = spotPlanDateList.getJSONObject(j);
                         logger.info("===spotPlanDateList.getJSONObject(j)========="+spotDate);
@@ -212,14 +216,14 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                                 updateBelongs(spotDate);
                             }
                             spotNum += DoubleUtil.getValue(dateValue);
-                            existsData=true;
+                            existsSalSpotData=true;
                             //匹配上则删除集合
                             spotPlanDateList.remove(j);
                             break;
                         }
                     }
                     //不存在，新增
-                    if (!existsData){
+                    if (!existsSalSpotData){
                         JSONObject spotDate = new JSONObject();
                         spotDate.accumulate("day",date);
                         spotDate.accumulate("spot",dateValue);
@@ -231,6 +235,39 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                         spotNum += DoubleUtil.getValue(dateValue);
                     }
 
+                    boolean existsMediaSpotData = false;
+                    for (int j = 0; j < spotPlanDateList.size(); j++) {
+                        JSONObject spotDate = spotPlanDateList.getJSONObject(j);
+                        logger.info("===spotPlanDateList.getJSONObject(j)========="+spotDate);
+                        Date spotDay = DateUtil.getDate(spotDate.getString("day"));
+                        String spot = spotDate.getString("spot");
+                        if (date.equals(DateUtil.getDateStr(spotDay))) {
+                            //没有更新
+                            if (!dateValue.equalsIgnoreCase(spot)) {
+                                //设置新的点位
+                                spotDate.put("spot",dateValue);
+                                updateBelongs(spotDate);
+                            }
+                            spotNum += DoubleUtil.getValue(dateValue);
+                            existsMediaSpotData=true;
+                            //匹配上则删除集合
+                            spotPlanDateList.remove(j);
+                            break;
+                        }
+                    }
+
+                    //不存在，新增
+                    if (!existsMediaSpotData){
+                        //在插入purContrantSpotDate的同时往媒体总库中插入输入。
+                        JSONObject mediaSpotDate = new JSONObject();
+                        mediaSpotDate.accumulate("customItem1",date);
+                        mediaSpotDate.accumulate("spot","2");
+                        mediaSpotDate.accumulate("meidaID",mediaId);
+                        mediaSpotDate.accumulate("contractId",contractId);
+                        //在备注中放入合同所有人
+                        mediaSpotDate.accumulate("comment",contract.getLong("ownerId"));
+                        createBelongs(mediaSpotDate888BelongID,mediaSpotDate);
+                    }
                 }
 
                 //删除本次修改的点位
@@ -355,5 +392,9 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
         sql.append("select id,orderPrice from saleContractSpot where id=").append(spotId);
         return queryResultArray( sql.toString());
     }
-
+    private JSONArray getMediaSpot(String mediaId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,customItem1,spot,comment from mediaSpotDate888 where meidaID=").append(mediaId);
+        return queryResultArray( sql.toString());
+    }
 }
