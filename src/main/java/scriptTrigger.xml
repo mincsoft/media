@@ -137,6 +137,13 @@
             <class>other.aakepi.bdfjfaackcpic.trigger.mediaKeeping.SaveMediaKeepingAfter</class>
         </trigger>
 
+        <trigger>
+            <object>purchasingContract</object>
+            <operate>update</operate>
+            <position>after</position>
+            <order>1</order>
+            <class>other.aakepi.bdfjfaackcpic.trigger.pur.PurchasingContractAfterTrigger</class>
+        </trigger>
     </config>
 </configs>
 

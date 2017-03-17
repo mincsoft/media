@@ -6,7 +6,7 @@ import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import other.aakepi.bdfjfaackcpic.Configuration4Belong;
+import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 import other.aakepi.bdfjfaackcpic.util.DoubleUtil;
@@ -155,6 +155,8 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
         int delRow = 0;
         StringBuffer stringBuffer_msg = new StringBuffer();
         boolean hasSpotItem = false;
+        //获得合同所有的销售合同点位信息
+        Map<String,JSONObject> saleContractSpotDateMap=getSalesSpotDateMap(contractId);
         for (int i = 0; i < spotList.size(); i++) {
             HashMap<String, String> dataMap = spotList.get(i);
             logger.debug("i:" + i + ";" + dataMap);
@@ -189,7 +191,16 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                 endCal.setTime(endDate);
                 //date_0_2015-01-01
                 endCal.add(Calendar.DATE, 1);//最后日期加一天，便于循环
+
                 boolean hasSpot = false;
+                Map<String,Map>  mediaIDExistMap=new HashMap<String, Map>();
+                Map<String,JSONObject>  mediaSpotMap;
+                if (mediaIDExistMap.isEmpty()||!mediaIDExistMap.containsKey(mediaId)){
+                    mediaSpotMap=getMediaSpotDateMap(NumberUtils.toLong(mediaId),startDate.getTime(),endDate.getTime());
+                    mediaIDExistMap.put(mediaId,mediaSpotMap);
+                }else{
+                    mediaSpotMap=mediaIDExistMap.get(mediaId);
+                }
                 while (startCal.before(endCal)) {
                     String date = String.format("%tF", startCal.getTime());
                     startCal.add(Calendar.DATE, 1);//开始日期加1
@@ -200,9 +211,46 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
 
                     if (!hasSpot && StringUtils.isNotBlank(dateValue)) {
                         hasSpot = true;
+                        ++ spotNum;
                     }
                     if (StringUtils.isBlank(dateValue)) continue;
-                    boolean existsSalSpotData = false;
+
+
+                    //更新销售合同媒体点位表，
+                    if(!saleContractSpotDateMap.isEmpty()&&saleContractSpotDateMap.containsKey(date+"&"+mediaId)){
+                       JSONObject saleContractSpotDate= saleContractSpotDateMap.get(date+"&"+mediaId);
+                        saleContractSpotDate.accumulate("spot","2");
+                        updateBelongs(saleContractSpotDate);
+                        saleContractSpotDateMap.remove(date+"&"+mediaId);
+                    }else {
+                        JSONObject spotDate = new JSONObject();
+                        spotDate.accumulate("day",date);
+                        spotDate.accumulate("spot","2");
+                        spotDate.accumulate("spotId",spotId);
+                        spotDate.accumulate("contractId",contractId);
+                        spotDate.accumulate("meidaId",mediaId);
+                        spotDate.accumulate("dimDepart",contract.getString("dimDepart"));
+                        createBelongs(spotDateBelongId,spotDate);
+                    }
+                    //更新媒体点位总表
+                    if(!mediaSpotMap.isEmpty()&&mediaSpotMap.containsKey(date+"&"+mediaId)){
+                        JSONObject mediaSpot= mediaSpotMap.get(date+"&"+mediaId);
+                        mediaSpot.accumulate("spot", "2");
+                        mediaSpot.accumulate("comment", contract.getLong("ownerId"));
+                        updateBelongs(mediaSpot);
+                    }else {
+                        //在插入purContrantSpotDate的同时往媒体总库中插入输入。
+                        JSONObject mediaSpotDate = new JSONObject();
+                        mediaSpotDate.accumulate("customItem1",date);
+                        mediaSpotDate.accumulate("spot","2");
+                        mediaSpotDate.accumulate("meidaID",mediaId);
+                        mediaSpotDate.accumulate("contractId",contractId);
+                        //在备注中放入合同所有人
+                        mediaSpotDate.accumulate("comment",contract.getLong("ownerId"));
+                        createBelongs(mediaSpotDate888BelongID,mediaSpotDate);
+                    }
+
+                 /* boolean existsSalSpotData = false;
                     for (int j = 0; j < spotPlanDateList.size(); j++) {
                         JSONObject spotDate = spotPlanDateList.getJSONObject(j);
                         logger.info("===spotPlanDateList.getJSONObject(j)========="+spotDate);
@@ -267,16 +315,21 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                         //在备注中放入合同所有人
                         mediaSpotDate.accumulate("comment",contract.getLong("ownerId"));
                         createBelongs(mediaSpotDate888BelongID,mediaSpotDate);
-                    }
+                    }*/
                 }
 
                 //删除本次修改的点位
-                for (int j = 0; j < spotPlanDateList.size() ; j++) {
+             /*   for (int j = 0; j < spotPlanDateList.size() ; j++) {
                     JSONObject spotDate = spotPlanDateList.getJSONObject(j);
                     long spotDateId = spotDate.getLong("id");
                     deleteBelongs(spotDateId);
+                }*/
+                Iterator it = saleContractSpotDateMap.keySet().iterator();
+                while(it.hasNext()) {
+                    JSONObject spotDate = (JSONObject)it.next();
+                    long spotDateId = spotDate.getLong("id");
+                    deleteBelongs(spotDateId);
                 }
-
                 if (!hasSpot) {
                     stringBuffer_msg.append("第" + currentRow + "行广告位，必须有点位纪录\n");
 //						return getErrorResponse(currentRow, "必须有点位纪录！");
@@ -386,7 +439,22 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
         sql.append(" order by day ");
         return queryResultArray( sql.toString());
     }
-
+    //得到销售合同对应的点位数据
+    private Map<String,JSONObject> getSalesSpotDateMap(String purContractId) {
+        String sql = "select id,day,spot,meidaId,spotId from saleContractSpotDate where contractId = " + purContractId + "";
+        JSONArray array = queryAllResult(sql);
+        Map<String,JSONObject> result=new HashMap<String,JSONObject>();
+        if (array!=null&&array.size()>0){
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject item = array.getJSONObject(i);
+                String day = item.getString("customItem1");
+                String date = DateUtil.getDateStr(day);
+                String meidaId = item.getString("meidaId");
+                result.put(date+"&"+meidaId,item);
+            }
+        }
+        return result;
+    }
     private JSONArray getSpot(String spotId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select id,orderPrice from saleContractSpot where id=").append(spotId);
@@ -396,5 +464,23 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
         StringBuffer sql = new StringBuffer();
         sql.append("select id,customItem1,spot,comment from mediaSpotDate888 where meidaID=").append(mediaId);
         return queryResultArray( sql.toString());
+    }
+
+    //得到采购合同对应的点位数据
+    private Map<String,JSONObject> getMediaSpotDateMap(long  mediaId,  Long beginLong ,  Long endLong ) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,customItem1,spot,comment from mediaSpotDate888 where meidaID=").append(mediaId);
+        sql.append(" and day >= ").append(beginLong).append(" and day <= ").append(endLong);
+        JSONArray array = queryAllResult(sql.toString());
+        Map<String, JSONObject> result = new HashMap<String, JSONObject>();
+        if (array != null && array.size() > 0) {
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject item = array.getJSONObject(i);
+                String day = item.getString("customItem1");
+                String date = DateUtil.getDateStr(day);
+                result.put(date+"&"+String.valueOf(mediaId), item);
+            }
+        }
+        return result;
     }
 }

@@ -54,7 +54,7 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
         logger.debug("contractid================"+contractId);
         if (StringUtils.isBlank(contractId)) contractId="-1";
         JSONObject contract = getContract(contractId);
-
+        logger.debug("contract================"+contract);
         Map<String, Object> returnMap = new HashMap<String, Object>();
 
         returnMap.put("contract", contract);
@@ -144,6 +144,7 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
 
                 if (renderDateColumn) {
                     spotPlanDateList = getSpotDate(spotId);
+                    logger.info("======getMediaSpotCellData.getSpotDate(spotId)=========="+spotPlanDateList);
                     //------------------------------------------
                     if (startDate != null && endDate != null) {
                         Calendar startCal = Calendar.getInstance();
@@ -165,7 +166,7 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
                             String other = "";
 
                             if((buyMedia&&purSpotDateMap.containsKey(date))){//1 没买的或者已经销售的
-                                other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
+                                other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";  //DFE3E8 223   227  232
                                 headData.add(getColItemObject(sheetId, startRow, dateColumns, null,other));
                             }
 
@@ -174,6 +175,7 @@ public class PurContractSpotSearch extends BaseSpotSearch implements ApiSupport 
 
                                 for (int k = 0; k < spotPlanDateList.size(); k++) {
                                     JSONObject spotDate = spotPlanDateList.getJSONObject(k);
+                                    logger.info("======getMediaSpotCellData. spotPlanDateList.getJSONObject(k)=========="+spotDate);
                                     Date spotDay = DateUtil.getDate(spotDate.getString("day"));
                                     if (date.equals(DateUtil.getDateStr(spotDay))) {
                                         //点位信息

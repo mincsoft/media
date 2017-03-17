@@ -12,16 +12,13 @@ import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.trigger.BaseTrigger;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 合同生效后自动生成上画记录
  */
 public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
-
+    long  mediaSpotDate888BelongID=100274711;
     public ScriptTriggerResult execute(ScriptTriggerParam scriptTriggerParam)
             throws ScriptBusinessException {
         List<DataModel> list = scriptTriggerParam.getDataModelList();
@@ -38,7 +35,7 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
 
 
             if ("2".equals(lockStatus)&&!"2".equals(status)) {//合同生效
-                // 1 更新合同状态
+                               // 1 更新合同状态
                 JSONObject contract = new JSONObject();
                 contract.put("id",id);
                 contract.put("status",2);
@@ -84,26 +81,41 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                         long paintBelongId = getBelongId("contractMediaPaint");
                         createBelongs(paintBelongId,paint);
 
-                        //TODO 4. 更新meidia点位记录。 待验证
-                        //获得合同信息
-                        JSONObject contractCur= getContract(String.valueOf(id));
-                        Date  startDate = DateUtil.getDate(contractCur.getString("startDate"));
-                        Date  endDate = DateUtil.getDate(contractCur.getString("endDate"));
-                        JSONArray getMediaRecords = null;
-                        if (media!=null&&startDate != null && endDate != null) {
-                            getMediaRecords = getMediaRecord(media.getLong("meidaId"), startDate.getTime(), endDate.getTime());
-                        }
-                        if (getMediaRecords!=null&&!getMediaRecords.isEmpty()){
-                            for (int j=0;i<=getMediaRecords.size();j++){
-                                JSONObject mediaSpotRecord=getMediaRecords.getJSONObject(j);
-                                String dayMedia = mediaSpotRecord.getString("customItem1");
-                                String dateMedia = DateUtil.getDateStr(dayMedia);
-                                //判断是否包含到销售采购表中。
-                               if(salSpotDayMap.containsKey(dateMedia)){
-                                   mediaSpotRecord.put("spot",1);
-                                   mediaSpotRecord.put("comment","正式合同");
-                                   updateBelongs(mediaSpotRecord);
-                               }
+                    }
+                    //获得合同信息
+                    JSONObject contractCur= getContract(String.valueOf(id));
+                    Date  startDate = DateUtil.getDate(contractCur.getString("startDate"));
+                    Date  endDate = DateUtil.getDate(contractCur.getString("endDate"));
+                    //TODO 4. 更新meidia点位记录。 待验证
+                    //采购合同生效 如果销售合同状态变为2，就把purContractSpotDate.点位中的数值放到media点位表中。
+                    Map<String,JSONObject> saleContractSpotDateMap=getSalesSpotDateMap(String.valueOf(id));
+                    Map<String,Map>  mediaIDExistMap=new HashMap<String, Map>();
+                    if(!saleContractSpotDateMap.isEmpty()){
+                        Iterator it = saleContractSpotDateMap.keySet().iterator();
+                        while(it.hasNext()) {
+                            JSONObject spotDate = (JSONObject)it.next();
+                            long meidaID= spotDate.getLong("mediaId");
+                            String day = spotDate.getString("day");
+                            String date = DateUtil.getDateStr(day);
+                            String meidaIDStr=String.valueOf(meidaID);
+                            Map<String,JSONObject>  mediaSpotMap;
+                            if (mediaIDExistMap.isEmpty()||!mediaIDExistMap.containsKey(meidaIDStr)){
+                                mediaSpotMap=getMediaSpotDateMap(meidaID,startDate.getTime(),endDate.getTime());
+                                mediaIDExistMap.put(meidaIDStr,mediaSpotMap);
+                            }else{
+                                mediaSpotMap=mediaIDExistMap.get(meidaIDStr);
+                            }
+                            if (!mediaSpotMap.isEmpty()&&mediaSpotMap.containsKey(date)){
+                                JSONObject mediaSpot =mediaSpotMap.get(date);
+                                mediaSpot.accumulate("spot","1");
+                                updateBelongs(mediaSpot);
+                            }else{
+                                JSONObject mediaSpotDate = new JSONObject();
+                                mediaSpotDate.accumulate("customItem1",date);
+                                mediaSpotDate.accumulate("spot","1");
+                                mediaSpotDate.accumulate("meidaID",meidaID);
+                                mediaSpotDate.accumulate("comment","已销售媒体");
+                                createBelongs(mediaSpotDate888BelongID,mediaSpotDate);
                             }
                         }
                     }
@@ -126,6 +138,27 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
         return queryResultArray(sql);
 
     }
+    private JSONArray getSalesSpotDateRecord(Integer contractId) {
+
+        String sql = "select id,day,spot,meidaId,spotId from saleContractSpotDate where id > 0 and contractId = " + contractId;
+
+        return queryResultArray(sql);
+
+    }
+    //得到销售合同对应的点位数据
+    private Map<String,JSONObject> getSalesSpotDateMap(String purContractId) {
+        String sql = "select id,day,spot,meidaId,spotId from saleContractSpotDate where contractId = " + purContractId + "";
+        JSONArray array = queryResultArray(sql);
+        Map<String,JSONObject> result=new HashMap<String,JSONObject>();
+        if (array!=null&&array.size()>0){
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject item = array.getJSONObject(i);
+                String id = item.getString("id");
+                result.put(id,item);
+            }
+        }
+        return result;
+    }
     //根据合同的起始日期，获得这段时间内的媒体库点位。
     private JSONArray getMediaRecord(long  mediaId,  Long beginLong ,  Long endLong ) {
         StringBuffer sql = new StringBuffer();
@@ -134,7 +167,23 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
         return queryResultArray(sql.toString());
 
     }
-
+    //得到采购合同对应的点位数据
+    private Map<String,JSONObject> getMediaSpotDateMap(long  mediaId,  Long beginLong ,  Long endLong ) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select id,customItem1,spot,comment from mediaSpotDate888 where meidaID=").append(mediaId);
+        sql.append(" and day >= ").append(beginLong).append(" and day <= ").append(endLong);
+        JSONArray array = queryResultArray(sql.toString());
+        Map<String, JSONObject> result = new HashMap<String, JSONObject>();
+        if (array != null && array.size() > 0) {
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject item = array.getJSONObject(i);
+                String day = item.getString("customItem1");
+                String date = DateUtil.getDateStr(day);
+                result.put(date, item);
+            }
+        }
+        return result;
+    }
 
     /**
      * 查询合同

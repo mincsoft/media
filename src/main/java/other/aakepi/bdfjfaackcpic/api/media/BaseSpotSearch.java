@@ -1,12 +1,12 @@
 package other.aakepi.bdfjfaackcpic.api.media;
 
-import com.Configuration;
 import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
+import other.aakepi.bdfjfaackcpic.Configuration4Belong;
 import other.aakepi.bdfjfaackcpic.config.SpotConfig;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
 
@@ -22,7 +22,7 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
     //request请求
     protected Request request;
     //全部实体信息
-    protected QueryResult allBelongs;
+//    protected QueryResult allBelongs;
     //媒体对象的ID
     protected long mediaBelongId;
     //媒体：字段描述
@@ -50,12 +50,11 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
 //        allBelongs = getAllBelongs();
 //        logger.info("==initParam.allBelongs:=="+allBelongs);
         //媒体对象的ID
-        mediaBelongId =Long.parseLong(Configuration.getInstance().getValue("mediaBelongId")) ;
+        mediaBelongId =100018286; //Long.parseLong(Configuration4Belong.getInstance().getValue("mediaBelongId")) ;
         logger.info("==initParam.mediaBelongId:=="+mediaBelongId);
         //字段描述
         mediaBelongsDes = getBelongsDesc(mediaBelongId);
 
-        logger.info("==initParam.getBelongsDesc:=="+mediaBelongsDes);
         //下拉选项
         mediaSelectMap = getBelongSelectItem(mediaBelongsDes);
         logger.info("==initParam.getBelongSelectItem:=="+mediaSelectMap);
@@ -344,7 +343,7 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
 
 
         //加载媒体的数据：
-        JSONArray cellArray = getMediaSpotCellData(0, 300, sheetId);
+        JSONArray cellArray = getMediaSpotCellData(0, 30, sheetId);
         if (cellArray!=null){
             headData.addAll(cellArray);
         }
