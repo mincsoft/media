@@ -93,6 +93,46 @@ public abstract class BaseApiSupport {
         return apiRequest(rkhdHttpData);
     }
 
+    /**
+     * 查询所有结果 ，弥补
+     * 1.没有加分页标示,是否也控制了最多输出30个对象的限制？
+     是，没有加分页标识时，系统默认为从第一条开始取三十条数据，即(limit 0,30)
+     2.如果超过30条，有什么方法可以查询得到全部结果？
+     建议操作步骤如下：
+     a.查询 limit 0,30
+     b.根据返回值中的totalSize判断分页数量(当然要注意除去第一页)
+     c.for(int i = 30;i<totalSize;i+30){
+     limit i,30
+     }
+
+     * @param sql
+     * @return
+     */
+    protected JSONArray queryAllResult(String sql){
+        //判断是否已经存在limit ,如果不存在 ，增加0,到30  起始 0 页数30
+        JSONArray  resultAll=null;
+        StringBuffer sb=new StringBuffer(sql);
+        int start=0;
+        int defaultSize=30;
+        if(sql.indexOf("limit")<0){
+            sb.append(" limit ").append(start).append(",").append(defaultSize);
+        }
+        QueryResult queryResult=queryResult(sb.toString());
+        resultAll= queryResult.getRecords();
+        int totalSize=queryResult.getTotalSize();
+        int count=queryResult.getCount();
+        for(int i=defaultSize;i<totalSize;i+=defaultSize){
+            sb=new StringBuffer(sql);
+            start=i;
+            if(sql.indexOf("limit")<0){
+                sb.append(" limit ").append(start).append(",").append(defaultSize);
+            }
+            logger.info("拼装的查询所有的结果集的数据sql：=="+sb.toString());
+            queryResult=queryResult(sb.toString());
+            resultAll.addAll(queryResult.getRecords());
+        }
+        return  resultAll;
+    }
 
     /**
      * 查询语句，返回json结果
@@ -244,7 +284,7 @@ public abstract class BaseApiSupport {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/describe");
         rkhdHttpData.putFormData("belongId", belongId);
         String result = apiRequest(rkhdHttpData);
-        logger.info("getBelongsDesc：:" + result);
+        logger.info("getBelongsDesc("+belongId+")：:" + result);
         return JSONObject.fromObject(result);
     }
 
@@ -276,7 +316,7 @@ public abstract class BaseApiSupport {
     protected JSONObject updateBelongs(JSONObject record) {
         RkhdHttpData rkhdHttpData = postRkhdHttpData("/data/v1/objects/customize/update");
         rkhdHttpData.setBody(record.toString());
-        logger.info("updateBelongs(record):" + record);
+        logger.info("===========updateBelongs(record)============:" + record);
         String result = apiRequest(rkhdHttpData);
         logger.info("updateBelongs:" + result);
         return JSONObject.fromObject(result);
