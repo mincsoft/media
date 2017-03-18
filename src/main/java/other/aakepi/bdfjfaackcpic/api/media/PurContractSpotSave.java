@@ -228,19 +228,21 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
                     if(!spotPlanMap.isEmpty()&&spotPlanMap.containsKey(date)){
                         JSONObject spotDateJSon = spotPlanMap.get(date);
                         //设置新的点位 外购媒体的采购，可销售为0 。
-                        spotDateJSon.put("spot", dateValue);
+                        spotDateJSon.put("spot", "1");
                         updateBelongs(spotDateJSon);
                         spotPlanMap.remove(date);
-                    }/*else{
+                    }else{
                         //在插入purContrantSpotDate的同时往媒体总库中插入输入。
-                        JSONObject mediaSpotDate = new JSONObject();
-                        mediaSpotDate.accumulate("customItem1",date);
-                        mediaSpotDate.accumulate("spot",dateValue);
-                        mediaSpotDate.accumulate("meidaID",mediaId);
-                        mediaSpotDate.accumulate("comment","新采购媒体");
-                        logger.info("新插入的mediaSpotDate：===" + mediaSpotDate);
-                        createBelongs(mediaSpotDate888BelongID, mediaSpotDate);
-                    }*/
+                        JSONObject spotDate = new JSONObject();
+                        spotDate.accumulate("day",date);
+                        spotDate.accumulate("qty",1);
+                        spotDate.accumulate("spotId",spotId);
+                        spotDate.accumulate("contractId",contractId);
+                        spotDate.accumulate("mediaId",mediaId);
+                        spotDate.accumulate("dimDepart",contract.getString("dimDepart"));
+                        logger.info("新插入的mediaSpotDate：===" + spotDate);
+                        createBelongs(spotDateBelongId, spotDate);
+                    }
 
             /*        for (int j = 0; j < spotPlanDateList.size(); j++) {
                         JSONObject spotDate = spotPlanDateList.getJSONObject(j);
@@ -311,12 +313,12 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
                     Double orderPrice = spot.getDouble("disPrice");
                     spot.put("id",spotId);
                     //日期
-                    JSONArray spotDateArray = getSpotDate(spotId);
-                    if (spotDateArray!=null&&spotDateArray.size()>0){
+//                    JSONArray spotDateArray = getSpotDate(spotId);
+                    if (spotPlanDateList!=null&&spotPlanDateList.size()>0){
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         try {
-                            spot.put("startAt",format.parse(spotDateArray.getJSONObject(0).getString("day")).getTime());
-                            spot.put("endAt",format.parse(spotDateArray.getJSONObject(spotDateArray.size()-1).getString("day")).getTime());
+                            spot.put("startAt",format.parse(spotPlanDateList.getJSONObject(0).getString("day")).getTime());
+                            spot.put("endAt",format.parse(spotPlanDateList.getJSONObject(spotPlanDateList.size()-1).getString("day")).getTime());
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -400,7 +402,7 @@ public class PurContractSpotSave extends PurContractSpotSearch implements ApiSup
         StringBuffer sql = new StringBuffer();
         sql.append("select id,day,qty from purContractSpotDate where spotId=").append(spotId);
         sql.append(" order by day ");
-        JSONArray result=queryAllResult( sql.toString());
+        JSONArray result=queryAllResult(sql.toString());
         logger.info("PurContractSportSave.getSpotDate("+spotId+"):="+result);
         return result;
     }
