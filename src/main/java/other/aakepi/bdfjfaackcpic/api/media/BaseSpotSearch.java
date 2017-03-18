@@ -6,7 +6,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import other.aakepi.bdfjfaackcpic.api.BaseApiSupport;
 import other.aakepi.bdfjfaackcpic.api.QueryResult;
-import other.aakepi.bdfjfaackcpic.Configuration4Belong;
 import other.aakepi.bdfjfaackcpic.config.SpotConfig;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
 
