@@ -118,7 +118,9 @@ public abstract class BaseApiSupport {
             sb.append(" limit ").append(start).append(",").append(defaultSize);
         }
         QueryResult queryResult=queryResult(sb.toString());
-        resultAll= queryResult.getRecords();
+        if(queryResult==null)
+           return  resultAll;
+        resultAll=queryResult.getRecords();
         int totalSize=queryResult.getTotalSize();
         int count=queryResult.getCount();
         for(int i=defaultSize;i<totalSize;i+=defaultSize){

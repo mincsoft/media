@@ -39,9 +39,8 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                 JSONObject contract = new JSONObject();
                 contract.put("id",id);
                 contract.put("status",2);
-                updateBelongs(contract);
-
-
+                JSONObject resutlContractResult= updateBelongs(contract);
+                logger.debug("resutlContractResult========"+resutlContractResult);
                 JSONArray salesSpotRecords = getSalesSpotRecord(id);
                 logger.debug("mediaRecords========"+salesSpotRecords);
                 JSONObject media = null;
@@ -86,14 +85,18 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                     JSONObject contractCur= getContract(String.valueOf(id));
                     Date  startDate = DateUtil.getDate(contractCur.getString("startDate"));
                     Date  endDate = DateUtil.getDate(contractCur.getString("endDate"));
+
                     //TODO 4. 更新meidia点位记录。 待验证
-                    //采购合同生效 如果销售合同状态变为2，就把purContractSpotDate.点位中的数值放到media点位表中。
+                    logger.info("更新合同状态为2的时候，记录或者增加媒体库点位信息==========");
+                    //采购合同生效 如果销售合同状态变为2，就把saleContractSpotDate.点位中的数值放到media点位表中。
                     Map<String,JSONObject> saleContractSpotDateMap=getSalesSpotDateMap(String.valueOf(id));
+                    logger.info("saleContractSpotDateMap=========="+saleContractSpotDateMap);
                     Map<String,Map>  mediaIDExistMap=new HashMap<String, Map>();
                     if(!saleContractSpotDateMap.isEmpty()){
                         Iterator it = saleContractSpotDateMap.keySet().iterator();
                         while(it.hasNext()) {
-                            JSONObject spotDate = (JSONObject)it.next();
+                            JSONObject spotDate =saleContractSpotDateMap.get(it.next());
+                            logger.info("saleContractSpotDateMap.spotDate=========="+spotDate);
                             long meidaID= spotDate.getLong("mediaId");
                             String day = spotDate.getString("day");
                             String date = DateUtil.getDateStr(day);
@@ -196,7 +199,20 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
     public static void main(String[] args) {
         TestTriggerTool testTriggerTool = new TestTriggerTool();
         ContractTrigger paymentTrigger = new ContractTrigger();
-        testTriggerTool.test("/Users/yujinliang/Documents/workspace/media/src/main/java/scriptTrigger.xml", paymentTrigger);
+        ArrayList<DataModel>  testArrayList=new ArrayList<DataModel>();
+        Map<String,Object>  map=new HashMap<String, Object>();
+        map.put("id","103141137");
+        map.put("status","2");
+        DataModel newDataModel=new DataModel(map);
+        testArrayList.add(newDataModel);
+        ScriptTriggerParam  test=new ScriptTriggerParam(testArrayList);
+        try{
+            paymentTrigger.execute(test);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+//        testTriggerTool.test("/Users/yujinliang/Documents/workspace/media/src/main/java/scriptTrigger.xml", paymentTrigger);
     }
 
 

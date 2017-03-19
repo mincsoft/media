@@ -177,7 +177,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                                         if (date.equals(DateUtil.getDateStr(spotDay))) {
                                             //点位信息
                                             String spot = spotDate.getString("spot");
-                                            //spot 为1：已销售；2：未生效合同，comment 内容为占用人姓名；3：未购买；0：可销售
+                                            //spot 为1：已销售；2：未生效合同，comment 内容为占用人姓名；3：u；0：可销售
                                             if(StringUtils.isNotEmpty(spot)&&StringUtils.isNumeric(spot)){
                                                 int intSpot=Integer.parseInt(spot);
                                                 switch (intSpot){
