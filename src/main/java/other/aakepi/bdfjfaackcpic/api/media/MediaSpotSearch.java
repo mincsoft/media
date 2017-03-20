@@ -177,7 +177,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                                         if (date.equals(DateUtil.getDateStr(spotDay))) {
                                             //点位信息
                                             String spot = spotDate.getString("spot");
-                                            //spot 为1：已销售；2：未生效合同，comment 内容为占用人姓名；3：u；0：可销售
+                                            //spot 为1：已销售；2：未生效合同，comment 内容为占用人姓名；3：未购买；0：可销售
                                             if(StringUtils.isNotEmpty(spot)&&StringUtils.isNumeric(spot)){
                                                 int intSpot=Integer.parseInt(spot);
                                                 switch (intSpot){
@@ -276,7 +276,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         }else if (StringUtils.isNotBlank(mediaName)) {
             sql.append(" where name like '%").append(mediaName).append("%'");
         }
-        sql.append(" order by opMode");
+        sql.append(" order by opMode desc");
 //        sql.append(" limit ").append(first).append(",").append(size);
         long tastTime=System.currentTimeMillis()-start;
         logger.info("===getAllMedia==="+tastTime);
@@ -344,6 +344,24 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         JSONArray resultMediaSpotDate888=queryResultArray(sql.toString());
         logger.info("===MediaSpotSearch.getMediaSpotDate888("+mediaId+")=="+resultMediaSpotDate888);
         return resultMediaSpotDate888;
+    }
+
+    /**
+     * 查询排期总表的点位纪录的MAP
+     * @return
+     */
+    private Map<String,JSONObject> getMediaSpotDate888Map(String mediaId) {
+        Map<String,JSONObject> resultMap=new HashMap<String, JSONObject>();
+        JSONArray resultMediaSpotDate888= getMediaSpotDate888( mediaId);
+        if(resultMediaSpotDate888!=null&&!resultMediaSpotDate888.isEmpty()){
+            for(int i=0;i<resultMediaSpotDate888.size();i++) {
+                JSONObject record=resultMediaSpotDate888.getJSONObject(i);
+                String day = record.getString("customItem1");
+                String date = DateUtil.getDateStr(day);
+                resultMap.put(date,record);
+            }
+        }
+        return resultMap;
     }
 
     /**
