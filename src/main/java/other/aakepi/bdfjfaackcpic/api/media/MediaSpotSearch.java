@@ -218,6 +218,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                                     }
                                 }else{
                                     if (buyMedia){
+
                                         other =", bgc: '#C9D0CD'";
                                         headData.add(getColItemObject(sheetId, startRow, dateColumns, "",other));
                                     }else{

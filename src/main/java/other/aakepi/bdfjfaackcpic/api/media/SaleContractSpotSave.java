@@ -219,7 +219,7 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                     //更新销售合同媒体点位表，
                     if(!saleContractSpotDateMap.isEmpty()&&saleContractSpotDateMap.containsKey(date+"&"+mediaId)){
                        JSONObject saleContractSpotDate= saleContractSpotDateMap.get(date+"&"+mediaId);
-                        saleContractSpotDate.accumulate("spot","2");
+                        saleContractSpotDate.put("spot","2");
                         updateBelongs(saleContractSpotDate);
                         saleContractSpotDateMap.remove(date+"&"+mediaId);
                     }else {
@@ -236,8 +236,8 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                     //更新媒体点位总表
                     if(!mediaSpotMap.isEmpty()&&mediaSpotMap.containsKey(date+"&"+mediaId)){
                         JSONObject mediaSpot= mediaSpotMap.get(date+"&"+mediaId);
-                        mediaSpot.accumulate("spot", "2");
-                        mediaSpot.accumulate("comment", contract.getLong("ownerId"));
+                        mediaSpot.put("spot", "2");
+                        mediaSpot.put("comment", contract.getLong("ownerId"));
                         updateBelongs(mediaSpot);
                     }else {
                         //在插入purContrantSpotDate的同时往媒体总库中插入输入。

@@ -110,7 +110,8 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                             }
                             if (!mediaSpotMap.isEmpty()&&mediaSpotMap.containsKey(date)){
                                 JSONObject mediaSpot =mediaSpotMap.get(date);
-                                mediaSpot.accumulate("spot","1");
+                                mediaSpot.put("spot", "1");
+                                mediaSpot.put("comment","已销售媒体");
                                 updateBelongs(mediaSpot);
                             }else{
                                 JSONObject mediaSpotDate = new JSONObject();

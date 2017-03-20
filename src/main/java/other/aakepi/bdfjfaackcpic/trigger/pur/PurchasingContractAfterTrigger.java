@@ -66,7 +66,8 @@ public class PurchasingContractAfterTrigger extends BaseTrigger implements Scrip
                        }
                         if (!mediaSpotMap.isEmpty()&&mediaSpotMap.containsKey(date)){
                             JSONObject mediaSpot =mediaSpotMap.get(date);
-                            mediaSpot.accumulate("spot","0");
+                            mediaSpot.put("spot", "0");
+                            mediaSpot.put("comment","");
                             logger.info("PurchasingContractAfterTrigger.execute: 更新媒体库点位"+mediaSpot);
                             updateBelongs(mediaSpot);
                         }else{
