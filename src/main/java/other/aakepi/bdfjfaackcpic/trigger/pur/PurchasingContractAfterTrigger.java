@@ -66,16 +66,16 @@ public class PurchasingContractAfterTrigger extends BaseTrigger implements Scrip
                        }
                         if (!mediaSpotMap.isEmpty()&&mediaSpotMap.containsKey(date)){
                             JSONObject mediaSpot =mediaSpotMap.get(date);
-                            mediaSpot.accumulate("spot",0);
+                            mediaSpot.accumulate("spot","0");
                             logger.info("PurchasingContractAfterTrigger.execute: 更新媒体库点位"+mediaSpot);
                             updateBelongs(mediaSpot);
                         }else{
                             JSONObject mediaSpotDate = new JSONObject();
                             mediaSpotDate.accumulate("customItem1",date);
-                            mediaSpotDate.accumulate("spot",0);
+                            mediaSpotDate.accumulate("spot","0");
                             mediaSpotDate.accumulate("meidaID",meidaID);
                             mediaSpotDate.accumulate("comment","新采购媒体");
-                            spotDate.accumulate("dimDepart",contract.getString("dimDepart"));
+                            mediaSpotDate.accumulate("dimDepart",contract.getLong("dimDepart"));
                             logger.info("PurchasingContractAfterTrigger.execute: 新增的媒体点位"+mediaSpotDate);
                             createBelongs(mediaSpotDate888BelongID,mediaSpotDate);
                         }
@@ -136,6 +136,7 @@ public class PurchasingContractAfterTrigger extends BaseTrigger implements Scrip
         Map<String,Object>  map=new HashMap<String, Object>();
         map.put("id","103141137");
         map.put("status","2");
+        map.put("dimDepart","2");
         DataModel newDataModel=new DataModel(map);
         testArrayList.add(newDataModel);
         ScriptTriggerParam  test=new ScriptTriggerParam(testArrayList);

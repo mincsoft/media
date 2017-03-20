@@ -118,6 +118,8 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                                 mediaSpotDate.accumulate("spot","1");
                                 mediaSpotDate.accumulate("meidaID",meidaID);
                                 mediaSpotDate.accumulate("comment","已销售媒体");
+                                mediaSpotDate.accumulate("dimDepart",contract.getLong("dimDepart"));
+                                logger.info("ContractTrigger.execute: mediaSpotDate888BelongID 新增的媒体点位"+mediaSpotDate);
                                 createBelongs(mediaSpotDate888BelongID,mediaSpotDate);
                             }
                         }

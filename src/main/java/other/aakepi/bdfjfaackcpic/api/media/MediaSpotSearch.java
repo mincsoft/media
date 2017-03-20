@@ -306,7 +306,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         long tastTime=System.currentTimeMillis()-start;
         logger.info("===getAllMedia==="+tastTime);
         logger.info("======getAllMedia'sSQL========="+sql);
-        return queryAllResult(sql.toString());
+        return queryResultArray(sql.toString());
     }
 
     /**

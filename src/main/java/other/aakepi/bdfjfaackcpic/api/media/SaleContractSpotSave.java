@@ -229,7 +229,8 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                         spotDate.accumulate("spotId",spotId);
                         spotDate.accumulate("contractId",contractId);
                         spotDate.accumulate("meidaId",mediaId);
-                        spotDate.accumulate("dimDepart",contract.getString("dimDepart"));
+                        spotDate.accumulate("dimDepart",contract.getLong("dimDepart"));
+                        logger.info("SaleContractSpotSave.execute: 新增的销售媒体点位"+spotDate);
                         createBelongs(spotDateBelongId,spotDate);
                     }
                     //更新媒体点位总表
@@ -247,6 +248,8 @@ public class SaleContractSpotSave extends SaleContractSpotSearch implements ApiS
                         mediaSpotDate.accumulate("contractId",contractId);
                         //在备注中放入合同所有人
                         mediaSpotDate.accumulate("comment",contract.getLong("ownerId"));
+                        mediaSpotDate.accumulate("dimDepart",contract.getLong("dimDepart"));
+                        logger.info("SaleContractSpotSave.execute: mediaSpotDate888BelongID 新增媒体点位库"+mediaSpotDate);
                         createBelongs(mediaSpotDate888BelongID,mediaSpotDate);
                     }
 
