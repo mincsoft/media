@@ -12,6 +12,7 @@ import other.aakepi.bdfjfaackcpic.api.QueryResult;
 import other.aakepi.bdfjfaackcpic.config.SpotField;
 import other.aakepi.bdfjfaackcpic.enums.OpMode;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
+import other.aakepi.bdfjfaackcpic.util.JSONUtil;
 
 import java.util.*;
 
@@ -140,6 +141,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                         long start= System.currentTimeMillis();
                         //显示媒体库总表
                         spotPlanDateList = getMediaSpotDate888(mediaId);
+                        Map<String,JSONObject>  mediaSpot888Map=getMediaSpotDate888Map(mediaId);
                         long tastTime=System.currentTimeMillis()-start;
                         logger.info("==getSpotDate tasttime="+tastTime);
                         //------------------------------------------
@@ -165,65 +167,73 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                                 String other = ",bgc: '#D7E3BC'"; // 浅绿色
 
                                 boolean hasSpotItem = false;
-                                if (spotPlanDateList != null && !spotPlanDateList.isEmpty()) {
+                                if (mediaSpot888Map != null && !mediaSpot888Map.isEmpty()&&mediaSpot888Map.containsKey(date)) {
 
-                                    for (int k = 0; k < spotPlanDateList.size(); k++) {
-                                        JSONObject spotDate = spotPlanDateList.getJSONObject(k);
+//                                    for (int k = 0; k < spotPlanDateList.size(); k++) {
 
-                                        logger.info("==spotPlanDateList.getJSONObject("+k+")="+spotDate);
-                                        String dayStr=spotDate.getString("customItem1");
+                                    JSONObject spotDate = mediaSpot888Map.get(date);
 
-                                        Date spotDay = DateUtil.getDate(dayStr);
-                                        if (date.equals(DateUtil.getDateStr(spotDay))) {
-                                            //点位信息
-                                            String spot = spotDate.getString("spot");
-                                            //spot 为1：已销售；2：未生效合同，comment 内容为占用人姓名；3：未购买；0：可销售
-                                            if(StringUtils.isNotEmpty(spot)&&StringUtils.isNumeric(spot)){
-                                                int intSpot=Integer.parseInt(spot);
-                                                switch (intSpot){
-                                                    case 0:{
-                                                        other="";
-                                                        headData.add(getColItemObject(sheetId, startRow, dateColumns, spot,other));
-                                                        break;
-                                                    }
-                                                    case 1:{
-                                                        other = ",bgc: '#D7E3BC'";//215 227 188  浅绿色
-                                                        headData.add(getColItemObject(sheetId, startRow, dateColumns, spot,other));
-                                                        break;
-                                                    }
-                                                    case 2: {
-                                                        other =", bgc: '#87cefa'";   //蓝色  135 206 250
-                                                        String userName = spotDate.getString("comment");
-                                                        headData.add(getColItemObject(sheetId, startRow, dateColumns, userName,other));
-                                                        break;
-                                                    }
-                                                    case 3: {
-                                                        other =", bgc: '#C9D0CD'";  // 201  208  205   //灰色
-                                                        headData.add(getColItemObject(sheetId, startRow, dateColumns, "",other));
-                                                        break;
-                                                    }
-                                                    default: break;
-                                                }
+                                    logger.info("==mediaSpot888Map.get("+date+")="+spotDate);
+                                    String dayStr=spotDate.getString("customItem1");
 
-                                            }else{
-                                                continue;
-                                            }
+                                    Date spotDay = DateUtil.getDate(dayStr);
 
+                                        //点位信息
+                                    String spot = spotDate.getString("spot");
+                                    //spot 为1：已销售；2：未生效合同，comment 内容为占用人姓名；3：未购买；0：可销售
+                                    if(StringUtils.isNotEmpty(spot)&&StringUtils.isNumeric(spot)){
+                                        int intSpot=Integer.parseInt(spot);
+                                        switch (intSpot) {
+                                            case 0:
+                                                other = "";
+                                                headData.add(getColItemObject(sheetId, startRow, dateColumns, spot, other));
+                                                break;
 
-                                            //配上则删除集合
-                                            spotPlanDateList.remove(k);
-                                            hasSpotItem=true;
-                                            break;
+                                            case 1:
+                                                other = ",bgc: '#D7E3BC'";//215 227 188  浅绿色
+                                                headData.add(getColItemObject(sheetId, startRow, dateColumns, spot, other));
+                                                break;
+
+                                            case 2:
+                                                other = ", bgc: '#87cefa'";   //蓝色  135 206 250
+                                                String userName = spotDate.getString("comment");
+                                                headData.add(getColItemObject(sheetId, startRow, dateColumns, userName, other));
+                                                break;
+
+                                            case 3:
+//                                                    other =", bgc: '#C9D0CD'";  // 201  208  205   //灰色
+                                                other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
+                                                headData.add(getColItemObject(sheetId, startRow, dateColumns, "", other));
+                                                break;
+
+                                            default:
+                                                other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
+                                                headData.add(getColItemObject(sheetId, startRow, dateColumns, "", other));
+                                                break;
+                                        }
+                                    }else{
+                                        //TODO  如果包含在媒体点位库表中，但是spot 标示错误数据的兼容
+                                        if (buyMedia){
+//                                        other =", bgc: '#C9D0CD'";
+                                            other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
+                                            headData.add(getColItemObject(sheetId, startRow, dateColumns, "",other));
+                                        }else{
+                                            //如果自由媒体，没有在媒体库点位表中有记录，认为都是可销售
+                                            headData.add(getColItemObject(sheetId, startRow, dateColumns, "0",""));
                                         }
                                     }
+
+                                        //配上则删除集合
+                                        mediaSpot888Map.remove(date);
+                                        hasSpotItem=true;
+
                                 }else{
                                     if (buyMedia){
-
-                                        other =", bgc: '#C9D0CD'";
+//                                        other =", bgc: '#C9D0CD'";
+                                        other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
                                         headData.add(getColItemObject(sheetId, startRow, dateColumns, "",other));
                                     }else{
                                         //如果自由媒体，没有在媒体库点位表中有记录，认为都是可销售
-
                                         headData.add(getColItemObject(sheetId, startRow, dateColumns, "0",""));
                                     }
                                 }
@@ -418,5 +428,18 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         return purSpotDateMap;
     }
 
+    public static void main(String[] args) {
+        MediaSpotSearch mediaSpotSearch = new MediaSpotSearch();
+        com.rkhd.platform.sdk.http.Request rkhdRequest = new com.rkhd.platform.sdk.http.Request();
+        rkhdRequest.putParameter("mediaName", new String[]{"广州塔媒体2"});
+        rkhdRequest.putParameter("mediaId", new String[]{""});
+        rkhdRequest.putParameter("begin", new String[]{"2017-03-22"});
+        rkhdRequest.putParameter("end", new String[]{"2017-04-22"});
 
+        //返回的结果
+        String json = mediaSpotSearch.execute(rkhdRequest, null, null);
+
+        String newJson = JSONUtil.string2Json(json);
+        System.out.println("返回newJson===" + newJson);
+    }
 }
