@@ -1,6 +1,6 @@
 var urlTitle = "https://api.xiaoshouyi.com";
 var urlSearchMedia="/script-api/customopenapi/search-mediaspot";//查询媒体数据
-var belongId = "100019547";
+var belongId = "100018286";
 var access_token;
 var refresh_token;
 var code;
@@ -10,6 +10,9 @@ var client_id = "e3829850419b7ec442b0314c3cf2ff58";
 var client_secret = "562e34991cd545d5f499a3331b5cb592";
 var debug="";
 var mediaId;
+var startIndex=0;
+var pageSize=30;
+var totalSize=0;
 
 $(function(){
     hideAll();
@@ -89,6 +92,7 @@ var loadMediaSpotData = function () {
     data["begin"] = beginDate;
     data["end"] = endDate;
     data["mediaId"] = mediaId;
+
     tokenAjax({
 //                url: urlTitle + "/script-api/customopenapi/search-mediaspot",    //请求的url地址
         url:  urlTitle+urlSearchMedia,    //请求的url地址
