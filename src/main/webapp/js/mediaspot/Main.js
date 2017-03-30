@@ -545,6 +545,9 @@ Ext.onReady(function() {
 			cells:JsonCells
 		}
 		SHEET_API.loadMoreData(SHEET_API_HD, Json,null,this);
+		//SHEET_API.loadData(SHEET_API_HD, Json, function() {
+		//	SHEET_API.insertRow(SHEET_API_HD, 1, row, total);
+		//}, this);
 	};
 
 
@@ -600,6 +603,9 @@ Ext.onReady(function() {
 	loadData = function(inJson) {
 		//var json =Ext.JSON.decode(inJson);
 		SHEET_API.loadData(SHEET_API_HD, inJson);
+		//SHEET_API.loadData(SHEET_API_HD, inJson, function() {
+		//	SHEET_API.insertRow(SHEET_API_HD, 1,33, 30);
+		//}, this);
 	};
 
 	setMaxCol = function(maxCol) {
@@ -614,7 +620,10 @@ Ext.onReady(function() {
 	loadUuidData = function(cells) {
 		//console.log("----cells---"+cells);
 		SHEET_API.updateCells(SHEET_API_HD, cells,null,this);
-		//SHEET_API.loadMoreData(SHEET_API_HD, inJson,null,this);
+		SHEET_API.loadMoreData(SHEET_API_HD, inJson,null,this);
+		//SHEET_API.loadData(SHEET_API_HD, inJson, function() {
+		//	SHEET_API.insertRow(SHEET_API_HD, 1,33, 30);
+		//}, this);
 	};
 
 

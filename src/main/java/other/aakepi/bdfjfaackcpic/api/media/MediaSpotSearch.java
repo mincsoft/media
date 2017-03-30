@@ -84,10 +84,10 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         if (result.getTotalSize() == null) return headData;
         if (result.getTotalSize() > 0) {
             //全部的媒体记录
-//            JSONArray records = result.getRecords();
-            JSONArray records=getAllMedia();
+            JSONArray records = result.getRecords();
+//            JSONArray records=getAllMedia();
             logger.info("getAllMedia:==="+records);
-            JSONArray spotPlanDateList ;
+//            JSONArray spotPlanDateList ;
             for (int i = 0; i < records.size(); i++) {
                 //从第四行开始
                 int startRow = 4 + i;
@@ -140,7 +140,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                         //已经销售的点位
                         long start= System.currentTimeMillis();
                         //显示媒体库总表
-                        spotPlanDateList = getMediaSpotDate888(mediaId);
+//                        spotPlanDateList = getMediaSpotDate888(mediaId);
                         Map<String,JSONObject>  mediaSpot888Map=getMediaSpotDate888Map(mediaId);
                         long tastTime=System.currentTimeMillis()-start;
                         logger.info("==getSpotDate tasttime="+tastTime);
@@ -212,7 +212,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
                                                 break;
                                         }
                                     }else{
-                                        //TODO  如果包含在媒体点位库表中，但是spot 标示错误数据的兼容
+                                        //  如果包含在媒体点位库表中，但是spot 标示错误数据的兼容
                                         if (buyMedia){
 //                                        other =", bgc: '#C9D0CD'";
                                             other = ",bgc: '#DFE3E8', ta: 'center', va: 'middle', dsd: 'ed'";
@@ -287,11 +287,13 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
             sql.append(" where name like '%").append(mediaName).append("%'");
         }
         sql.append(" order by opMode desc");
-//        sql.append(" limit ").append(first).append(",").append(size);
+        sql.append(" limit ").append(first).append(",").append(size);
         long tastTime=System.currentTimeMillis()-start;
         logger.info("===getAllMedia==="+tastTime);
         logger.info("======getAllMedia'sSQL========="+sql);
-        return queryResult( sql.toString());
+        QueryResult queryResult=queryResult(sql.toString());
+        logger.info("======getAllMedia'queryResult========="+queryResult);
+        return queryResult;
     }
 
     /**
@@ -317,7 +319,9 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
         long tastTime=System.currentTimeMillis()-start;
         logger.info("===getAllMedia==="+tastTime);
         logger.info("======getAllMedia'sSQL========="+sql);
-        return queryResultArray(sql.toString());
+        JSONArray resultArray=queryAllResult(sql.toString());
+        logger.info("======getAllMedia'queryResult========="+resultArray);
+        return resultArray;
     }
 
     /**
@@ -431,7 +435,7 @@ public class MediaSpotSearch extends BaseSpotSearch implements ApiSupport {
     public static void main(String[] args) {
         MediaSpotSearch mediaSpotSearch = new MediaSpotSearch();
         com.rkhd.platform.sdk.http.Request rkhdRequest = new com.rkhd.platform.sdk.http.Request();
-        rkhdRequest.putParameter("mediaName", new String[]{"广州塔媒体2"});
+//        rkhdRequest.putParameter("mediaName", new String[]{"广州塔媒体2"});
         rkhdRequest.putParameter("mediaId", new String[]{""});
         rkhdRequest.putParameter("begin", new String[]{"2017-03-22"});
         rkhdRequest.putParameter("end", new String[]{"2017-04-22"});

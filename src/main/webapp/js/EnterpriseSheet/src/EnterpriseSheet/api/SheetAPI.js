@@ -171,6 +171,7 @@ Ext.define('EnterpriseSheet.api.SheetAPI', {
         }
 
         var sheet = new EnterpriseSheet.sheet.RollingSheet({
+
             style: 'border:none;',
             loadMask: {
                 msg: SLANG['processing']

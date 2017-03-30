@@ -341,8 +341,8 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
         headData.addAll(titleArray);
 
 
-        //加载媒体的数据：
-        JSONArray cellArray = getMediaSpotCellData(0, 30, sheetId);
+        //加载媒体的数据：TODO 如果分页，就只显示内容，不显示表头
+        JSONArray cellArray = getMediaSpotCellData(0, 20, sheetId);
         if (cellArray!=null){
             headData.addAll(cellArray);
         }

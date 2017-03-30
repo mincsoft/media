@@ -86,7 +86,7 @@ public class ContractTrigger extends BaseTrigger implements ScriptTrigger {
                     Date  startDate = DateUtil.getDate(contractCur.getString("startDate"));
                     Date  endDate = DateUtil.getDate(contractCur.getString("endDate"));
 
-                    //TODO 4. 更新meidia点位记录。 待验证
+                    // 4. 更新meidia点位记录。 待验证(当前无法在流程中更新粗放，但是自身改变状态可以触发)
                     logger.info("更新合同状态为2的时候，记录或者增加媒体库点位信息==========");
                     //采购合同生效 如果销售合同状态变为2，就把saleContractSpotDate.点位中的数值放到media点位表中。
                     Map<String,JSONObject> saleContractSpotDateMap=getSalesSpotDateMap(String.valueOf(id));
