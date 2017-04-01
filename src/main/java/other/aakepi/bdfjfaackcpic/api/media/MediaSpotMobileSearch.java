@@ -4,6 +4,7 @@ import com.rkhd.platform.sdk.api.ApiSupport;
 import com.rkhd.platform.sdk.http.Request;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import other.aakepi.bdfjfaackcpic.util.DateUtil;
 
@@ -166,7 +167,12 @@ public class MediaSpotMobileSearch extends BaseSpotSearch implements ApiSupport 
     private Map<String, String> getPurSpotDate(JSONObject media) {
 
         String mediaId = media.getString("id");
-        int opMode = media.getInt("opMode"); //经营方式
+        String opModeStr= media.getString("opMode"); //经营方式
+        int opMode =0;
+        if(StringUtils.isNotEmpty(opModeStr)){
+            opMode=Integer.valueOf(opModeStr);
+        }
+
         JSONArray resultArray = new JSONArray();
         if(opMode == 1 ){ //自有媒体, 每天都可用
             Calendar startCal = Calendar.getInstance();

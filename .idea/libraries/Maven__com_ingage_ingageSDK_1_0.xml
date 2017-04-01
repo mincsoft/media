@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Maven: com.ingage:ingageSDK:1.0">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/ingage/ingageSDK/1.0/ingageSDK-1.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/ingage/ingageSDK/1.0/IngageSDK-1.0.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/com/ingage/ingageSDK/1.0/ingageSDK-1.0-javadoc.jar!/" />

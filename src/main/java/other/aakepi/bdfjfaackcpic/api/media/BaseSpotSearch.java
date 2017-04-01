@@ -21,7 +21,7 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
     //request请求
     protected Request request;
     //全部实体信息
-    protected QueryResult allBelongs;
+//    protected QueryResult allBelongs;
     //媒体对象的ID
     protected long mediaBelongId;
     //媒体：字段描述
@@ -46,17 +46,22 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
      */
     protected void initParam() {
         //查询全部实体，获得对应的belongId：
-        allBelongs = getAllBelongs();
+//        allBelongs = getAllBelongs();
+//        logger.info("==initParam.allBelongs:=="+allBelongs);
         //媒体对象的ID
-        mediaBelongId = getBelongId(allBelongs, "media");
+        mediaBelongId =100018286; //Long.parseLong(Configuration4Belong.getInstance().getValue("mediaBelongId")) ;
+        logger.info("==initParam.mediaBelongId:=="+mediaBelongId);
         //字段描述
-        mediaBelongsDes = getBelongsDesc( mediaBelongId);
+        mediaBelongsDes = getBelongsDesc(mediaBelongId);
+
         //下拉选项
         mediaSelectMap = getBelongSelectItem(mediaBelongsDes);
+        logger.info("==initParam.getBelongSelectItem:=="+mediaSelectMap);
         //排期配置对象
         spotConfig = new SpotConfig(mediaBelongsDes);
-
+        logger.info("==initParam.new SpotConfig(mediaBelongsDes):==" + spotConfig.getSpotFielList());
         initSpotConfig();
+        logger.info("==initParam.initSpotConfig:=="+spotConfig.getSpotFielList());
     }
 
     /**
@@ -336,8 +341,8 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
         headData.addAll(titleArray);
 
 
-        //加载媒体的数据：
-        JSONArray cellArray = getMediaSpotCellData(0, 300, sheetId);
+        //加载媒体的数据：TODO 如果分页，就只显示内容，不显示表头
+        JSONArray cellArray = getMediaSpotCellData(0, 20, sheetId);
         if (cellArray!=null){
             headData.addAll(cellArray);
         }

@@ -63,4 +63,16 @@ public class SpotField {
     public void setIsMediaField(boolean isMediaField) {
         this.isMediaField = isMediaField;
     }
+
+    @Override
+    public String toString() {
+        return "SpotField{" +
+                "en='" + en + '\'' +
+                ", zn='" + zn + '\'' +
+                ", width=" + width +
+                ", other='" + other + '\'' +
+                ", type='" + type + '\'' +
+                ", isMediaField=" + isMediaField +
+                '}';
+    }
 }

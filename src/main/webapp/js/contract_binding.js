@@ -141,8 +141,9 @@ rkclient.on('data:xsyCustomizeRefer', function (id, entityName, entityInfo, widg
                 if (entityName == 'purchasingContract'||entityId == 100018099) {
                     menuId = widget_purMediaSpot_menuId;
                 }
+                var urlTitle = "https://crm.xiaoshouyi.com/";
                 var url = "custom_menu.action?menuId=" + menuId + "&contractId=" + contractId + "&op=edit";
-                window.open(url, '编辑排期');
+                window.open(urlTitle+url, '编辑排期');
             });
         }
 
