@@ -362,7 +362,7 @@ public abstract class BaseSpotSearch extends BaseApiSupport {
 
         long end = System.currentTimeMillis() - start;
         logger.debug("load sheet time :" + end + " ms");
-
+        logger.debug("===="+this.getClass().getName()+".sheet's jsonResult"+ jsonResult);
         return jsonResult;
     }
 
